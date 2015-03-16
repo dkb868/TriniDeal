@@ -1,0 +1,5 @@
+#gitignore for typical python project
+
+*.pyc
+
+#adding the sqlite database would probably be a good idea
