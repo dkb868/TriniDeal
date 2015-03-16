@@ -1,4 +1,4 @@
-#Readme for projectmanicou
+#Readme for projectmanicou  
 
-Admin username: administrator
-Admin password: administrator
+Admin username: administrator  
+Admin password: administrator  
