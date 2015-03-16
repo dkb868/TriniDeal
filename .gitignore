@@ -1,5 +1,9 @@
 #gitignore for typical python project
 
 *.pyc
+db.sqlite3
 
-#adding the sqlite database would probably be a good idea
+#gedit autosave ignores
+*.py~
+.gitignore~
+
