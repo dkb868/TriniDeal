@@ -18,7 +18,7 @@ class Post(models.Model):
 	post_time = models.DateField()
 	post_last_edited = models.DateField()
 	price = models.IntegerField()
-	availability = models.BooleanField()
+	availability = models.BooleanField(default=True)
 	
 	
 class Comment(models.Model):
