@@ -5,7 +5,9 @@ from django.db import models
 class User(models.Model):
 	name = models.CharField(max_length=200)
 	email = models.EmailField()
-	#no password field as I would encourage the use of Facebook login in lieu of inconvenient accounts
+	seller_points = models.IntegerField(verbose_name='concrete measurement of reliability of this person as a seller')
+	#seller points may be earned by being upvoted by satisfied customers, commenting a lot, etc.
+	#no password field as I would encourage the use of Facebook/other oauth2 login in lieu of inconvenient accounts
 	
 class Post(models.Model):
 	
