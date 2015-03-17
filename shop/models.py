@@ -2,10 +2,13 @@ from django.db import models
 
 # Create your models here.
 
-class User(models.Model):
-	name = models.CharField(max_length=200)
-	email = models.EmailField()
-	seller_points = models.IntegerField(verbose_name='concrete measurement of reliability of this person as a seller')
+#UserProfile not user. Email,password etc is already done by django.
+#Social login will be used
+#Thus userProfile only needs additional info like rating etc.
+
+#class UserProfile(models.Model):
+#
+#	seller_points = models.IntegerField(verbose_name='concrete measurement of reliability of this person as a seller')
 	#seller points may be earned by being upvoted by satisfied customers, commenting a lot, etc.
 	#no password field as I would encourage the use of Facebook/other oauth2 login in lieu of inconvenient accounts
 	
@@ -29,4 +32,3 @@ class Comment(models.Model):
 	comment_text = models.TextField(max_length=1500)
 	comment_time = 	models.DateTimeField()	
 	comment_last_edited = models.DateField()
-	
