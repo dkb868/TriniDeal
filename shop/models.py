@@ -17,8 +17,8 @@ class Post(models.Model):
 	poster = models.ForeignKey('User')
 	post_text = models.TextField(max_length=1500)
 	sale_category = models.CharField(max_length=75)
-	post_time = models.DateField()
-	post_last_edited = models.DateField()
+	post_time = models.DateTimeField()
+	post_last_edited = models.DateTimeField()
 	price = models.IntegerField()
 	availability = models.BooleanField(default=True)
 	
@@ -27,6 +27,6 @@ class Comment(models.Model):
 	poster = models.ForeignKey('User')
 	post = models.ForeignKey('Post')
 	comment_text = models.TextField(max_length=1500)
-	comment_time = 	models.DateField()	
+	comment_time = 	models.DateTimeField()	
 	comment_last_edited = models.DateField()
 	
