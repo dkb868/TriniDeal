@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('comment_text', models.TextField(max_length=1500)),
-                ('comment_time', models.DateField()),
+                ('comment_time', models.DateTimeField()),
                 ('comment_last_edited', models.DateField()),
             ],
             options={
@@ -29,8 +29,8 @@ class Migration(migrations.Migration):
                 ('post_type', models.CharField(default=b'sell', max_length=4, choices=[(b'buy', b'Buying'), (b'sell', b'Selling')])),
                 ('post_text', models.TextField(max_length=1500)),
                 ('sale_category', models.CharField(max_length=75)),
-                ('post_time', models.DateField()),
-                ('post_last_edited', models.DateField()),
+                ('post_time', models.DateTimeField()),
+                ('post_last_edited', models.DateTimeField()),
                 ('price', models.IntegerField()),
                 ('availability', models.BooleanField(default=True)),
             ],
@@ -39,11 +39,9 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.CreateModel(
-            name='User',
+            name='UserProfile',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=200)),
-                ('email', models.EmailField(max_length=75)),
                 ('seller_points', models.IntegerField(verbose_name=b'concrete measurement of reliability of this person as a seller')),
             ],
             options={
@@ -53,7 +51,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='post',
             name='poster',
-            field=models.ForeignKey(to='shop.User'),
+            field=models.ForeignKey(to='shop.UserProfile'),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -65,7 +63,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='comment',
             name='poster',
-            field=models.ForeignKey(to='shop.User'),
+            field=models.ForeignKey(to='shop.UserProfile'),
             preserve_default=True,
         ),
     ]
