@@ -1,11 +1,20 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.conf import settings
+
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'manicou.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
+    url(r'^$', 'shop.views.index', name='index'),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^shop/', include('shop.urls')),
+    #namespace everything
+    url(r'^shop/', include('shop.urls', namespace='shop')),
 )
+
+#development media server
+if settings.DEBUG:
+        urlpatterns += patterns(
+            'django.views.static',
+            (r'^media/(?P<path>.*)',
+            'serve',
+            {'document_root': settings.MEDIA_ROOT}),
+        )
