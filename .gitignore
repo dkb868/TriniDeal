@@ -7,3 +7,6 @@ db.sqlite3
 *.py~
 .gitignore~
 
+#pycharm stuff ignores
+
+.idea/
