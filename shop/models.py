@@ -60,15 +60,20 @@ class SaleItem(models.Model):
 
 		super(SaleItem, self).save(*args, **kwargs)
 
+	def __unicode__(self):
+		return self.title
 
 class Category(models.Model):
-	name = models.CharField(max_length='20')
+	name = models.CharField(max_length='20',unique=True)
 	slug = models.SlugField(unique=True)
 
 	def save(self, *args, **kwargs):
 		self.slug = slugify(self.name)
 
 		super(Category, self).save(*args, **kwargs)
+
+	def __unicode__(self):
+		return self.name
 
 
 

@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from shop.models import SellerProfile,SaleItem,Category,UserBid,SaleItemImage,Comment
+from shop.forms import SaleItemForm
 
 
 def index(request):
@@ -19,6 +20,23 @@ def saleitem(request, item_slug):
     item = SaleItem.objects.get(slug=item_slug)
     context_dict = {'item': item}
     return render(request, 'main/item.html', context_dict)
+
+def add_new_item(request):
+    if request.method == 'POST':
+        form = SaleItemForm(request.POST)
+
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.owner = request.user.sellerprofile
+            item.save()
+            return redirect('shop:item', item.slug)
+        else:
+            print form.errors
+
+    else:
+        form = SaleItemForm()
+
+    return render(request, 'shop/add_new_item.html', {'form': form})
 
 
 # The Following Code Requires sellerprofile to be Linked with Users

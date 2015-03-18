@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
+from shop.forms import SaleItemForm
 from shop.models import Category, SellerProfile, SaleItem
 
 
@@ -30,3 +31,24 @@ class SaleItemViewTests(TestCase):
 
         response = self.client.get(reverse('shop:item', kwargs={'item_slug':'testtitle'}))
         self.assertEqual(response.status_code, 200)
+
+class AddNewItemViewTests(TestCase):
+
+    def test_valid_saleitem_creation(self):
+
+        testcat = Category.objects.create(name='testcat')
+        data = {'title': 'testtitle','condition': 'NEW',
+                'description': 'its legit',
+                'asking_price': 334334,
+                'payment_type':'COD',
+                'negotiable': True,
+                'expiration_date': '4/4/2015',
+                'category': testcat.id,
+                'refundable': True,
+                'home_delivery': True}
+
+        form = SaleItemForm(data=data)
+        print form.errors
+        self.assertTrue(form.is_valid())
+
+        # Need SellerProfile to actually test the posting
