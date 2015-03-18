@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Manicou</title>
+    </head>
+
+    <body>
+        <h1>Add Item</h1>
+
+        <form id="saleitem_form" method="post" action=".">
+
+            {% csrf_token %}
+            {{  form.as_p }}
+            <input type="submit" name="submit" value="Create Item" />
+        </form>
+    </body>
+
+</html>
