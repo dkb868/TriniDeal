@@ -27,6 +27,7 @@
     </div>
     <a href="{% url "review_detail" pk=sellerprofile.pk %}">Review details</a>
 {% endfor %}
+<a href="{% url "review_create" content_type='sellerprofile' object_id=sellerprofile.pk %}"> "Review this book" </a>
 	<p>Public Seller Profile</p>
 	<p>username: {{ sellerprofile.user.username }}</p>
 
