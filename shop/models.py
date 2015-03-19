@@ -4,11 +4,12 @@ import itertools
 from django.template.defaultfilters import slugify
 
 
-# UserProfile not user. Email,password etc is already done by django.
-# Social login will be used
-# Thus userProfile only needs additional info like rating etc.
+
 class SellerProfile(models.Model):
     user = models.OneToOneField(User)
+    location = models.CharField(max_length=30,blank=True)
+    phone_number = models.IntegerField(default=1)
+
 
     def __unicode__(self):
         return (self.user.first_name + ' ' + self.user.last_name)
