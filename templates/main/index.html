@@ -6,6 +6,13 @@
     <title>Project Manicou</title>
 </head>
 <body>
+<h1>Facebook Login</h1>
+<p>
+{% load socialaccount %}
+{% providers_media_js %}
+<a href="{% provider_login_url "facebook" method="js_sdk" %}">Facebook Connect</a>
+</p>
+
 <h1>Here are our items</h1>
 	{% if items %}
 		<ul>
