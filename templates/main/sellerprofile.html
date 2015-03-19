@@ -1,20 +1,36 @@
 <!DOCTYPE html>
 {%  load staticfiles %}
-{% load pinax_ratings_tags %}
+{%  load review_tags %}
+
+
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>Project Manicou</title>
-    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
 </head>
 <body>
-{% overall_rating sellerprofile as the_overall_rating %}
+{%  total_review_average sellerprofile 5 as stars %}
+	<p>This object got {{ stars }} out of 5 stars.</p>
 
-<div class="overall_rating">{{ the_overall_rating }}</div>
+{% get_reviews sellerprofile as reviews %}
+{% for review in reviews %}
+    <p>
+        {{ review.get_average_rating }}
+    </p>
+    <p>
+        {% if review.content %}
+            {{ review.content|truncatewords:'70' }}
+        {% else %}
+            Reviewed without description.
+        {% endif %}
+    </div>
+    <a href="{% url "review_detail" pk=sellerprofile.pk %}">Review details</a>
+{% endfor %}
 	<p>Public Seller Profile</p>
 	<p>username: {{ sellerprofile.user.username }}</p>
-<div id="user_rating"></div>
 
-{% user_rating_js request.user sellerprofile %}
+
+
 </body>
 </html>

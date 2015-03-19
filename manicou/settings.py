@@ -49,7 +49,13 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'shop',
-    'pinax.ratings',
+
+    # review apps
+    'hvad',
+    'review',
+    'user_media',
+    'generic_positions',
+
 
     # allauth apps
     'django.contrib.sites',
