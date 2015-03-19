@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 from shop.forms import SaleItemForm
 from shop.models import Category, SellerProfile, SaleItem
+from django.contrib.auth.models import User
 
 
 class IndexViewTests(TestCase):
@@ -23,8 +24,9 @@ class CategoryViewTests(TestCase):
 class SaleItemViewTests(TestCase):
 
     def test_saleitem_page(self):
+        testuser = User.objects.create(username='testuser')
         testcat = Category.objects.create(name='testcat')
-        testseller = SellerProfile.objects.create()
+        testseller = SellerProfile.objects.create(user=testuser)
         testitem = SaleItem.objects.create(	owner = testseller, title = 'testtitle',
                                             condition = 'NEW', payment_type = 'COD',
                                             category = testcat )
