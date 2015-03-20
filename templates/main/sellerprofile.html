@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 {%  load staticfiles %}
+{%  load review_tags %}
+
+
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>Project Manicou</title>
+
 </head>
 <body>
+{%  total_review_average sellerprofile 5 as stars %}
+	<p>This object got {{ stars }} out of 5 stars.</p>
+
+{% get_reviews sellerprofile as reviews %}
+{% for review in reviews %}
+    <p>
+        {{ review.get_average_rating }}
+    </p>
+    <p>
+        {% if review.content %}
+            {{ review.content|truncatewords:'70' }}
+        {% else %}
+            Reviewed without description.
+        {% endif %}
+    </div>
+    <a href="{% url "review_detail" pk=sellerprofile.pk %}">Review details</a>
+{% endfor %}
+<a href="{% url "review_create" content_type='sellerprofile' object_id=sellerprofile.pk %}"> "Review this book" </a>
 	<p>Public Seller Profile</p>
 	<p>username: {{ sellerprofile.user.username }}</p>
+
+
+
 </body>
 </html>

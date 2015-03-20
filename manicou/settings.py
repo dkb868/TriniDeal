@@ -50,12 +50,20 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'shop',
 
+    # review apps
+    'hvad',
+    'review',
+    'user_media',
+    'generic_positions',
+
+
     # allauth apps
     'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook'
+    'allauth.socialaccount.providers.facebook',
+
 )
 
 SITE_ID = 1

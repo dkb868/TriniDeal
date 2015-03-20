@@ -8,3 +8,4 @@ admin.site.register(UserBid)
 admin.site.register(SaleItemImage)
 admin.site.register(Comment)
 
+
