@@ -1,15 +1,17 @@
 import os
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'manicou.settings')
 
 import django
 django.setup()
 
 from shop.models import SellerProfile, Category, SaleItem
+from django.contrib.auth.models import User
 
 
 def populate():
-
-    shopowner = SellerProfile.objects.get_or_create()[0]
+    admin = User.objects.get(username='administrator')
+    shopowner = SellerProfile.objects.get_or_create(user=admin)[0]
     # Multiple categories to be added later
     testcat = Category.objects.get_or_create(name="testcat")[0]
     def add_item(title,asking_price, condition='NEW', payment_type='COD', category=testcat,owner=shopowner):

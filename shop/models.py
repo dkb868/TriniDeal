@@ -1,16 +1,18 @@
+from django.contrib.auth.models import User
 from django.db import models
 import itertools
 from django.template.defaultfilters import slugify
 
 
-# UserProfile not user. Email,password etc is already done by django.
-# Social login will be used
-# Thus userProfile only needs additional info like rating etc.
-class SellerProfile(models.Model):
 
-	seller_points = models.IntegerField(default=0,verbose_name='concrete measurement of reliability of this person as a seller')
-	# seller points may be earned by being upvoted by satisfied customers, commenting a lot, etc.
-	# no password field as I would encourage the use of Facebook/other oauth2 login in lieu of inconvenient accounts
+class SellerProfile(models.Model):
+    user = models.OneToOneField(User)
+    location = models.CharField(max_length=30,blank=True)
+    phone_number = models.IntegerField(default=1)
+
+
+    def __unicode__(self):
+        return (self.user.first_name + ' ' + self.user.last_name)
 
 class SaleItem(models.Model):
 

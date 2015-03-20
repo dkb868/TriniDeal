@@ -39,15 +39,14 @@ def add_new_item(request):
     return render(request, 'shop/add_new_item.html', {'form': form})
 
 
-# The Following Code Requires sellerprofile to be Linked with Users
-# It will not work until Social Login Users are implemented and linked to sellerprofile
 
-# def sellerprofile(request, user_id):
-#    sellerprofile = User.objects.get(id=user_id).sellerprofile
-#    context_dict = {'sellerprofile': sellerprofile}
-#    return render(request, 'main/sellerprofile.html', context_dict)
 
-# def sellerdashboard(request):
-#    context_dict = {'sellerprofile': request.user.sellerprofile}
-#    return render(request, 'main/dashboard.html', context_dict)
+def sellerprofile(request, user_id):
+    sellerprofile = User.objects.get(id=user_id).sellerprofile
+    context_dict = {'sellerprofile': sellerprofile}
+    return render(request, 'main/sellerprofile.html', context_dict)
+
+def sellerdashboard(request):
+    context_dict = {'sellerprofile': request.user.sellerprofile}
+    return render(request, 'main/dashboard.html', context_dict)
 
