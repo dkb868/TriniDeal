@@ -7,4 +7,5 @@ urlpatterns = patterns('',
     url(r'^add_new_item/$', views.add_new_item, name='add_new_item'),
     url(r'^sellerprofile/(?P<user_id>\d+)/$', views.sellerprofile, name='sellerprofile'),
     url(r'^dashboard/$', views.sellerdashboard, name='dashboard'),
+    url(r'^make_bid/(?P<item_slug>[\w\-]+)/$', views.make_bid, name='makebid'),
 	)

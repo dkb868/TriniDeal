@@ -6,13 +6,13 @@ from django.template.defaultfilters import slugify
 
 
 class SellerProfile(models.Model):
-    user = models.OneToOneField(User)
-    location = models.CharField(max_length=30,blank=True)
-    phone_number = models.IntegerField(default=1)
+	user = models.OneToOneField(User)
+	location = models.CharField(max_length=30,blank=True)
+	phone_number = models.IntegerField(default=1)
 
 
-    def __unicode__(self):
-        return (self.user.first_name + ' ' + self.user.last_name)
+	def __unicode__(self):
+		return (self.user.first_name + ' ' + self.user.last_name)
 
 class SaleItem(models.Model):
 
@@ -49,10 +49,14 @@ class SaleItem(models.Model):
 	refundable = models.BooleanField(default=False)
 	home_delivery = models.BooleanField(default=False)
 	slug = models.SlugField(unique=True)
+	current_highest_bid = models.IntegerField(default=0,blank=True)
 
 	def save(self, *args, **kwargs):
 
 		#if slug is already used, add a number to it.
+        # slugify is broken when updating an item because it doesn't check
+        # to see if that slug that exists...is FOR THIS ITEM
+        # so always use update_fields to avoid pointless slug creation
 
 		self.slug = orig = slugify(self.title)
 		for x in itertools.count(1):
@@ -80,12 +84,13 @@ class Category(models.Model):
 
 
 class UserBid(models.Model):
-	user = models.ForeignKey('SellerProfile')
-	sale_item = models.ForeignKey('SaleItem')
+	user = models.ForeignKey(User)
+	sale_item = models.OneToOneField('SaleItem')
 	post_time = models.DateTimeField(auto_now_add=True)
 	offer_price = models.IntegerField(default=0)
-	# user bids may optionally have short messages with them.
-	message = models.CharField(max_length='50', blank=True)
+
+	def __unicode__(self):
+		return (self.user.first_name + " " + self.user.last_name + " " + self.sale_item.title)
 
 
 class SaleItemImage(models.Model):

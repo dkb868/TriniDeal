@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from shop.models import SellerProfile,SaleItem,Category,UserBid,SaleItemImage,Comment
-from shop.forms import SaleItemForm
+from shop.forms import SaleItemForm, UserBidForm
 
 
 def index(request):
@@ -19,6 +19,9 @@ def category(request, category_name_slug):
 def saleitem(request, item_slug):
     item = SaleItem.objects.get(slug=item_slug)
     context_dict = {'item': item}
+
+    bidform = UserBidForm()
+    context_dict['bidform'] = bidform
     return render(request, 'main/item.html', context_dict)
 
 def add_new_item(request):
@@ -49,4 +52,28 @@ def sellerprofile(request, user_id):
 def sellerdashboard(request):
     context_dict = {'sellerprofile': request.user.sellerprofile}
     return render(request, 'main/dashboard.html', context_dict)
+
+def make_bid(request, item_slug):
+    item = SaleItem.objects.get(slug=item_slug)
+
+    try:
+        userbid = UserBid.objects.get(user=request.user, sale_item=item)
+
+    except UserBid.DoesNotExist:
+        userbid = UserBid(user=request.user,sale_item=item)
+
+
+    if request.method == 'POST':
+        form = UserBidForm(request.POST, instance=userbid)
+        if form.is_valid():
+            bid = form.save()
+            item.current_highest_bid = bid.offer_price
+            item.save(update_fields=['current_highest_bid'])
+            return redirect('shop:item', item.slug)
+
+        else:
+            print form.errors
+
+    else:
+        return redirect('index')
 
