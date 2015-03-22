@@ -54,6 +54,9 @@ class SaleItem(models.Model):
 	def save(self, *args, **kwargs):
 
 		#if slug is already used, add a number to it.
+        # slugify is broken when updating an item because it doesn't check
+        # to see if that slug that exists...is FOR THIS ITEM
+        # so always use update_fields to avoid pointless slug creation
 
 		self.slug = orig = slugify(self.title)
 		for x in itertools.count(1):

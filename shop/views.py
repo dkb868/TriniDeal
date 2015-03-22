@@ -68,7 +68,7 @@ def make_bid(request, item_slug):
         if form.is_valid():
             bid = form.save()
             item.current_highest_bid = bid.offer_price
-            item.save()
+            item.save(update_fields=['current_highest_bid'])
             return redirect('shop:item', item.slug)
 
         else:
