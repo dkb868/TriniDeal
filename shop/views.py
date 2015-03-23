@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from notifications import notify
 from shop.models import SellerProfile,SaleItem,Category,UserBid,SaleItemImage,Comment
-from shop.forms import SaleItemForm, UserBidForm
+from shop.forms import SaleItemForm, UserBidForm, SellerProfileForm
 
 
 def index(request):
@@ -73,9 +73,7 @@ def make_bid(request, item_slug):
     if request.method == 'POST':
         form = UserBidForm(request.POST, instance=userbid)
         if form.is_valid():
-            bid = form.save()
-            item.current_highest_bid = bid.offer_price
-            item.save(update_fields=['current_highest_bid'])
+            form.save()
             notify.send(request.user, recipient=item.owner.user, verb=u'Made an offer on your item: ', target=item)
             return redirect('shop:item', item.slug)
 
@@ -85,3 +83,17 @@ def make_bid(request, item_slug):
     else:
         return redirect('index')
 
+def create_sellerprofile(request):
+    if request.method=='POST':
+        form = SellerProfileForm(request.POST)
+        if form.is_valid():
+            sellerprofile = form.save(commit=False)
+            sellerprofile.user = request.user
+            sellerprofile.save()
+            form.save_m2m()
+            return redirect('index')
+        else:
+            print form.errors
+    else:
+        form = SellerProfileForm()
+    return render(request, 'shop/create_sellerprofile.html', {'form': form})
