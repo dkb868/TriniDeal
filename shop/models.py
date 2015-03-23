@@ -113,3 +113,28 @@ class Comment(models.Model):
 	sale_item = models.ForeignKey('SaleItem')
 	comment_text = models.TextField(max_length=150)
 	comment_time = 	models.DateTimeField(auto_now_add=True)
+
+class Order(models.Model):
+
+	PAYMENT_CHOICES = (
+		('COD', 'Cash on delivery'),
+		('CARD', 'Linx/Debit Card/Credit Card on delivery'),
+		('ONLINE', ''),
+	)
+	buyer = models.ForeignKey(User)
+	buy_item = models.OneToOneField('SaleItem')
+	meetuploc = models.TextField(blank=True)
+	street = models.TextField(blank=True)
+	city = models.TextField(blank=True)
+	phone = models.IntegerField()
+	paymentmethod = models.CharField(max_length=7,choices=PAYMENT_CHOICES)
+	
+	def __unicode__(self):
+		return ("ORDER" + " " + self.buyer.first_name + " " + self.buyer.last_name + " " + self.buy_item.title )
+
+
+
+
+
+
+
