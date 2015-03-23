@@ -8,4 +8,5 @@ urlpatterns = patterns('',
     url(r'^sellerprofile/(?P<user_id>\d+)/$', views.sellerprofile, name='sellerprofile'),
     url(r'^dashboard/$', views.sellerdashboard, name='dashboard'),
     url(r'^make_bid/(?P<item_slug>[\w\-]+)/$', views.make_bid, name='makebid'),
+    url(r'^create_sellerprofile/$', views.create_sellerprofile, name='create_sellerprofile'),
 	)

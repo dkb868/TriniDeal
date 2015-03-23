@@ -3,12 +3,31 @@ from django.db import models
 import itertools
 from django.template.defaultfilters import slugify
 
+class PaymentChoice(models.Model):
+	description = models.CharField(max_length=50)
 
+	def __unicode__(self):
+		return self.description
 
 class SellerProfile(models.Model):
+
+	# Choice Lists
+	DELIVERY_CHOICES = (
+		('SOME', 'Some Locations'),
+		('ALL', 'All locations'),
+		('NONE', 'No home delivery'),
+	)
+
+	# Model Fields
 	user = models.OneToOneField(User)
+	seller_name = models.CharField(max_length=50,blank=True)
 	location = models.CharField(max_length=30,blank=True)
 	phone_number = models.IntegerField(default=1)
+	payment_type = models.ManyToManyField('PaymentChoice')
+	home_delivery = models.CharField(max_length=5, choices=DELIVERY_CHOICES)
+	meetup = models.BooleanField(default=True)
+	details = models.TextField(blank=True)
+
 
 
 	def __unicode__(self):
@@ -28,28 +47,20 @@ class SaleItem(models.Model):
 
 	)
 
-	PAYMENT_CHOICES = (
-		('COD', 'Cash On Delivery'),
-		('ONLINE', 'Paypal'),
-	)
+
 
 	# Model Fields
 
 	owner = models.ForeignKey('SellerProfile')
 	title = models.CharField(max_length='30')
 	condition = models.CharField(max_length=15, choices=CONDITION_CHOICES)
-	description = models.TextField(max_length='200',blank=True)
+	description = models.TextField(blank=True)
 	asking_price = models.IntegerField(default=0)
-	payment_type = models.CharField(max_length=6, choices=PAYMENT_CHOICES)
 	negotiable = models.BooleanField(default=True)
-	expiration_date = models.DateField(blank=True,null=True)
-	available = models.BooleanField(default=True, blank=True)
+	active = models.BooleanField(default=True, blank=True)
 	post_time = models.DateTimeField(auto_now_add=True)
 	category = models.ForeignKey('Category')
-	refundable = models.BooleanField(default=False)
-	home_delivery = models.BooleanField(default=False)
 	slug = models.SlugField(unique=True)
-	current_highest_bid = models.IntegerField(default=0,blank=True)
 	reason = models.CharField(max_length=100, blank=True)
 
 	def save(self, *args, **kwargs):

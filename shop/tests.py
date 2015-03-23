@@ -1,8 +1,8 @@
-from django.test import TestCase, Client
+from django.test import TestCase, Client, TransactionTestCase
 from django.core.urlresolvers import reverse
 from notifications.models import Notification
-from shop.forms import SaleItemForm, UserBidForm
-from shop.models import Category, SellerProfile, SaleItem, UserBid
+from shop.forms import SaleItemForm, UserBidForm, SellerProfileForm
+from shop.models import Category, SellerProfile, SaleItem, UserBid, PaymentChoice
 from django.contrib.auth.models import User
 
 
@@ -13,7 +13,7 @@ def add_user(username):
 	return u
 
 def add_sellerprofile(user):
-	sp = SellerProfile.objects.create(user=user)
+	sp = SellerProfile.objects.create(user=user,home_delivery='NONE')
 	return sp
 
 def add_cat(name):
@@ -23,8 +23,7 @@ def add_cat(name):
 def add_item(title, asking_price, category, owner, condition='NEW', payment_type='COD'):
 	item = SaleItem.objects.create(title=title,asking_price=asking_price,
 								   category=category, owner=owner,
-									condition=condition, payment_type=payment_type
-									)
+									condition=condition,)
 	return item
 
 ## Test Classes
@@ -173,7 +172,30 @@ class MakeBidViewTests(TestCase):
 		response = self.c.post(reverse('shop:makebid', kwargs={'item_slug':'testitem'}),data=data)
 		self.assertEqual(response.status_code, 302)
 		item = SaleItem.objects.get(slug='testitem')
-		self.assertEqual(item.current_highest_bid, 300)
 		self.assertEqual(Notification.objects.count(), 1)
 
 
+class CreateSellerProfileViewTests(TestCase):
+	def setUp(self):
+		self.testuser = User.objects.create_user(username='testuser',password='password')
+		self.c = Client()
+		self.c.login(username='testuser',password='password')
+		self.assertTrue(self.c.login)
+		self.cash = PaymentChoice.objects.create(description='cash')
+
+	def tearDown(self):
+		self.c.logout()
+
+	def test_valid_sellerprofile_creation(self):
+		data = {
+			'seller_name': 'testname','location': 'Heaven',
+			'phone_number': 12312352,'payment_type': [self.cash.pk],
+			'home_delivery': 'ALL','meetup': True,
+			'details': 'Blahblah',
+			}
+		form = SellerProfileForm(data=data)
+		print form.errors
+		self.assertTrue(form.is_valid())
+		response = self.c.post(reverse('shop:create_sellerprofile'),data=data)
+		self.assertEqual(response.status_code, 302)
+		self.assertEqual(SellerProfile.objects.count(), 1)
