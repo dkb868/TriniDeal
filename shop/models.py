@@ -53,18 +53,17 @@ class SaleItem(models.Model):
 
 	def save(self, *args, **kwargs):
 
-		#if slug is already used, add a number to it.
-        # slugify is broken when updating an item because it doesn't check
-        # to see if that slug that exists...is FOR THIS ITEM
-        # so always use update_fields to avoid pointless slug creation
+		if not self.slug:
+			self.slug = orig = slugify(self.title)
+			for x in itertools.count(1):
+				if not SaleItem.objects.filter(slug=self.slug).exists():
+					break
+				self.slug = '%s-%d' % (orig, x)
+			super(SaleItem, self).save(*args, **kwargs)
 
-		self.slug = orig = slugify(self.title)
-		for x in itertools.count(1):
-			if not SaleItem.objects.filter(slug=self.slug).exists():
-				break
-			self.slug = '%s-%d' % (orig, x)
+		else:
+			super(SaleItem, self).save(*args, **kwargs)
 
-		super(SaleItem, self).save(*args, **kwargs)
 
 	def __unicode__(self):
 		return self.title
@@ -85,7 +84,7 @@ class Category(models.Model):
 
 class UserBid(models.Model):
 	user = models.ForeignKey(User)
-	sale_item = models.OneToOneField('SaleItem')
+	sale_item = models.ForeignKey('SaleItem')
 	post_time = models.DateTimeField(auto_now_add=True)
 	offer_price = models.IntegerField(default=0)
 

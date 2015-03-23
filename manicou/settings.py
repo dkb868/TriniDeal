@@ -64,6 +64,9 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
 
+    # noticiation app
+    'notifications',
+
 )
 
 SITE_ID = 1

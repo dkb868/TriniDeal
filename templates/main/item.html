@@ -10,12 +10,22 @@
 	<p>Owner: {{ item.owner }}</p>
 	<p>Condition: {{ item.condition }}</p>
 	<p>Asking Price: {{ item.asking_price }}</p>
-    <p>Current Highest Offer: {{ item.current_highest_bid }}</p>
-    <form id="bid_form" method="post" action="{% url 'shop:makebid' item.slug %}">
+    {% if highestbid %}
+        {% if  user == item.owner.user %}
+          <p>Current Highest Offer: {{ highestbid.user }} - {{ highestbid.offer_price }}</p>
+        {% else %}
+           <p>Current Highest Offer: {{ highestbid.offer_price }}</p>
+        {% endif %}
+    {% endif %}
 
-        {% csrf_token %}
-       <p>Price</p> <input type="number" min="{{ item.current_highest_bid }}" max="{{ item.asking_price }}" id="id_offer_price" name="offer_price" placeholder="100">
-        <input type="submit" name="submit" value="Make an Offer" />
-    </form>
+    {% if  user != item.owner.user %}
+		<form id="bid_form" method="post" action="{% url 'shop:makebid' item.slug %}">
+            {% csrf_token %}
+            <input type="number" min="{{ highestbid.offer_price }}" max="{{ item.asking_price }}" id="id_offer_price" name="offer_price" placeholder="100">
+            <input type="submit" name="submit" value="Make an Offer" />
+        </form>
+	{% endif %}
+
+
 </body>
 </html>
