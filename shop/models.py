@@ -50,6 +50,7 @@ class SaleItem(models.Model):
 	home_delivery = models.BooleanField(default=False)
 	slug = models.SlugField(unique=True)
 	current_highest_bid = models.IntegerField(default=0,blank=True)
+	reason = models.CharField(max_length=100, blank=True)
 
 	def save(self, *args, **kwargs):
 
@@ -98,8 +99,7 @@ class SaleItemImage(models.Model):
 	sale_item = models.ForeignKey('SaleItem')
 
 class Comment(models.Model):
-	poster = models.ForeignKey('SellerProfile')
+	poster = models.ForeignKey(User)
 	sale_item = models.ForeignKey('SaleItem')
 	comment_text = models.TextField(max_length=150)
 	comment_time = 	models.DateTimeField(auto_now_add=True)
-	comment_last_edited = models.DateTimeField(auto_now=True)
