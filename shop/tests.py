@@ -1,5 +1,6 @@
 from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
+from notifications.models import Notification
 from shop.forms import SaleItemForm, UserBidForm
 from shop.models import Category, SellerProfile, SaleItem, UserBid
 from django.contrib.auth.models import User
@@ -157,6 +158,7 @@ class MakeBidViewTests(TestCase):
 							category=testcat,owner=self.testusersp)
 		response = self.c.post(reverse('shop:makebid', kwargs={'item_slug':'testitem'}),data=data)
 		self.assertEqual(response.status_code, 302)
+		self.assertEqual(Notification.objects.count(), 1)
 
 	# Tests to see if users with previous bids can make new ones
 	def test_valid_update_bid_form(self):
@@ -172,5 +174,6 @@ class MakeBidViewTests(TestCase):
 		self.assertEqual(response.status_code, 302)
 		item = SaleItem.objects.get(slug='testitem')
 		self.assertEqual(item.current_highest_bid, 300)
+		self.assertEqual(Notification.objects.count(), 1)
 
 

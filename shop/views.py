@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+from notifications import notify
 from shop.models import SellerProfile,SaleItem,Category,UserBid,SaleItemImage,Comment
 from shop.forms import SaleItemForm, UserBidForm
 
@@ -19,9 +20,15 @@ def category(request, category_name_slug):
 def saleitem(request, item_slug):
     item = SaleItem.objects.get(slug=item_slug)
     context_dict = {'item': item}
-
     bidform = UserBidForm()
     context_dict['bidform'] = bidform
+    context_dict['user'] = request.user
+    try:
+        highestbid = UserBid.objects.filter(sale_item=item).order_by('-offer_price')[0]
+        context_dict['highestbid'] = highestbid
+    except:
+        pass
+
     return render(request, 'main/item.html', context_dict)
 
 def add_new_item(request):
@@ -69,6 +76,7 @@ def make_bid(request, item_slug):
             bid = form.save()
             item.current_highest_bid = bid.offer_price
             item.save(update_fields=['current_highest_bid'])
+            notify.send(request.user, recipient=item.owner.user, verb=u'Made an offer on your item: ', target=item)
             return redirect('shop:item', item.slug)
 
         else:
