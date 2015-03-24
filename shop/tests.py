@@ -1,8 +1,8 @@
 from django.test import TestCase, Client, TransactionTestCase
 from django.core.urlresolvers import reverse
 from notifications.models import Notification
-from shop.forms import SaleItemForm, UserBidForm, SellerProfileForm
-from shop.models import Category, SellerProfile, SaleItem, UserBid, PaymentChoice
+from shop.forms import SaleItemForm, UserBidForm, SellerProfileForm, OrderCheckoutForm, OrderConfirmationForm
+from shop.models import Category, SellerProfile, SaleItem, UserBid, PaymentChoice, Order
 from django.contrib.auth.models import User
 
 
@@ -20,7 +20,7 @@ def add_cat(name):
 	c = Category.objects.create(name=name)
 	return c
 
-def add_item(title, asking_price, category, owner, condition='NEW', payment_type='COD'):
+def add_item(title, asking_price, category, owner, condition='NEW',):
 	item = SaleItem.objects.create(title=title,asking_price=asking_price,
 								   category=category, owner=owner,
 									condition=condition,)
@@ -164,14 +164,19 @@ class MakeBidViewTests(TestCase):
 		testcat = add_cat('testcat')
 		testitem = add_item(title='testitem',asking_price=100,
 							category=testcat,owner=self.testusersp)
-		previousbid = UserBid.objects.create(user=self.testuser,sale_item=testitem,offer_price=200)
+		UserBid.objects.create(user=self.testuser,sale_item=testitem,offer_price=200)
+		# Checking the bid before the form
+		previousbid = UserBid.objects.get(user=self.testuser,sale_item=testitem)
+		self.assertEqual(previousbid.offer_price, 200)
 		data = {'offer_price':300}
 		form = UserBidForm(data=data)
 		print form.errors
 		self.assertTrue(form.is_valid())
 		response = self.c.post(reverse('shop:makebid', kwargs={'item_slug':'testitem'}),data=data)
 		self.assertEqual(response.status_code, 302)
-		item = SaleItem.objects.get(slug='testitem')
+		# Checking the bid after the form
+		updatedbid = UserBid.objects.get(user=self.testuser,sale_item=testitem)
+		self.assertEqual(updatedbid.offer_price, 300)
 		self.assertEqual(Notification.objects.count(), 1)
 
 
@@ -199,3 +204,80 @@ class CreateSellerProfileViewTests(TestCase):
 		response = self.c.post(reverse('shop:create_sellerprofile'),data=data)
 		self.assertEqual(response.status_code, 302)
 		self.assertEqual(SellerProfile.objects.count(), 1)
+
+class ItemCartViewTests(TestCase):
+	def setUp(self):
+		self.testuser = User.objects.create_user(username='testuser',password='password')
+		self.testusersp = add_sellerprofile(self.testuser)
+		self.c = Client()
+		self.c.login(username='testuser',password='password')
+		self.assertTrue(self.c.login)
+
+	def tearDown(self):
+		self.c.logout()
+
+	def test_valid_item_cart_creation(self):
+		testcat = add_cat('testcat')
+		testitem = add_item(title='testitem',asking_price=100,
+							category=testcat,owner=self.testusersp)
+		response = self.c.get(reverse('shop:item_cart', kwargs={'item_slug':'testitem'}))
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual((response.context['item']), testitem)
+
+class CheckoutViewTests(TestCase):
+	def setUp(self):
+		self.testuser = User.objects.create_user(username='testuser',password='password')
+		self.testusersp = add_sellerprofile(self.testuser)
+		self.c = Client()
+		self.c.login(username='testuser',password='password')
+		self.assertTrue(self.c.login)
+
+	def tearDown(self):
+		self.c.logout()
+
+	def test_valid_checkout(self):
+		testcat = add_cat('testcat')
+		testitem = add_item(title='testitem',asking_price=100,
+							category=testcat,owner=self.testusersp)
+
+		data = {'meetuploc': 'pielantis',
+				'phone': 234243242,
+				'paymentmethod': 'COD',
+				'additionalinfo': 'spam',}
+		form = OrderCheckoutForm(data=data)
+		self.assertTrue(form.is_valid)
+		response = self.c.post(reverse('shop:checkout', kwargs={'item_slug':'testitem'}), data=data)
+		self.assertEqual(response.status_code, 302)
+		self.assertEqual(Order.objects.count(), 1)
+
+class ConfirmationViewTests(TestCase):
+	def setUp(self):
+		self.testuser = User.objects.create_user(username='testuser',password='password')
+		self.testusersp = add_sellerprofile(self.testuser)
+		self.c = Client()
+		self.c.login(username='testuser',password='password')
+		self.assertTrue(self.c.login)
+		self.testcat = add_cat('testcat')
+		self.testitem = add_item(title='testitem',asking_price=100,
+							category=self.testcat,owner=self.testusersp)
+		self.order = Order.objects.create(buyer=self.testuser,meetuploc='pielantis',
+										  phone=12313132,paymentmethod='COD',buy_item=self.testitem)
+	def tearDown(self):
+		self.c.logout()
+
+	def test_valid_order_confirmation(self):
+
+		# Checking the agreetoterms and confirmed before the form
+		self.assertFalse(self.order.agreetoterms)
+		self.assertFalse(self.order.confirmed)
+		data = {'agreetoterms': True}
+		form = OrderConfirmationForm(data=data)
+		self.assertTrue(form.is_valid)
+		response = self.c.post(reverse('shop:confirmation', kwargs={'order_id': self.order.id}), data=data)
+		self.assertEqual(response.status_code, 302)
+		self.assertEqual(Order.objects.count(), 1)
+		orderafter = Order.objects.get(buyer=self.testuser,meetuploc='pielantis',
+									   phone=12313132,paymentmethod='COD',buy_item=self.testitem)
+		# Checking the agreetoterms and confirmed after the form
+		self.assertTrue(orderafter.agreetoterms)
+		self.assertTrue(orderafter.confirmed)

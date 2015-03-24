@@ -15,9 +15,10 @@
 	{% if items %}
 		<ul>
 		{%  for item in items %}
-            <a href="{% url 'shop:item' item.slug %}">
-		<li><p>{{ item.title }} - {{ item.asking_price }} sold by {{ item.owner }}</p></li>
-            </a>
+          <li>  <a href="{% url 'shop:item' item.slug %}">
+				<p>{{ item.title }} - {{ item.asking_price }} sold by {{ item.owner }}</p>
+                </a>
+          </li>
 	    {%  endfor %}
     {%  else  %}
         <strong> No items ? MADNESS. Go sell something now! </strong>

@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from notifications import notify
-from shop.models import SellerProfile,SaleItem,Category,UserBid,SaleItemImage,Comment
-from shop.forms import SaleItemForm, UserBidForm, SellerProfileForm
+from shop.models import SellerProfile,SaleItem,Category,UserBid,SaleItemImage,Comment, Order
+from shop.forms import SaleItemForm, UserBidForm, SellerProfileForm, OrderCheckoutForm, OrderConfirmationForm
 
 
 def index(request):
@@ -78,6 +78,7 @@ def make_bid(request, item_slug):
             return redirect('shop:item', item.slug)
 
         else:
+
             print form.errors
 
     else:
@@ -97,3 +98,60 @@ def create_sellerprofile(request):
     else:
         form = SellerProfileForm()
     return render(request, 'shop/create_sellerprofile.html', {'form': form})
+
+def item_cart(request, item_slug):
+    item = SaleItem.objects.get(slug=item_slug)
+    context_dict = {'item': item}
+    return render(request, 'shop/item_cart.html', context_dict)
+
+def checkout(request, item_slug):
+    item = SaleItem.objects.get(slug=item_slug)
+    context_dict = {'item':item, 'user': request.user}
+
+    if request.method=='POST':
+        form = OrderCheckoutForm(request.POST)
+        context_dict['form'] = form
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.buyer = request.user
+            order.buy_item = item
+            order.save()
+            return redirect('shop:confirmation', order.id)
+        else:
+            print form.errors
+
+    else:
+        form = OrderCheckoutForm()
+        context_dict['form'] = form
+    return render(request, 'shop/checkout.html', context_dict)
+
+
+def confirmation(request, order_id):
+    try:
+        order = Order.objects.get(id=order_id)
+        context_dict = {'order': order}
+        if request.method=='POST':
+            form = OrderConfirmationForm(request.POST, instance=order)
+            context_dict['form'] = form
+            if form.is_valid():
+                confirmorder = form.save(commit=False)
+                confirmorder.confirmed = True
+                confirmorder.save()
+                return redirect('index')
+            else:
+                print form.errors
+
+        else:
+            form = OrderConfirmationForm()
+            context_dict['form'] = form
+
+        return render(request, 'shop/confirmation.html',context_dict)
+
+
+    except Order.DoesNotExist:
+        return redirect('index')
+
+
+
+
+
