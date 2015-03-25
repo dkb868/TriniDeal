@@ -57,7 +57,7 @@ class SaleItem(models.Model):
 	description = models.TextField(blank=True)
 	asking_price = models.IntegerField(default=0)
 	negotiable = models.BooleanField(default=True)
-	active = models.BooleanField(default=True, blank=True)
+	available = models.BooleanField(default=True, blank=True)
 	post_time = models.DateTimeField(auto_now_add=True)
 	category = models.ForeignKey('Category')
 	slug = models.SlugField(unique=True)

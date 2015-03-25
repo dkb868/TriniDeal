@@ -250,6 +250,24 @@ class CheckoutViewTests(TestCase):
 		self.assertEqual(response.status_code, 302)
 		self.assertEqual(Order.objects.count(), 1)
 
+	def test_page_works_when_item_available(self):
+		testcat = add_cat('testcat')
+		testitem = add_item(title='testitem',asking_price=100,
+							category=testcat,owner=self.testusersp)
+		response = self.c.get(reverse('shop:checkout', kwargs={'item_slug':'testitem'}))
+		self.assertEqual(response.status_code, 200)
+
+
+	def test_redirect_when_item_unavailable(self):
+		testcat = add_cat('testcat')
+		testitem = add_item(title='testitem',asking_price=100,
+							category=testcat,owner=self.testusersp)
+		testitem.available = False
+		testitem.save(update_fields=['available'])
+
+		response = self.c.get(reverse('shop:checkout', kwargs={'item_slug':'testitem'}))
+		self.assertEqual(response.status_code, 302)
+
 class ConfirmationViewTests(TestCase):
 	def setUp(self):
 		self.testuser = User.objects.create_user(username='testuser',password='password')
@@ -270,6 +288,7 @@ class ConfirmationViewTests(TestCase):
 		# Checking the agreetoterms and confirmed before the form
 		self.assertFalse(self.order.agreetoterms)
 		self.assertFalse(self.order.confirmed)
+		self.assertTrue(self.order.buy_item.available)
 		data = {'agreetoterms': True}
 		form = OrderConfirmationForm(data=data)
 		self.assertTrue(form.is_valid)
@@ -281,3 +300,5 @@ class ConfirmationViewTests(TestCase):
 		# Checking the agreetoterms and confirmed after the form
 		self.assertTrue(orderafter.agreetoterms)
 		self.assertTrue(orderafter.confirmed)
+		# item should now be unavailable
+		self.assertFalse(orderafter.buy_item.available)

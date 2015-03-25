@@ -106,6 +106,10 @@ def item_cart(request, item_slug):
 
 def checkout(request, item_slug):
     item = SaleItem.objects.get(slug=item_slug)
+
+    if not item.available:
+        return redirect('index')
+
     context_dict = {'item':item, 'user': request.user}
 
     if request.method=='POST':
@@ -137,6 +141,8 @@ def confirmation(request, order_id):
                 confirmorder = form.save(commit=False)
                 confirmorder.confirmed = True
                 confirmorder.save()
+                confirmorder.buy_item.available = False
+                confirmorder.buy_item.save(update_fields=['available'])
                 return redirect('index')
             else:
                 print form.errors
@@ -150,8 +156,3 @@ def confirmation(request, order_id):
 
     except Order.DoesNotExist:
         return redirect('index')
-
-
-
-
-
