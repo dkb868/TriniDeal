@@ -268,6 +268,61 @@ class CheckoutViewTests(TestCase):
 		response = self.c.get(reverse('shop:checkout', kwargs={'item_slug':'testitem'}))
 		self.assertEqual(response.status_code, 302)
 
+
+class BidCheckoutViewTests(TestCase):
+	def setUp(self):
+		self.testuser = User.objects.create_user(username='testuser',password='password')
+		self.testusersp = add_sellerprofile(self.testuser)
+		self.c = Client()
+		self.c.login(username='testuser',password='password')
+		self.assertTrue(self.c.login)
+
+	def tearDown(self):
+		self.c.logout()
+
+	def test_valid_bidcheckout(self):
+		testcat = add_cat('testcat')
+		testitem = add_item(title='testitem',asking_price=100,
+							category=testcat,owner=self.testusersp)
+		testbid = UserBid.objects.create(user=self.testuser,sale_item=testitem,offer_price=200)
+		testitem.available = False
+		testitem.accepted_bid = testbid
+		testitem.save()
+
+		data = {'meetuploc': 'pielantis',
+				'phone': 234243242,
+				'paymentmethod': 'COD',
+				'additionalinfo': 'spam',}
+		form = OrderCheckoutForm(data=data)
+		self.assertTrue(form.is_valid)
+		response = self.c.post(reverse('shop:bidcheckout', kwargs={'item_slug':'testitem'}), data=data)
+		self.assertEqual(response.status_code, 302)
+		self.assertEqual(Order.objects.count(), 1)
+
+	def test_page_works_when_user_is_accepted_bid_user(self):
+		testcat = add_cat('testcat')
+		testitem = add_item(title='testitem',asking_price=100,
+							category=testcat,owner=self.testusersp)
+		testbid = UserBid.objects.create(user=self.testuser,sale_item=testitem,offer_price=200)
+		testitem.available = False
+		testitem.accepted_bid = testbid
+		testitem.save()
+		response = self.c.get(reverse('shop:bidcheckout', kwargs={'item_slug':'testitem'}))
+		self.assertEqual(response.status_code, 200)
+
+
+	def test_redirect_when_user_is_not_accepted_bid_user(self):
+		testcat = add_cat('testcat')
+		testitem = add_item(title='testitem',asking_price=100,
+							category=testcat,owner=self.testusersp)
+		testitem.available = False
+		testitem.save(update_fields=['available'])
+
+		response = self.c.get(reverse('shop:bidcheckout', kwargs={'item_slug':'testitem'}))
+		self.assertEqual(response.status_code, 302)
+
+
+
 class ConfirmationViewTests(TestCase):
 	def setUp(self):
 		self.testuser = User.objects.create_user(username='testuser',password='password')
@@ -302,3 +357,37 @@ class ConfirmationViewTests(TestCase):
 		self.assertTrue(orderafter.confirmed)
 		# item should now be unavailable
 		self.assertFalse(orderafter.buy_item.available)
+
+class AcceptBidViewTests(TestCase):
+	def setUp(self):
+		self.testuser = User.objects.create_user(username='testuser',password='password')
+		self.testusersp = add_sellerprofile(self.testuser)
+		self.c = Client()
+		self.c.login(username='testuser',password='password')
+		self.assertTrue(self.c.login)
+	def tearDown(self):
+		self.c.logout()
+
+	def test_valid_accept_bid(self):
+		testcat = add_cat('testcat')
+		testitem = add_item(title='testitem',asking_price=100,
+							category=testcat,owner=self.testusersp)
+		self.assertTrue(testitem.available)
+		testbid = UserBid.objects.create(user=self.testuser,sale_item=testitem,offer_price=200)
+		response = self.c.post(reverse('shop:acceptbid', kwargs={'bid_id':testbid.id}))
+		self.assertEqual(response.status_code, 302)
+		testitemafter = SaleItem.objects.get(slug='testitem')
+		self.assertEqual(testitemafter.accepted_bid, testbid)
+		self.assertFalse(testitemafter.available)
+
+
+	def test_item_owner_can_acces_accept_bid_view(self):
+		testcat = add_cat('testcat')
+		testitem = add_item(title='testitem',asking_price=100,
+							category=testcat,owner=self.testusersp)
+		self.assertTrue(testitem.available)
+		testbid = UserBid.objects.create(user=self.testuser,sale_item=testitem,offer_price=200)
+		response = self.c.get(reverse('shop:acceptbid', kwargs={'bid_id':testbid.id}))
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.context['bid'], testbid)
+

@@ -62,6 +62,7 @@ class SaleItem(models.Model):
 	category = models.ForeignKey('Category')
 	slug = models.SlugField(unique=True)
 	reason = models.CharField(max_length=100, blank=True)
+	accepted_bid = models.OneToOneField('UserBid', null=True, blank=True)
 
 	def save(self, *args, **kwargs):
 

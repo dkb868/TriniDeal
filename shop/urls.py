@@ -11,5 +11,7 @@ urlpatterns = patterns('',
     url(r'^create_sellerprofile/$', views.create_sellerprofile, name='create_sellerprofile'),
     url(r'^(?P<item_slug>[\w\-]+)/shoppingcart/$', views.item_cart, name='item_cart'),
     url(r'^(?P<item_slug>[\w\-]+)/checkout/$', views.checkout, name='checkout'),
+    url(r'^(?P<item_slug>[\w\-]+)/bidcheckout/$', views.bidcheckout, name='bidcheckout'),
     url(r'^confirmation/(?P<order_id>\d+)/$', views.confirmation, name='confirmation'),
+    url(r'^acceptbid/(?P<bid_id>\d+)/$', views.acceptbid, name='acceptbid'),
 	)
