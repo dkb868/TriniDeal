@@ -6,7 +6,23 @@
     <title>Project Manicou</title>
 </head>
 <body>
-<p>I wonder if the staticfiles are working</p>
-    <img src="{% static "images/test.png" %}" alt="test image" />
+<h1>Facebook Login</h1>
+<p>
+<a href="/accounts/login/">Login Page</a>
+</p>
+
+<h1>Here are our items</h1>
+	{% if items %}
+		<ul>
+		{%  for item in items %}
+          <li>  <a href="{% url 'shop:item' item.slug %}">
+				<p>{{ item.title }} - {{ item.asking_price }} sold by {{ item.owner }}</p>
+                </a>
+          </li>
+	    {%  endfor %}
+    {%  else  %}
+        <strong> No items ? MADNESS. Go sell something now! </strong>
+    {% endif %}
+
 </body>
 </html>

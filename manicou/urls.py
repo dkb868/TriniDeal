@@ -1,16 +1,19 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
+import notifications
 
 
 urlpatterns = patterns('',
     url(r'^$', 'shop.views.index', name='index'),
     url(r'^admin/', include(admin.site.urls)),
-    #namespace everything
+    url(r'^accounts/', include('allauth.urls')),
+    url(r'^review/', include('review.urls')),
+    url(r'^inbox/notifications/', include(notifications.urls)),
     url(r'^shop/', include('shop.urls', namespace='shop')),
 )
 
-#development media server
+# development media server
 if settings.DEBUG:
         urlpatterns += patterns(
             'django.views.static',
