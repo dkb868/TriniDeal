@@ -6,16 +6,34 @@
     <title>Project Manicou</title>
 </head>
 <body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&appId=1407433476232650&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 	<p>Title: {{ item.title }}</p>
 	<p>Owner: {{ item.owner }}</p>
 	<p>Condition: {{ item.condition }}</p>
 	<p>Asking Price: {{ item.asking_price }}</p>
-    <p>Current Highest Offer: {{ item.current_highest_bid }}</p>
-    <form id="bid_form" method="post" action="{% url 'shop:makebid' item.slug %}">
+    {% if highestbid %}
+        {% if  user == item.owner.user %}
+          <p>Current Highest Offer: {{ highestbid.user }} - {{ highestbid.offer_price }}</p>
+        {% else %}
+           <p>Current Highest Offer: {{ highestbid.offer_price }}</p>
+        {% endif %}
+    {% endif %}
 
-        {% csrf_token %}
-       <p>Price</p> <input type="number" min="{{ item.current_highest_bid }}" max="{{ item.asking_price }}" id="id_offer_price" name="offer_price" placeholder="100">
-        <input type="submit" name="submit" value="Make an Offer" />
-    </form>
+    {% if  user != item.owner.user %}
+		<form id="bid_form" method="post" action="{% url 'shop:makebid' item.slug %}">
+            {% csrf_token %}
+            <input type="number" min="{{ highestbid.offer_price }}" max="{{ item.asking_price }}" id="id_offer_price" name="offer_price" placeholder="100">
+            <input type="submit" name="submit" value="Make an Offer" />
+        </form>
+	{% endif %}
+
+<div class="fb-comments" data-href="http://localhost:8000/shop/item/{{ item.slug }}/" data-width="600" data-numposts="5" data-colorscheme="light"></div>
 </body>
 </html>

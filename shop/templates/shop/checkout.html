@@ -5,12 +5,12 @@
     </head>
 
     <body>
-        <h1>Add Item</h1>
+        <h1>Checkout</h1>
 
-        <form id="saleitem_form" method="post" action=".">
+        <form id="checkout_form" method="post" action=".">
             {% csrf_token %}
             {{  form.as_p }}
-            <input type="submit" name="submit" value="Create Item" />
+            <input type="submit" name="submit" value="Checkout" />
         </form>
     </body>
 
