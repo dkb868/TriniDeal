@@ -118,23 +118,6 @@ class SellerProfileViewTests(TestCase):
 		response = self.client.get(reverse('shop:sellerprofile', kwargs={'user_id':testuser.id}))
 		self.assertEqual(response.status_code, 200)
 
-class SellerProfileDashboardViewTests(TestCase):
-	def setUp(self):
-		self.testuser = User.objects.create_user(username='testuser',password='password',
-											first_name='test',last_name='user')
-		self.testusersp = add_sellerprofile(self.testuser)
-		self.c = Client()
-		self.c.login(username='testuser',password='password')
-		self.assertTrue(self.c.login)
-
-	def tearDown(self):
-		self.c.logout()
-
-	def test_dashboard_page_working(self):
-		response = self.c.get(reverse('shop:dashboard'))
-		self.assertEqual(response.status_code, 200)
-		self.assertEqual((response.context['sellerprofile']), self.testusersp)
-
 class MakeBidViewTests(TestCase):
 	def setUp(self):
 		self.testuser = User.objects.create_user(username='testuser',password='password')
@@ -391,3 +374,94 @@ class AcceptBidViewTests(TestCase):
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.context['bid'], testbid)
 
+
+# Dashboard tests
+class SellerProfileDashboardViewTests(TestCase):
+	def setUp(self):
+		self.testuser = User.objects.create_user(username='testuser',password='password',
+											first_name='test',last_name='user')
+		self.testusersp = add_sellerprofile(self.testuser)
+		self.c = Client()
+		self.c.login(username='testuser',password='password')
+		self.assertTrue(self.c.login)
+
+	def tearDown(self):
+		self.c.logout()
+
+	def test_dashboard_page_working(self):
+		response = self.c.get(reverse('shop:dashboard'))
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual((response.context['sellerprofile']), self.testusersp)
+		self.assertEqual((response.context['current_items_count']), 0)
+		self.assertEqual((response.context['past_items_count']), 0)
+		self.assertEqual((response.context['current_orders_count']), 0)
+		self.assertEqual((response.context['past_orders_count']), 0)
+
+class DashboardCurrentItemsViewTests(TestCase):
+	def setUp(self):
+		self.testuser = User.objects.create_user(username='testuser',password='password',
+											first_name='test',last_name='user')
+		self.testusersp = add_sellerprofile(self.testuser)
+		self.c = Client()
+		self.c.login(username='testuser',password='password')
+		self.assertTrue(self.c.login)
+
+	def tearDown(self):
+		self.c.logout()
+
+	def test_dashboard_current_items_page_working(self):
+		response = self.c.get(reverse('shop:dashboard_current_items'))
+		self.assertEqual(response.status_code, 200)
+		self.assertQuerysetEqual((response.context['current_items']), [])
+
+class DashboardPastItemsViewTests(TestCase):
+	def setUp(self):
+		self.testuser = User.objects.create_user(username='testuser',password='password',
+											first_name='test',last_name='user')
+		self.testusersp = add_sellerprofile(self.testuser)
+		self.c = Client()
+		self.c.login(username='testuser',password='password')
+		self.assertTrue(self.c.login)
+
+	def tearDown(self):
+		self.c.logout()
+
+	def test_dashboard_past_items_page_working(self):
+		response = self.c.get(reverse('shop:dashboard_past_items'))
+		self.assertEqual(response.status_code, 200)
+		self.assertQuerysetEqual((response.context['past_items']), [])
+
+
+class DashboardCurrentOrdersViewTests(TestCase):
+	def setUp(self):
+		self.testuser = User.objects.create_user(username='testuser',password='password',
+											first_name='test',last_name='user')
+		self.testusersp = add_sellerprofile(self.testuser)
+		self.c = Client()
+		self.c.login(username='testuser',password='password')
+		self.assertTrue(self.c.login)
+
+	def tearDown(self):
+		self.c.logout()
+
+	def test_dashboard_current_orders_page_working(self):
+		response = self.c.get(reverse('shop:dashboard_current_orders'))
+		self.assertEqual(response.status_code, 200)
+		self.assertQuerysetEqual((response.context['current_orders']), [])
+
+class DashboardPastOrdersViewTests(TestCase):
+	def setUp(self):
+		self.testuser = User.objects.create_user(username='testuser',password='password',
+											first_name='test',last_name='user')
+		self.testusersp = add_sellerprofile(self.testuser)
+		self.c = Client()
+		self.c.login(username='testuser',password='password')
+		self.assertTrue(self.c.login)
+
+	def tearDown(self):
+		self.c.logout()
+
+	def test_dashboard_past_orders_page_working(self):
+		response = self.c.get(reverse('shop:dashboard_past_orders'))
+		self.assertEqual(response.status_code, 200)
+		self.assertQuerysetEqual((response.context['past_orders']), [])

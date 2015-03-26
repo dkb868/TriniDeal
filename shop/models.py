@@ -132,6 +132,7 @@ class Order(models.Model):
 	additionalinfo = models.TextField(blank=True)
 	confirmed = models.BooleanField(default=False)
 	agreetoterms = models.BooleanField(default=False)
+	completed = models.BooleanField(default=False)
 
 	def __unicode__(self):
 		return ("ORDER" + " " + self.buyer.first_name + " " + self.buyer.last_name + " " + self.buy_item.title )

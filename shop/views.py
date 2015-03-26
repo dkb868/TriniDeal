@@ -57,8 +57,30 @@ def sellerprofile(request, user_id):
 	return render(request, 'main/sellerprofile.html', context_dict)
 
 def sellerdashboard(request):
-	context_dict = {'sellerprofile': request.user.sellerprofile}
+	current_items_count = SaleItem.objects.filter(owner=request.user.sellerprofile,available=True).count()
+	past_items_count = SaleItem.objects.filter(owner=request.user.sellerprofile, available=False).count()
+	current_orders_count = Order.objects.filter(buy_item__owner=request.user.sellerprofile, completed=False).count()
+	past_orders_count = Order.objects.filter(buy_item__owner=request.user.sellerprofile, completed=True).count()
+	context_dict = {'sellerprofile':request.user.sellerprofile, 'current_items_count':current_items_count,
+					'past_items_count':past_items_count,'current_orders_count':current_orders_count,
+                    'past_orders_count':past_orders_count}
 	return render(request, 'main/dashboard.html', context_dict)
+
+def dashboard_current_items(request):
+	context_dict = {'current_items': SaleItem.objects.filter(owner=request.user.sellerprofile,available=True)}
+	return render(request, 'shop/dashboard_current_items.html', context_dict)
+
+def dashboard_past_items(request):
+	context_dict = {'past_items': SaleItem.objects.filter(owner=request.user.sellerprofile, available=False)}
+	return render(request, 'shop/dashboard_past_items.html',context_dict)
+
+def dashboard_current_orders(request):
+	context_dict = {'current_orders':Order.objects.filter(buy_item__owner=request.user.sellerprofile, completed=False)}
+	return render(request, 'shop/dashboard_current_orders.html',context_dict)
+
+def dashboard_past_orders(request):
+	context_dict = {'past_orders':Order.objects.filter(buy_item__owner=request.user.sellerprofile, completed=True) }
+	return render(request, 'shop/dashboard_past_orders.html', context_dict)
 
 def make_bid(request, item_slug):
 	item = SaleItem.objects.get(slug=item_slug)
