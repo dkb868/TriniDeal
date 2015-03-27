@@ -50,14 +50,14 @@
 								<img src="images/product-details/rating.png" alt="" />
 								<span>
 									<span>${{ item.asking_price }}.00</span>
-									<button type="button" class="btn btn-default cart">
+									<a href="{% url 'shop:item_cart' item.slug %}"><button type="button" class="btn btn-default cart">
 										Buy now
-									</button>
+									</button> </a>
 								</span>
                                 {% if highestbid %}
                                         <p>Current Highest Offer: {{ highestbid.offer_price }}</p>
 								{% endif %}
-                                {% if item.negotiable %}
+                                {% if request.user.sellerprofile != item.owner and item.negotiable %}
 									<form id="bid_form" method="post" action="{% url 'shop:makebid' item.slug %}">
 							            {% csrf_token %}
 							            <input type="number" min="{{ highestbid.offer_price }}" max="{{ item.asking_price }}" id="id_offer_price" name="offer_price" placeholder="100">
@@ -89,12 +89,10 @@
 							</ul>
 						</div>
 						<div class="tab-content">
-							<div class="tab-pane fade active in" id="details" >
+							<div class="tab-pane fade active in" id="details">
 								<div class="col-sm-12">
-									<div class="product-image-wrapper">
-										<div class="single-products item-description">
-											<p>{{ item.description }} </p>
-										</div>
+									<div class="product-image-wrapper item-description">
+											<p>{{ item.description|linebreaks }} </p>
 									</div>
 								</div>
                             </div>
@@ -131,6 +129,8 @@
                                 <br>
                                 <p>Thanks for your opinion!</p>
                             {% else %}
+                                <a href="/review/sellerprofile/{{ item.owner.id }}/create/">Review this seller</a>
+                                <!--
 									<p><b>Write Your Review</b></p>
 
 									<form action="#">
@@ -144,6 +144,7 @@
 											Submit
 										</button>
 									</form>
+									-->
                             {% endif %}
 								</div>
 							</div>

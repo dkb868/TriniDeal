@@ -230,8 +230,8 @@ a#scrollUp i{
 }
 
 .mainmenu ul li{
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 20px;
+  padding-left: 20px;
 }
 
 .mainmenu ul li:first-child{
@@ -2539,4 +2539,24 @@ h2.title {
 
 .fbswag{
     padding-left:15px;
+}
+
+.stylish-input-group .input-group-addon{
+    background: white !important;
+}
+.stylish-input-group .form-control{
+	border-right:0;
+	box-shadow:0 0 0;
+	border-color:#ccc;
+}
+.stylish-input-group button{
+    border:0;
+    background:transparent;
+}
+
+.mainmenu{
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+
 }

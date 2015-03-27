@@ -1,16 +1,48 @@
-<!DOCTYPE html>
+{% extends 'shop/base.html' %}
 {%  load staticfiles %}
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>Project Manicou</title>
-</head>
-<body>
-<h1>Your cart</h1>
+{% block title %} Buying {{ item.title }}{% endblock %}
+{% block category_block %}
+{% endblock %}
 
-<p>Item - {{ item.title }}</p>
-<p>Price - {{ item.asking_price }}</p>
+{% block body_block %}
+	<section id="cart_items">
+		<div class="container">
 
+			<div class="table-responsive cart_info">
+				<table class="table table-condensed">
+					<thead>
+						<tr class="cart_menu">
+							<td class="image">Item</td>
+							<td class="description">Description</td>
+							<td class="total">Price</td>
+							<td></td>
+                            <td></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="cart_product">
+								<a href=""><img src="{% static 'shop/images/cart/one.png' %}" alt=""></a>
+							</td>
+							<td class="cart_description">
+								<h4><a href="">{{ item.title }}</a></h4>
+								<p>Sold by: {{ item.owner }} </p>
+							</td>
+							<td class="cart_total">
+								<p class="cart_total_price">$59</p>
+							</td>
+                            <td class="cart_total">
+                                <a class="btn btn-default check_out" href="{% url 'shop:checkout' item.slug %}">Check Out</a>
+                            </td>
+							<td class="cart_delete">
+								<a class="cart_quantity_delete" href="{% url 'index' %}"><i class="fa fa-times"></i></a>
+							</td>
 
-</body>
-</html>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section> <!--/#cart_items-->
+
+{% endblock %}
