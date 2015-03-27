@@ -1,11 +1,8 @@
-<!DOCTYPE html>
+{% extends 'shop/base.html' %}
 {%  load staticfiles %}
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>Project Manicou</title>
-</head>
-<body>
+
+
+{% block body_block %}
 <h1>Facebook Login</h1>
 <p>
 <a href="/accounts/login/">Login Page</a>
@@ -20,9 +17,9 @@
                 </a>
           </li>
 	    {%  endfor %}
+        </ul>
     {%  else  %}
         <strong> No items ? MADNESS. Go sell something now! </strong>
     {% endif %}
 
-</body>
-</html>
+{% endblock %}

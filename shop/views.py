@@ -1,14 +1,14 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from notifications import notify
-from shop.models import SellerProfile,SaleItem,Category,UserBid,SaleItemImage,Comment, Order
+from shop.models import SellerProfile,SaleItem,Category,UserBid,SaleItemImage,Comment, Order, PaymentChoice
 from shop.forms import SaleItemForm, UserBidForm, SellerProfileForm, OrderCheckoutForm, OrderConfirmationForm
 
 
 def index(request):
-	item_list = SaleItem.objects.all()
+	item_list = SaleItem.objects.all().order_by('post_time')[:9]
 	context_dict = {'items': item_list}
-	return render(request, 'main/index.html', context_dict)
+	return render(request, 'shop/index.html', context_dict)
 
 
 def category(request, category_name_slug):
@@ -23,13 +23,16 @@ def saleitem(request, item_slug):
 	bidform = UserBidForm()
 	context_dict['bidform'] = bidform
 	context_dict['user'] = request.user
+	context_dict['itemcondition'] = item.get_condition_display()
+	context_dict['homedelivery'] = item.owner.get_home_delivery_display()
+	context_dict['payment'] = PaymentChoice.objects.filter(sellerprofile=item.owner)
 	try:
 		highestbid = UserBid.objects.filter(sale_item=item).order_by('-offer_price')[0]
 		context_dict['highestbid'] = highestbid
 	except:
 		pass
 
-	return render(request, 'main/item.html', context_dict)
+	return render(request, 'shop/item.html', context_dict)
 
 def add_new_item(request):
 	if request.method == 'POST':
@@ -75,8 +78,8 @@ def make_bid(request, item_slug):
 			return redirect('shop:item', item.slug)
 
 		else:
-
 			print form.errors
+			return redirect('shop:item', item.slug)
 
 	else:
 		return redirect('index')
@@ -198,7 +201,6 @@ def acceptbid(request, bid_id):
 	context_dict={'item':bid.sale_item, 'bid':bid}
 	return render(request, 'shop/acceptbid.html', context_dict )
 
-
 # dashboard views
 
 def sellerdashboard(request):
@@ -208,7 +210,7 @@ def sellerdashboard(request):
 	past_orders_count = Order.objects.filter(buy_item__owner=request.user.sellerprofile, completed=True).count()
 	context_dict = {'sellerprofile':request.user.sellerprofile, 'current_items_count':current_items_count,
 					'past_items_count':past_items_count,'current_orders_count':current_orders_count,
-                    'past_orders_count':past_orders_count}
+					'past_orders_count':past_orders_count}
 	return render(request, 'main/dashboard.html', context_dict)
 
 def dashboard_current_items(request):

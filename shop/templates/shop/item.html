@@ -1,0 +1,254 @@
+{% extends 'shop/base.html' %}
+{%  load staticfiles %}
+{% block title %} {{ item.title }} {% endblock %}
+
+{% block body_block %}
+<div class="col-sm-9 padding-right">
+					<div class="product-details"><!--product-details-->
+						<div class="col-sm-5">
+							<div class="view-product">
+								<img src="{% static 'shop/images/product-details/1.jpg' %}" alt="" />
+							</div>
+							<div id="similar-product" class="carousel slide" data-ride="carousel">
+
+								  <!-- Wrapper for slides -->
+								    <div class="carousel-inner">
+										<div class="item active">
+										  <a href=""><img src="{% static 'shop/images/product-details/similar1.jpg' %}" alt=""></a>
+										  <a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
+										  <a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
+										</div>
+                                        <!--
+										<div class="item">
+										  <a href=""><img src="images/product-details/similar1.jpg" alt=""></a>
+										  <a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
+										  <a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
+										</div>
+										<div class="item">
+										  <a href=""><img src="images/product-details/similar1.jpg" alt=""></a>
+										  <a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
+										  <a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
+										</div>
+										-->
+
+									</div>
+
+								  <!-- Controls -->
+								  <a class="left item-control" href="#similar-product" data-slide="prev">
+									<i class="fa fa-angle-left"></i>
+								  </a>
+								  <a class="right item-control" href="#similar-product" data-slide="next">
+									<i class="fa fa-angle-right"></i>
+								  </a>
+							</div>
+
+						</div>
+						<div class="col-sm-7">
+							<div class="product-information"><!--/product-information-->
+								<img src="images/product-details/new.jpg" class="newarrival" alt="" />
+								<h2>{{ item.title }}</h2>
+								<img src="images/product-details/rating.png" alt="" />
+								<span>
+									<span>${{ item.asking_price }}.00</span>
+									<button type="button" class="btn btn-default cart">
+										Buy now
+									</button>
+								</span>
+                                {% if highestbid %}
+                                        <p>Current Highest Offer: {{ highestbid.offer_price }}</p>
+								{% endif %}
+                                {% if item.negotiable %}
+									<form id="bid_form" method="post" action="{% url 'shop:makebid' item.slug %}">
+							            {% csrf_token %}
+							            <input type="number" min="{{ highestbid.offer_price }}" max="{{ item.asking_price }}" id="id_offer_price" name="offer_price" placeholder="100">
+							            <input type="submit" name="submit" value="Make an Offer" />
+							        </form>
+                                {% endif %}
+								<p><b>Condition:</b> {{ itemcondition }}</p>
+                                {%  if item.reason %}
+                                   <p><b>Reason for selling:</b> {{ item.reason }}</p>
+                                {% endif %}
+                                <p><b>Home Delivery:</b> {{ homedelivery }}</p>
+                                <p><b>Meetup Delivery:</b> {% if item.owner.meetup %} Available {% else %} Unavailable {% endif %}</p>
+								<p><b>Seller:</b> {{ item.owner }}</p>
+                                <p><b>Seller Location:</b> {{ item.owner.location }}</p>
+                                <p><b>Accepted Payment Types:</b> {% for type in payment %} {{ type }} {% endfor %}</p>
+								<a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
+							</div><!--/product-information-->
+						</div>
+					</div><!--/product-details-->
+
+					<div class="category-tab shop-details-tab"><!--category-tab-->
+                        {% load review_tags %}
+						<div class="col-sm-12">
+							<ul class="nav nav-tabs">
+								<li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+								<li><a href="#comments" data-toggle="tab">Comments</a></li>
+                                {% get_review_count item.owner as review_count %}
+								<li><a href="#reviews" data-toggle="tab">Seller Reviews ({{ review_count }})</a></li>
+							</ul>
+						</div>
+						<div class="tab-content">
+							<div class="tab-pane fade active in" id="details" >
+								<div class="col-sm-12">
+									<div class="product-image-wrapper">
+										<div class="single-products item-description">
+											<p>{{ item.description }} </p>
+										</div>
+									</div>
+								</div>
+                            </div>
+
+							<div class="tab-pane fade" id="comments" >
+								<div class="col-sm-12">
+									<div class="fb-comments fbswag" data-href="http://localhost:8000/shop/item/{{ item.slug }}/" data-width="800" data-numposts="5" data-colorscheme="light"></div>
+								</div>
+							</div>
+
+							<div class="tab-pane fade" id="reviews" >
+                                {% total_review_average item.owner 5 as stars %}
+								<div class="col-sm-12">
+                                    <p>This seller is rated {{ stars }} out of 5 stars.</p>
+                                    {% get_reviews item.owner as reviews %}
+									{% for review in reviews %}
+                                    <p>
+								        {{ review.get_average_rating }}
+								    </p>
+								    <p>
+                                    <ul>
+										<li><a href=""><i class="fa fa-user"></i>{{ review.user.first_name }} {{ review.user.last_name }}</a></li>
+										<li><a href=""><i class="fa fa-calendar-o"></i>{{ review.creation_date|date:"j M Y" }}</a></li>
+									</ul>
+								        {% if review.content %}
+											<p> {{ review.content }}</p>
+								        {% else %}
+								            Reviewed without description.
+								        {% endif %}
+								    </div>
+									{% endfor %}
+                                {% user_has_reviewed item.owner request.user as has_reviewed %}
+                            {% if has_reviewed %}
+                                <br>
+                                <p>Thanks for your opinion!</p>
+                            {% else %}
+									<p><b>Write Your Review</b></p>
+
+									<form action="#">
+										<span>
+											<input type="text" placeholder="Your Name"/>
+											<input type="email" placeholder="Email Address"/>
+										</span>
+										<textarea name="" ></textarea>
+										<b>Rating: </b> <img src="images/product-details/rating.png" alt="" />
+										<button type="button" class="btn btn-default pull-right">
+											Submit
+										</button>
+									</form>
+                            {% endif %}
+								</div>
+							</div>
+
+						</div>
+					</div><!--/category-tab-->
+
+					<div class="recommended_items"><!--recommended_items-->
+						<h2 class="title text-center">related items</h2>
+
+						<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+							<div class="carousel-inner">
+								<div class="item active">
+									<div class="col-sm-4">
+										<div class="product-image-wrapper">
+											<div class="single-products">
+												<div class="productinfo text-center">
+													<img src="images/home/recommend1.jpg" alt="" />
+													<h2>$56</h2>
+													<p>Easy Polo Black Edition</p>
+													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="product-image-wrapper">
+											<div class="single-products">
+												<div class="productinfo text-center">
+													<img src="images/home/recommend2.jpg" alt="" />
+													<h2>$56</h2>
+													<p>Easy Polo Black Edition</p>
+													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="product-image-wrapper">
+											<div class="single-products">
+												<div class="productinfo text-center">
+													<img src="images/home/recommend3.jpg" alt="" />
+													<h2>$56</h2>
+													<p>Easy Polo Black Edition</p>
+													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="item">
+									<div class="col-sm-4">
+										<div class="product-image-wrapper">
+											<div class="single-products">
+												<div class="productinfo text-center">
+													<img src="images/home/recommend1.jpg" alt="" />
+													<h2>$56</h2>
+													<p>Easy Polo Black Edition</p>
+													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="product-image-wrapper">
+											<div class="single-products">
+												<div class="productinfo text-center">
+													<img src="images/home/recommend2.jpg" alt="" />
+													<h2>$56</h2>
+													<p>Easy Polo Black Edition</p>
+													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="product-image-wrapper">
+											<div class="single-products">
+												<div class="productinfo text-center">
+													<img src="images/home/recommend3.jpg" alt="" />
+													<h2>$56</h2>
+													<p>Easy Polo Black Edition</p>
+													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							 <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+								<i class="fa fa-angle-left"></i>
+							  </a>
+							  <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+								<i class="fa fa-angle-right"></i>
+							  </a>
+						</div>
+					</div><!--/recommended_items-->
+
+				</div>
+    <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&appId=1407433476232650&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+{% endblock %}

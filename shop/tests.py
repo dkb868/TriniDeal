@@ -68,15 +68,22 @@ class CategoryViewTests(TestCase):
 		self.assertQuerysetEqual(response.context['items'], ['<SaleItem: testitem>'])
 
 class SaleItemViewTests(TestCase):
+	def setUp(self):
+		self.testuser = User.objects.create_user(username='testuser',password='password')
+		self.testusersp = add_sellerprofile(self.testuser)
+		self.c = Client()
+		self.c.login(username='testuser',password='password')
+		self.assertTrue(self.c.login)
+
+	def tearDown(self):
+		self.c.logout()
 
 	def test_saleitem_page(self):
-		testuser = add_user('testuser')
-		testusersp = add_sellerprofile(testuser)
 		testcat = add_cat('testcat')
 		testitem = add_item(title='test item',asking_price=100,
-							category=testcat,owner=testusersp)
+							category=testcat,owner=self.testusersp)
 
-		response = self.client.get(reverse('shop:item', kwargs={'item_slug':'test-item'}))
+		response = self.c.get(reverse('shop:item', kwargs={'item_slug':'test-item'}))
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.context['item'], testitem)
 
