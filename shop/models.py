@@ -31,7 +31,7 @@ class SellerProfile(models.Model):
 
 
 	def __unicode__(self):
-		return (self.user.first_name + ' ' + self.user.last_name)
+		return (self.user.first_name + ' ' + self.user.last_name) + ' ' + self.user.username
 
 class SaleItem(models.Model):
 

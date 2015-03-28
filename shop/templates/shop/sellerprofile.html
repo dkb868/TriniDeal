@@ -42,7 +42,9 @@ Duis ornare ornare turpis eu malesuada. Donec eu iaculis nibh, ut semper urna. I
                         <figcaption class="ratings">
                             <p>Seller Rating
                                 {%  total_review_average sellerprofile 5 as stars %}
-								{% if stars < 2.0 %}
+                                {% if stars == 0 %}
+                                - No Ratings Yet
+								{% elif stars < 2.0 %}
                                 <span class="fa fa-star"></span>
                                 <span class="fa fa-star-o"></span>
                                 <span class="fa fa-star-o"></span>
