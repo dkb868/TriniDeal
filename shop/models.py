@@ -128,7 +128,7 @@ class Order(models.Model):
 	street = models.TextField(blank=True)
 	city = models.TextField(blank=True)
 	phone = models.IntegerField()
-	paymentmethod = models.CharField(max_length=7,choices=PAYMENT_CHOICES)
+	paymentmethod = models.ForeignKey('PaymentChoice')
 	additionalinfo = models.TextField(blank=True)
 	confirmed = models.BooleanField(default=False)
 	agreetoterms = models.BooleanField(default=False)

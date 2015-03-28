@@ -1,17 +1,95 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Manicou</title>
-    </head>
+{% extends 'shop/base.html' %}
+{%  load staticfiles %}
+{% block title %} Checkout on {{ item.title }} {% endblock %}
+{% block category_block %}
+{% endblock %}
+{% block body_block %}
+    <div class="col-sm-12">
+					<h2 class="title text-center">Order Confirmation</h2>
+				</div>
+<section id="cart_items">
+	<div class="container">
+			    <div class="review-payment">
+		            <h2>Review your order</h2>
+		        </div>
 
-    <body>
-        <h1>Confirm Order</h1>
-
-        <form id="checkout_form" method="post" action=".">
+			<div class="table-responsive cart_info">
+				<table class="table table-condensed">
+					<thead>
+						<tr class="cart_menu">
+							<td class="image">Item</td>
+							<td class="description">Description</td>
+							<td class="total">Price</td>
+							<td></td>
+                            <td></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="cart_product">
+								<a href=""><img src="{% static 'shop/images/cart/one.png' %}" alt=""></a>
+							</td>
+							<td class="cart_description">
+								<h4><a href="">{{ item.title }}</a></h4>
+								<p>Sold by: {{ item.owner }} </p>
+							</td>
+							<td class="cart_total">
+								<p class="cart_total_price">${{ item.asking_price }}.00</p>
+							</td>
+						</tr>
+							<tr>
+								<td colspan="4">&nbsp;</td>
+								<td colspan="2">
+									<table class="table table-condensed total-result">
+										{% if order.meetuploc %}
+                                        <tr>
+											<td>Suggested Meetup Location</td>
+											<td>{{ order.meetuploc }}</td>
+										</tr>
+                                        {% endif %}
+                                        {% if order.street and order.city %}
+										<tr>
+											<td>Delivery Address</td>
+											<td>{{ order.street }},{{ order.city }}</td>
+										</tr>
+                                        {% endif %}
+										<tr class="shipping-cost">
+											<td>Phone Number</td>
+											<td>{{ order.phone }}</td>
+										</tr>
+										<tr>
+											<td>Total</td>
+											<td><span>${{ item.asking_price }}.00</span></td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+        </div>
+    </section>
+    <div class="row">
+         	<div class="col-sm-offset-2 ">
+        <form class="form-horizontal" id="confirmation_form" method="post" action=".">
             {% csrf_token %}
-            {{  form.as_p }}
-            <input type="submit" name="submit" value="Confirm" />
-        </form>
-    </body>
+			<div class="form-group">
+                {{ form.agreetoterms.errors }}
+                <label for="id_agreetoterms" class="control-label col-xs-4">Confirm order and Agree to our terms of service and solemnly swear all info is valid :) :</label>
+                <div class="col-xs-8">
+	                <input id="id_agreetoterms" name="agreetoterms" type="checkbox" />
+                </div>
+            </div>
 
-</html>
+            <div class="form-group">
+                <div class="col-xs-6 col-sm-offset-4">
+                    <br>
+		            <button type="submit" name="submit" value="Confirm" class="btn btn-default">
+		                    Confirm and Place Order
+		            </button>
+                </div>
+            </div>
+        </form>
+		</div>
+    </div>
+{% endblock %}

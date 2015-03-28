@@ -44,8 +44,7 @@ class OrderCheckoutForm(forms.ModelForm):
 		city = cleaned_data.get('city')
 
 		if not (meetuploc or (street and city)):
-			raise forms.ValidationError('You need to enter the details for some method of delivery')
-
+			raise forms.ValidationError({'meetuploc': ['You need to enter the details for some method of delivery',]})
 class OrderConfirmationForm(forms.ModelForm):
 	class Meta:
 		model = Order

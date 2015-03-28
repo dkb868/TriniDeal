@@ -228,6 +228,7 @@ class CheckoutViewTests(TestCase):
 		self.c = Client()
 		self.c.login(username='testuser',password='password')
 		self.assertTrue(self.c.login)
+		self.cash = PaymentChoice.objects.create(description='cash')
 
 	def tearDown(self):
 		self.c.logout()
@@ -239,7 +240,7 @@ class CheckoutViewTests(TestCase):
 
 		data = {'meetuploc': 'pielantis',
 				'phone': 234243242,
-				'paymentmethod': 'COD',
+				'paymentmethod': self.cash.pk,
 				'additionalinfo': 'spam',}
 		form = OrderCheckoutForm(data=data)
 		self.assertTrue(form.is_valid)
@@ -273,6 +274,7 @@ class BidCheckoutViewTests(TestCase):
 		self.c = Client()
 		self.c.login(username='testuser',password='password')
 		self.assertTrue(self.c.login)
+		self.cash = PaymentChoice.objects.create(description='cash')
 
 	def tearDown(self):
 		self.c.logout()
@@ -288,7 +290,7 @@ class BidCheckoutViewTests(TestCase):
 
 		data = {'meetuploc': 'pielantis',
 				'phone': 234243242,
-				'paymentmethod': 'COD',
+				'paymentmethod': self.cash.pk,
 				'additionalinfo': 'spam',}
 		form = OrderCheckoutForm(data=data)
 		self.assertTrue(form.is_valid)
@@ -328,10 +330,11 @@ class ConfirmationViewTests(TestCase):
 		self.c.login(username='testuser',password='password')
 		self.assertTrue(self.c.login)
 		self.testcat = add_cat('testcat')
+		self.cash = PaymentChoice.objects.create(description='cash')
 		self.testitem = add_item(title='testitem',asking_price=100,
 							category=self.testcat,owner=self.testusersp)
 		self.order = Order.objects.create(buyer=self.testuser,meetuploc='pielantis',
-										  phone=12313132,paymentmethod='COD',buy_item=self.testitem)
+										  phone=12313132,paymentmethod=self.cash,buy_item=self.testitem)
 	def tearDown(self):
 		self.c.logout()
 
@@ -348,7 +351,7 @@ class ConfirmationViewTests(TestCase):
 		self.assertEqual(response.status_code, 302)
 		self.assertEqual(Order.objects.count(), 1)
 		orderafter = Order.objects.get(buyer=self.testuser,meetuploc='pielantis',
-									   phone=12313132,paymentmethod='COD',buy_item=self.testitem)
+									   phone=12313132,paymentmethod=self.cash,buy_item=self.testitem)
 		# Checking the agreetoterms and confirmed after the form
 		self.assertTrue(orderafter.agreetoterms)
 		self.assertTrue(orderafter.confirmed)

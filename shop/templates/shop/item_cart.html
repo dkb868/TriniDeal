@@ -29,7 +29,7 @@
 								<p>Sold by: {{ item.owner }} </p>
 							</td>
 							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
+								<p class="cart_total_price">{{ item.asking_price }}</p>
 							</td>
                             <td class="cart_total">
                                 <a class="btn btn-default check_out" href="{% url 'shop:checkout' item.slug %}">Check Out</a>

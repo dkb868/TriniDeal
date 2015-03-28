@@ -106,7 +106,6 @@ def item_cart(request, item_slug):
 
 def checkout(request, item_slug):
 	item = SaleItem.objects.get(slug=item_slug)
-
 	if not item.available:
 		return redirect('index')
 
@@ -123,17 +122,20 @@ def checkout(request, item_slug):
 			return redirect('shop:confirmation', order.id)
 		else:
 			print form.errors
+			context_dict['payment'] = PaymentChoice.objects.filter(sellerprofile=item.owner)
 
 	else:
 		form = OrderCheckoutForm()
 		context_dict['form'] = form
+		context_dict['payment'] = PaymentChoice.objects.filter(sellerprofile=item.owner)
 	return render(request, 'shop/checkout.html', context_dict)
 
 
 def confirmation(request, order_id):
 	try:
 		order = Order.objects.get(id=order_id)
-		context_dict = {'order': order}
+		item = order.buy_item
+		context_dict = {'order': order, 'item':item}
 		if request.method=='POST':
 			form = OrderConfirmationForm(request.POST, instance=order)
 			context_dict['form'] = form
