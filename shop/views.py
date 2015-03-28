@@ -54,8 +54,8 @@ def add_new_item(request):
 
 
 
-def sellerprofile(request, user_id):
-	sellerprofile = User.objects.get(id=user_id).sellerprofile
+def sellerprofile(request, seller_id):
+	sellerprofile = SellerProfile.objects.get(id=seller_id)
 	context_dict = {'sellerprofile': sellerprofile}
 	return render(request, 'shop/sellerprofile.html', context_dict)
 

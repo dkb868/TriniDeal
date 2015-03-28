@@ -118,11 +118,18 @@ class AddNewItemViewTests(TestCase):
 		self.assertEqual(response.status_code, 302)
 
 class SellerProfileViewTests(TestCase):
+	def setUp(self):
+		self.testuser = User.objects.create_user(username='testuser',password='password')
+		self.testusersp = add_sellerprofile(self.testuser)
+		self.c = Client()
+		self.c.login(username='testuser',password='password')
+		self.assertTrue(self.c.login)
+
+	def tearDown(self):
+		self.c.logout()
 
 	def test_sellerprofile_page_working(self):
-		testuser = add_user('testuser')
-		testusersp = add_sellerprofile(testuser)
-		response = self.client.get(reverse('shop:sellerprofile', kwargs={'user_id':testuser.id}))
+		response = self.c.get(reverse('shop:sellerprofile', kwargs={'seller_id':self.testusersp.id}))
 		self.assertEqual(response.status_code, 200)
 
 class MakeBidViewTests(TestCase):

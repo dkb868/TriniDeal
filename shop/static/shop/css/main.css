@@ -2560,3 +2560,13 @@ h2.title {
     width: 70%;
 
 }
+
+.textwrapper{
+    width: 400px;
+    word-wrap: normal;
+}
+
+.quickrightwrap{
+    position: relative;
+    left:500px;
+}
