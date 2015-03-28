@@ -6,7 +6,7 @@ from shop.forms import SaleItemForm, UserBidForm, SellerProfileForm, OrderChecko
 
 
 def index(request):
-	item_list = SaleItem.objects.all().order_by('post_time')[:9]
+	item_list = SaleItem.objects.filter(available=True).order_by('post_time')[:9]
 	context_dict = {'items': item_list}
 	return render(request, 'shop/index.html', context_dict)
 
@@ -20,8 +20,6 @@ def category(request, category_name_slug):
 def saleitem(request, item_slug):
 	item = SaleItem.objects.get(slug=item_slug)
 	context_dict = {'item': item}
-	bidform = UserBidForm()
-	context_dict['bidform'] = bidform
 	context_dict['user'] = request.user
 	context_dict['itemcondition'] = item.get_condition_display()
 	context_dict['homedelivery'] = item.owner.get_home_delivery_display()
@@ -62,9 +60,15 @@ def sellerprofile(request, seller_id):
 
 def make_bid(request, item_slug):
 	item = SaleItem.objects.get(slug=item_slug)
+	context_dict = {'item': item}
+	try:
+		highestbid = UserBid.objects.filter(sale_item=item).order_by('-offer_price')[0]
+		context_dict['highestbid'] = highestbid
+	except:
+		pass
 
 	try:
-		userbid = UserBid.objects.get(user=request.user, sale_item=item)
+		userbid = UserBid.objects.get(user=request.user,sale_item=item)
 
 	except UserBid.DoesNotExist:
 		userbid = UserBid(user=request.user,sale_item=item)
@@ -79,10 +83,12 @@ def make_bid(request, item_slug):
 
 		else:
 			print form.errors
-			return redirect('shop:item', item.slug)
+			context_dict['form'] = form
 
 	else:
-		return redirect('index')
+		form = UserBidForm()
+		context_dict['form'] = form
+		return render(request, 'shop/makebid.html', context_dict)
 
 def create_sellerprofile(request):
 	if request.method=='POST':
@@ -110,7 +116,7 @@ def checkout(request, item_slug):
 		return redirect('index')
 
 	context_dict = {'item':item, 'user': request.user}
-
+	context_dict['payment'] = PaymentChoice.objects.filter(sellerprofile=item.owner)
 	if request.method=='POST':
 		form = OrderCheckoutForm(request.POST)
 		context_dict['form'] = form
@@ -122,18 +128,18 @@ def checkout(request, item_slug):
 			return redirect('shop:confirmation', order.id)
 		else:
 			print form.errors
-			context_dict['payment'] = PaymentChoice.objects.filter(sellerprofile=item.owner)
-
 	else:
 		form = OrderCheckoutForm()
 		context_dict['form'] = form
-		context_dict['payment'] = PaymentChoice.objects.filter(sellerprofile=item.owner)
 	return render(request, 'shop/checkout.html', context_dict)
 
 
 def confirmation(request, order_id):
 	try:
 		order = Order.objects.get(id=order_id)
+		if request.user != order.buyer:
+			return redirect('index')
+
 		item = order.buy_item
 		context_dict = {'order': order, 'item':item}
 		if request.method=='POST':
@@ -168,7 +174,7 @@ def bidcheckout(request, item_slug):
 		return redirect('index')
 
 	context_dict = {'item':item, 'user': request.user}
-
+	context_dict['payment'] = PaymentChoice.objects.filter(sellerprofile=item.owner)
 	if request.method=='POST':
 		form = OrderCheckoutForm(request.POST)
 		context_dict['form'] = form
@@ -180,18 +186,21 @@ def bidcheckout(request, item_slug):
 			return redirect('shop:confirmation', order.id)
 		else:
 			print form.errors
-
 	else:
 		form = OrderCheckoutForm()
 		context_dict['form'] = form
-	return render(request, 'shop/checkout.html', context_dict)
+	return render(request, 'shop/bidcheckout.html', context_dict)
+
 
 
 def acceptbid(request, bid_id):
 	bid = UserBid.objects.get(id=bid_id)
 
 	# Users do not have items, SELLERS have items
-	if request.user.sellerprofile != bid.sale_item.owner:
+	try:
+		if request.user.sellerprofile != bid.sale_item.owner:
+			return redirect('index')
+	except:
 		return redirect('index')
 
 	if request.method=='POST':

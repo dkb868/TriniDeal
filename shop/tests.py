@@ -335,6 +335,11 @@ class ConfirmationViewTests(TestCase):
 							category=self.testcat,owner=self.testusersp)
 		self.order = Order.objects.create(buyer=self.testuser,meetuploc='pielantis',
 										  phone=12313132,paymentmethod=self.cash,buy_item=self.testitem)
+		self.testuser2 = User.objects.create_user(username='testuser2',password='password')
+		self.d = Client()
+		self.d.login(username='testuser2',password='password')
+		self.assertTrue(self.d.login)
+
 	def tearDown(self):
 		self.c.logout()
 
@@ -357,6 +362,14 @@ class ConfirmationViewTests(TestCase):
 		self.assertTrue(orderafter.confirmed)
 		# item should now be unavailable
 		self.assertFalse(orderafter.buy_item.available)
+
+	def test_confirmation_available_to_user_who_is_the_order_buyer(self):
+		response = self.c.get(reverse('shop:confirmation', kwargs={'order_id': self.order.id}))
+		self.assertEqual(response.status_code, 200)
+
+	def test_confirmation_unavailable_to_user_who_is_not_the_order_buyer(self):
+		response = self.d.get(reverse('shop:confirmation', kwargs={'order_id': self.order.id}))
+		self.assertEqual(response.status_code, 302)
 
 class AcceptBidViewTests(TestCase):
 	def setUp(self):
@@ -381,7 +394,7 @@ class AcceptBidViewTests(TestCase):
 		self.assertFalse(testitemafter.available)
 
 
-	def test_item_owner_can_acces_accept_bid_view(self):
+	def test_item_owner_can_access_accept_bid_view(self):
 		testcat = add_cat('testcat')
 		testitem = add_item(title='testitem',asking_price=100,
 							category=testcat,owner=self.testusersp)

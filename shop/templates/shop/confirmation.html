@@ -34,7 +34,11 @@
 								<p>Sold by: {{ item.owner }} </p>
 							</td>
 							<td class="cart_total">
-								<p class="cart_total_price">${{ item.asking_price }}.00</p>
+                                {% if item.accepted_bid %}
+								<p class="cart_total_price">${{ item.accepted_bid.offer_price }}.00</p>
+                                {% else %}
+                                <p class="cart_total_price">${{ item.asking_price }}.00</p>
+                                {% endif %}
 							</td>
 						</tr>
 							<tr>
@@ -59,7 +63,11 @@
 										</tr>
 										<tr>
 											<td>Total</td>
-											<td><span>${{ item.asking_price }}.00</span></td>
+                                            {% if item.accepted_bid %}
+											<td><span>${{ item.accepted_bid.offer_price }}.00</span></td>
+                                            {% else %}
+                                            <td><span>${{ item.asking_price }}.00</span></td>
+                                            {% endif %}
 										</tr>
 									</table>
 								</td>

@@ -54,17 +54,23 @@
 										Buy now
 									</button> </a>
 								</span>
-                                {% if highestbid %}
-                                        <p>Current Highest Offer: {{ highestbid.offer_price }}</p>
-								{% endif %}
-                                {% if request.user.sellerprofile != item.owner and item.negotiable %}
-									<form id="bid_form" method="post" action="{% url 'shop:makebid' item.slug %}">
-							            {% csrf_token %}
-							            <input type="number" min="{{ highestbid.offer_price }}" max="{{ item.asking_price }}" id="id_offer_price" name="offer_price" placeholder="100">
-							            <input type="submit" name="submit" value="Make an Offer" />
-							        </form>
+                                {% if item.negotiable %}
+	                                {% if highestbid %}
+	                                        <p>Current Highest Offer: ${{ highestbid.offer_price }}.00 {% if request.user.sellerprofile == item.owner %}
+                                            <a href="{% url 'shop:acceptbid' highestbid.id %}"><button class="btn btn-success" type="submit" name="submit" value="Make an Offer" >
+	                                            Accept offer
+	                                        </button> </a>
+                                            {% endif %}</p>
+
+									{% endif %}
+                                    <p><b>Price Negotiable</b></p>
+                                    {% if request.user.sellerprofile != item.owner %}
+							            <a href="{% url 'shop:makebid' item.slug %}"><button class="btn btn-default" type="submit" name="submit" value="Make an Offer" >
+                                            Make an offer
+                                        </button></a>
+                                    {% endif %}
                                 {% endif %}
-								<p><b>Condition:</b> {{ itemcondition }}</p>
+								<p><br><b>Condition:</b> {{ itemcondition }}</p>
                                 {%  if item.reason %}
                                    <p><b>Reason for selling:</b> {{ item.reason }}</p>
                                 {% endif %}
@@ -122,12 +128,11 @@
 								        {% else %}
 								            Reviewed without description.
 								        {% endif %}
-								    </div>
 									{% endfor %}
                                 {% user_has_reviewed item.owner request.user as has_reviewed %}
                             {% if has_reviewed %}
                                 <br>
-                                <p>Thanks for your opinion!</p>
+                                <p><b>Thanks for your opinion!</b></p>
                             {% else %}
                                 <a href="/review/sellerprofile/{{ item.owner.id }}/create/">Review this seller</a>
                                 <!--
@@ -146,6 +151,7 @@
 									</form>
 									-->
                             {% endif %}
+                                </div>
 								</div>
 							</div>
 

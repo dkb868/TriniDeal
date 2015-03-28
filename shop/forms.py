@@ -55,4 +55,4 @@ class OrderConfirmationForm(forms.ModelForm):
 		agree = cleaned_data.get('agreetoterms')
 
 		if not agree:
-			raise forms.ValidationError('You must agree to the terms to continue')
+			raise forms.ValidationError({'agreetoterms': ['You must agree to the terms to continue',]})
