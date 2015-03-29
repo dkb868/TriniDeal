@@ -342,6 +342,7 @@ class ConfirmationViewTests(TestCase):
 
 	def tearDown(self):
 		self.c.logout()
+		self.d.logout()
 
 	def test_valid_order_confirmation(self):
 
@@ -381,6 +382,7 @@ class AcceptBidViewTests(TestCase):
 	def tearDown(self):
 		self.c.logout()
 
+
 	def test_valid_accept_bid(self):
 		testcat = add_cat('testcat')
 		testitem = add_item(title='testitem',asking_price=100,
@@ -403,6 +405,33 @@ class AcceptBidViewTests(TestCase):
 		response = self.c.get(reverse('shop:acceptbid', kwargs={'bid_id':testbid.id}))
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.context['bid'], testbid)
+
+class OrderViewTests(TestCase):
+	def setUp(self):
+		self.testuser = User.objects.create_user(username='testuser',password='password',
+											first_name='test',last_name='user')
+		self.testusersp = add_sellerprofile(self.testuser)
+		self.c = Client()
+		self.c.login(username='testuser',password='password')
+		self.assertTrue(self.c.login)
+		self.testuser2 = User.objects.create_user(username='testuser2',password='password')
+		self.d = Client()
+		self.d.login(username='testuser2',password='password')
+		self.assertTrue(self.d.login)
+		self.testcat = add_cat('testcat')
+		self.cash = PaymentChoice.objects.create(description='cash')
+		self.testitem = add_item(title='testitem',asking_price=100,
+							category=self.testcat,owner=self.testusersp)
+		self.order = Order.objects.create(buyer=self.testuser2,meetuploc='pielantis',
+										  phone=12313132,paymentmethod=self.cash,buy_item=self.testitem)
+
+	def tearDown(self):
+		self.c.logout()
+		self.d.logout()
+
+	def test_user_without_sellerprofile_can_access_order_page(self):
+		response = self.d.get(reverse('shop:order', kwargs={'order_id': self.order.id}))
+		self.assertEqual(response.status_code, 200)
 
 
 # Dashboard tests

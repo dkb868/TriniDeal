@@ -1,0 +1,26 @@
+{% extends 'shop/base.html' %}
+{%  load staticfiles %}
+{% block title %} Your Dashboard {% endblock %}
+{% block category_block %}
+{% endblock %}
+{% block body_block %}
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class="title text-center">Seller Dashboard:
+                {% if sellerprofile.seller_name %}
+	            {{ sellerprofile.seller_name }}
+	            {% else %}
+	            {{ sellerprofile.user.first_name }} {{ sellerprofile.user.last_name }}
+	            {% endif %}
+            </h2>
+        </div>
+        <div class="col-sm-offset-5">
+        <ul>
+            <li><a href="{% url 'shop:dashboard_current_items' %}">Current items on sale ({{ current_items_count }})</a></li>
+            <li><a href="{% url 'shop:dashboard_past_items' %}">Past items sold ({{ past_items_count }})</a></li>
+            <li><a href="{% url 'shop:dashboard_current_orders' %}">Current orders ({{ current_orders_count }})</a></li>
+            <li><a href="{% url 'shop:dashboard_past_orders' %}">Completed orders ({{ past_orders_count }})</a></li>
+        </ul>
+		</div>
+    </div>
+{% endblock %}

@@ -212,6 +212,29 @@ def acceptbid(request, bid_id):
 	context_dict={'item':bid.sale_item, 'bid':bid}
 	return render(request, 'shop/acceptbid.html', context_dict )
 
+def order(request, order_id):
+	try:
+		order = Order.objects.get(id=order_id)
+		try:
+			if request.user != order.buyer:
+				if request.user.sellerprofile != order.buy_item.owner:
+					return redirect('index')
+		except AttributeError:
+			return redirect('index')
+
+		item = order.buy_item
+		context_dict = {'order': order, 'item':item}
+		if request.method=='POST':
+			order.completed = True
+			order.save(update_fields=['completed'])
+			return redirect('shop:dashboard')
+		else:
+			return render(request, 'shop/order.html',context_dict)
+
+	except Order.DoesNotExist:
+		return redirect('index')
+
+
 # dashboard views
 
 def sellerdashboard(request):
@@ -222,14 +245,14 @@ def sellerdashboard(request):
 	context_dict = {'sellerprofile':request.user.sellerprofile, 'current_items_count':current_items_count,
 					'past_items_count':past_items_count,'current_orders_count':current_orders_count,
 					'past_orders_count':past_orders_count}
-	return render(request, 'main/dashboard.html', context_dict)
+	return render(request, 'shop/dashboard.html', context_dict)
 
 def dashboard_current_items(request):
-	context_dict = {'current_items': SaleItem.objects.filter(owner=request.user.sellerprofile,available=True)}
+	context_dict = {'current_items': SaleItem.objects.filter(owner=request.user.sellerprofile,available=True).order_by('post_time')}
 	return render(request, 'shop/dashboard_current_items.html', context_dict)
 
 def dashboard_past_items(request):
-	context_dict = {'past_items': SaleItem.objects.filter(owner=request.user.sellerprofile, available=False)}
+	context_dict = {'past_items': SaleItem.objects.filter(owner=request.user.sellerprofile, available=False).order_by('post_time')}
 	return render(request, 'shop/dashboard_past_items.html',context_dict)
 
 def dashboard_current_orders(request):
@@ -239,3 +262,33 @@ def dashboard_current_orders(request):
 def dashboard_past_orders(request):
 	context_dict = {'past_orders':Order.objects.filter(buy_item__owner=request.user.sellerprofile, completed=True) }
 	return render(request, 'shop/dashboard_past_orders.html', context_dict)
+
+def removeitem(request, item_slug):
+	item = SaleItem.objects.get(slug=item_slug)
+	try:
+		if request.user.sellerprofile != item.owner:
+			return redirect('index')
+	except AttributeError:
+		return redirect('index')
+
+	if request.method=='POST':
+		item.available = False
+		item.save(update_fields=['available'])
+		return redirect('shop:dashboard_current_items')
+
+	return redirect('shop:dashboard')
+
+def reactivateitem(request, item_slug):
+	item = SaleItem.objects.get(slug=item_slug)
+	try:
+		if request.user.sellerprofile != item.owner:
+			return redirect('index')
+	except AttributeError:
+		return redirect('index')
+
+	if request.method=='POST':
+		item.available = True
+		item.save(update_fields=['available'])
+		return redirect('shop:dashboard_past_items')
+
+	return redirect('shop:dashboard')
