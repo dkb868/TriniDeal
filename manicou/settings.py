@@ -68,6 +68,8 @@ INSTALLED_APPS = (
     # noticiation app
     'notifications',
 
+    # contact form
+    'envelope',
 )
 
 SITE_ID = 1
@@ -164,3 +166,15 @@ REVIEW_UPDATE_SUCCESS_URL = 'index'
 REVIEW_ALLOW_ANONYMOUS = False
 
 
+# EMAIL
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.zoho.com'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'support@trinideal.com'
+EMAIL_HOST_USER = 'support@trinideal.com'
+EMAIL_HOST_PASSWORD = 'Allthatiknow1'
+
+# contact
+
+ENVELOPE_EMAIL_RECIPIENTS = ['support@trinideal.com','mitrikyle@yahoo.com']

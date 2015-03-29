@@ -16,6 +16,8 @@ urlpatterns = patterns('',
     url(r'^order/(?P<order_id>\d+)/$', views.order, name='order'),
     url(r'^myorders/$', views.myorders, name='myorders'),
 
+    url(r'^search/$', views.search, name='search'),
+
 
     # dashboard urls
     url(r'^dashboard/$', views.sellerdashboard, name='dashboard'),

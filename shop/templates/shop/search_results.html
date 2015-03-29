@@ -1,0 +1,40 @@
+{% extends 'shop/base.html' %}
+{%  load staticfiles %}
+{% block title %} Search {% endblock %}
+{% block body_block %}
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-9 padding-right">
+					<div class="features_items"><!--features_items-->
+                    	{% if found_entries %}
+							{%  for item in found_entries %}
+					             <a href="{% url 'shop:item' item.slug %}">
+	                                 <div class="col-sm-4">
+										<div class="product-image-wrapper">
+											<div class="single-products">
+												<div class="productinfo text-center">
+													<img src="{% static 'shop/images/home/product1.jpg' %}" alt="" />
+
+                                                    <h2>{{ item.title|truncatewords:'6' }}</h2>
+													<p>${{ item.asking_price }}.00</p>
+												</div>
+
+											</div>
+										</div>
+                                     </div>
+                                 </a>
+						    {%  endfor %}
+					    {%  else  %}
+					        <strong> No results found :( </strong>
+					    {% endif %}
+
+
+					</div><!--features_items-->
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+{% endblock %}

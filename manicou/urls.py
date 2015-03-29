@@ -13,9 +13,7 @@ urlpatterns = patterns('',
     url(r'^inbox/notifications/', include(notifications.urls)),
     url(r'^shop/', include('shop.urls', namespace='shop')),
     url(r'^about/$', TemplateView.as_view(template_name='main/about.html'), name='about'),
-  #  url(r'contact^$', 'shop.views.contact', name='contact'),
-
-
+    url(r'^contact/', include('envelope.urls')),
 )
 
 # development media server

@@ -33,27 +33,24 @@
 				<div class="row">
 					<div class="col-sm-6">
 						<div class="contactinfo">
-							<ul class="nav nav-pills">
-								<li><a href=""><i class="fa fa-envelope"></i> support@trinideal.com </a></li>
-                                <li><a href=""><i class="fa fa-user"></i> My Seller Profile</a></li>
-								<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
-								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-
-							</ul>
+							<ul class="nav navbar-nav">
+                                {% if request.user.sellerprofile %}
+                                <li><a href="{% url 'shop:sellerprofile' request.user.sellerprofile.id %}"><i class="fa fa-user"></i> My Seller Profile</a></li>
+								{% endif %}
+                                <li><a href="{% url 'shop:myorders' %}"><i class="fa fa-shopping-cart"></i> My Purchases</a></li>
+                            </ul>
 						</div>
 					</div>
 					<div class="col-sm-6">
-						<div class="social-icons pull-right">
+						<div class="contactinfo pull-right">
 							<ul class="nav navbar-nav">
-                                <li><a href="{% url 'about' %}"><i class="fa fa-trophy"></i> About</a></li>
-								<li><a href="#"><i class="fa fa-send"></i> Contact</a></li>
+                                <li><a href="{% url 'about' %}"><i class="fa fa-trophy"></i> About us</a></li>
+								<li><a href="{% url 'envelope-contact' %}"><i class="fa fa-envelope"></i> Contact</a></li>
                                 {% if not request.user.is_authenticated %}
                                 <li><a href="{% url 'account_login' %}"><i class="fa fa-lock"></i> Login</a></li>
                                     {% else %}
                                 <li><a href="{% url 'account_logout' %}"><i class="fa fa-lock"></i> Logout</a></li>
                                 {% endif %}
-								<li><a href=""><i class="fa fa-facebook"></i></a></li>
 							</ul>
 						</div>
 					</div>
@@ -70,15 +67,17 @@
 						</div>
 					</div>
                 <div class="col-sm-6">
-							            <div class="input-group stylish-input-group">
-                                            <input type="text" class="form-control"  placeholder="Search" >
-                                            <span class="input-group-addon">
-                                                <button type="submit">
-                                                    <span class="glyphicon glyphicon-search"></span>
-                                                </button>
-                                            </span>
-							            </div>
-							        </div>
+                    <form method="get" action="{% url 'shop:search' %}">
+			            <div class="input-group stylish-input-group">
+                            <input type="text" name="q" id="id_q" class="form-control" placeholder="Search" >
+                            <span class="input-group-addon">
+                                <button type="submit" value="submit">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+			            </div>
+                        </form>
+			        </div>
 					<div class="col-sm-2">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
@@ -114,9 +113,10 @@
 								<li><a href="{% url 'index' %}">Home</a></li>
                                 <li><a href="{% url 'shop:dashboard' %}">Seller Dashboard</a></li>
                                 <li><a href="{% url 'shop:add_new_item' %}">Post an item</a></li>
-                                <li><a href="{% url 'shop:myorders' %}">My Purchases</a></li>
+                                {% if request.user.is_authenticated %}
                                 {% notifications_unread as unread_count %}
                                 <li><a href="{% url 'notifications:unread' %}">Notifications({{ unread_count }})</a></li>
+                                {% endif %}
 
                                 <!--
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
