@@ -14,6 +14,8 @@ urlpatterns = patterns('',
     url(r'^confirmation/(?P<order_id>\d+)/$', views.confirmation, name='confirmation'),
     url(r'^acceptbid/(?P<bid_id>\d+)/$', views.acceptbid, name='acceptbid'),
     url(r'^order/(?P<order_id>\d+)/$', views.order, name='order'),
+    url(r'^myorders/$', views.myorders, name='myorders'),
+
 
     # dashboard urls
     url(r'^dashboard/$', views.sellerdashboard, name='dashboard'),

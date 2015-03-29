@@ -212,6 +212,10 @@ def acceptbid(request, bid_id):
 	context_dict={'item':bid.sale_item, 'bid':bid}
 	return render(request, 'shop/acceptbid.html', context_dict )
 
+def myorders(request):
+	context_dict = {'current_orders':Order.objects.filter(buyer=request.user, completed=False)}
+	return render(request, 'shop/myorders.html',context_dict)
+
 def order(request, order_id):
 	try:
 		order = Order.objects.get(id=order_id)

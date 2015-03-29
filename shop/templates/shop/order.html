@@ -46,7 +46,7 @@ Order on {{ item }}
                     <p><strong>Additional Info: </strong> {{ order.additionalinfo }}</p>
                     {% endif %}
                 </div>
-            {% if request.user.sellerprofile == item.owner %}
+            {% if request.user.sellerprofile == item.owner and not order.completed %}
                 <div class="row">
                      <form class="form" id="order_complete_form" method="post" action=".">
                          {% csrf_token %}
@@ -54,7 +54,7 @@ Order on {{ item }}
 			                <div class="col-xs-6 ">
 			                    <br>
                                 <label>When the product has been successfully delivered, click this button to mark the order as completed.</label>
-			                <button type="submit" name="submit" value="Order Complete" class="btn btn-default">
+			                <button type="submit" name="submit" value="Order Complete" class="btn btn-success">
 			                    Order Completed
 			                </button>
 			                </div>

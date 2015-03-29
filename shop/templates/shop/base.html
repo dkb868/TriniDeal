@@ -101,7 +101,7 @@
 								<li><a href="{% url 'index' %}">Home</a></li>
                                 <li><a href="{% url 'shop:dashboard' %}">Seller Dashboard</a></li>
                                 <li><a href="{% url 'shop:add_new_item' %}">Post an item</a></li>
-                                <li><a href="#">My Orders</a></li>
+                                <li><a href="{% url 'shop:myorders' %}">My Orders</a></li>
                                 <li><a href="{% url 'about' %}">About</a></li>
 								<li><a href="#">Contact</a></li>
                                 {% if not request.user.is_authenticated %}

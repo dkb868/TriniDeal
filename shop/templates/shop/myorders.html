@@ -1,0 +1,23 @@
+{% extends 'shop/base.html' %}
+{%  load staticfiles %}
+{% block title %} Your current orders {% endblock %}
+{% block category_block %}
+{% endblock %}
+{% block body_block %}
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class="title text-center">Your Orders</h2>
+        </div>
+        <div class="col-sm-offset-5">
+            {% if current_orders %}
+        <ul>
+            {% for order in current_orders %}
+            <li><a href="{% url 'shop:order' order.id %}">Item you ordered: {{ order.buy_item }}</a></li>
+            {% endfor %}
+        </ul>
+            {% else %}
+                <strong>You do not have any orders at the moment.</strong>
+            {% endif %}
+		</div>
+    </div>
+{% endblock %}
