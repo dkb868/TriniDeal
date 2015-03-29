@@ -63,6 +63,7 @@ class SaleItem(models.Model):
 	slug = models.SlugField(unique=True)
 	reason = models.CharField(max_length=100, blank=True)
 	accepted_bid = models.OneToOneField('UserBid', null=True, blank=True)
+	image = models.ImageField(upload_to='sale_item_images')
 
 	def save(self, *args, **kwargs):
 
@@ -105,9 +106,12 @@ class UserBid(models.Model):
 		return (self.user.first_name + " " + self.user.last_name + " " + self.sale_item.title)
 
 
-class SaleItemImage(models.Model):
+class SaleItemAdditionalImages(models.Model):
 	image = models.ImageField(upload_to='sale_item_images',null=True,blank=True)
 	sale_item = models.ForeignKey('SaleItem')
+
+	def __unicode__(self):
+		return self.sale_item.title + ' ' + 'image'
 
 class Comment(models.Model):
 	poster = models.ForeignKey(User)

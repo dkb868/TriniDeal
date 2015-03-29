@@ -4,10 +4,12 @@ from shop.models import SaleItem, Category, UserBid, SellerProfile, Order
 
 class SaleItemForm(forms.ModelForm):
 	category = forms.ModelChoiceField(queryset=Category.objects.all())
+	image = forms.ImageField(required=True)
+	additional_images = forms.ImageField(required=False)
 	class Meta:
 		model = SaleItem
 		fields = ('title','condition','description','reason',
-				  'asking_price','negotiable','category',)
+				  'asking_price','negotiable','category','image','additional_images')
 
 class UserBidForm(forms.ModelForm):
 	class Meta:

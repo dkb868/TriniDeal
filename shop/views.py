@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from notifications import notify
-from shop.models import SellerProfile,SaleItem,Category,UserBid,SaleItemImage,Comment, Order, PaymentChoice
+from shop.models import SellerProfile,SaleItem,Category,UserBid,Comment, Order, PaymentChoice, \
+	SaleItemAdditionalImages
 from shop.forms import SaleItemForm, UserBidForm, SellerProfileForm, OrderCheckoutForm, OrderConfirmationForm
 
 
@@ -24,6 +25,7 @@ def saleitem(request, item_slug):
 	context_dict['itemcondition'] = item.get_condition_display()
 	context_dict['homedelivery'] = item.owner.get_home_delivery_display()
 	context_dict['payment'] = PaymentChoice.objects.filter(sellerprofile=item.owner)
+	context_dict['additional_images'] = SaleItemAdditionalImages.objects.filter(sale_item=item)
 	try:
 		highestbid = UserBid.objects.filter(sale_item=item).order_by('-offer_price')[0]
 		context_dict['highestbid'] = highestbid
@@ -34,12 +36,21 @@ def saleitem(request, item_slug):
 
 def add_new_item(request):
 	if request.method == 'POST':
-		form = SaleItemForm(request.POST)
+		form = SaleItemForm(request.POST,request.FILES)
 
 		if form.is_valid():
 			item = form.save(commit=False)
 			item.owner = request.user.sellerprofile
+
+			if 'image' in request.FILES:
+				item.image = request.FILES['image']
+
 			item.save()
+
+			if 'additional_images' in request.FILES:
+				for image in request.FILES.getlist('additional_images'):
+					SaleItemAdditionalImages.objects.create(image=image, sale_item=item)
+
 			return redirect('shop:item', item.slug)
 		else:
 			print form.errors

@@ -7,7 +7,7 @@ https://docs.djangoproject.com/en/1.7/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
-
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -35,6 +35,7 @@ TEMPLATE_DEBUG = True
 TEMPLATE_DIRS = (
     TEMPLATE_PATH,
 )
+
 
 ALLOWED_HOSTS = []
 
@@ -125,7 +126,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Allauth stuff
 
-TEMPLATE_CONTEXT_PROCESSORS = (
+TEMPLATE_CONTEXT_PROCESSORS += (
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.request",
     "allauth.account.context_processors.account",
