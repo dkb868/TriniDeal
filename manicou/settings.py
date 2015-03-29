@@ -139,6 +139,7 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
+
 SOCIALACCOUNT_PROVIDERS = \
     {'facebook':
        {'SCOPE': ['email', 'publish_stream'],
@@ -150,6 +151,11 @@ SOCIALACCOUNT_PROVIDERS = \
 LOGIN_REDIRECT_URL = '/'
 
 ACCOUNT_SESSION_REMEMBER = True
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_SIGNUP_FORM_CLASS = 'shop.forms.SignupForm'
 
 # Review stuff
 

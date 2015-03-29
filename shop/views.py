@@ -64,6 +64,8 @@ def make_bid(request, item_slug):
 	try:
 		highestbid = UserBid.objects.filter(sale_item=item).order_by('-offer_price')[0]
 		context_dict['highestbid'] = highestbid
+		min_offer = highestbid.offer_price + 1
+		context_dict['min_offer'] = min_offer
 	except:
 		pass
 
@@ -78,7 +80,15 @@ def make_bid(request, item_slug):
 		form = UserBidForm(request.POST, instance=userbid)
 		if form.is_valid():
 			form.save()
-			notify.send(request.user, recipient=item.owner.user, verb=u'Made an offer on your item: ', target=item)
+			notify.send(request.user, recipient=item.owner.user, verb=u' made an offer on your item: ', target=item)
+
+			for ubid in item.userbid_set.all():
+
+				if ubid.user == request.user:
+					continue
+
+				notify.send(request.user, recipient=ubid.user, verb=u' bid on an item that you bid on', target=item)
+
 			return redirect('shop:item', item.slug)
 
 		else:
@@ -151,6 +161,8 @@ def confirmation(request, order_id):
 				confirmorder.save()
 				confirmorder.buy_item.available = False
 				confirmorder.buy_item.save(update_fields=['available'])
+				notify.send(request.user, recipient=item.owner.user, verb=u' placed an order on your item. Go to your dashboard to view your orders.', target=confirmorder)
+
 				return redirect('index')
 			else:
 				print form.errors
@@ -207,13 +219,14 @@ def acceptbid(request, bid_id):
 		bid.sale_item.available = False
 		bid.sale_item.accepted_bid = bid
 		bid.sale_item.save(update_fields=['available','accepted_bid'])
+		notify.send(request.user, recipient=bid.user, verb=u' accepted your offer on their item. Click the link to review and checkout ', target=bid)
 		return redirect('shop:dashboard')
 
 	context_dict={'item':bid.sale_item, 'bid':bid}
 	return render(request, 'shop/acceptbid.html', context_dict )
 
 def myorders(request):
-	context_dict = {'current_orders':Order.objects.filter(buyer=request.user, completed=False)}
+	context_dict = {'current_orders':Order.objects.filter(buyer=request.user, confirmed=True, completed=False)}
 	return render(request, 'shop/myorders.html',context_dict)
 
 def order(request, order_id):
@@ -223,6 +236,9 @@ def order(request, order_id):
 			if request.user != order.buyer:
 				if request.user.sellerprofile != order.buy_item.owner:
 					return redirect('index')
+
+			if not order.confirmed:
+				return redirect('index')
 		except AttributeError:
 			return redirect('index')
 
@@ -260,11 +276,11 @@ def dashboard_past_items(request):
 	return render(request, 'shop/dashboard_past_items.html',context_dict)
 
 def dashboard_current_orders(request):
-	context_dict = {'current_orders':Order.objects.filter(buy_item__owner=request.user.sellerprofile, completed=False)}
+	context_dict = {'current_orders':Order.objects.filter(buy_item__owner=request.user.sellerprofile, confirmed=True, completed=False)}
 	return render(request, 'shop/dashboard_current_orders.html',context_dict)
 
 def dashboard_past_orders(request):
-	context_dict = {'past_orders':Order.objects.filter(buy_item__owner=request.user.sellerprofile, completed=True) }
+	context_dict = {'past_orders':Order.objects.filter(buy_item__owner=request.user.sellerprofile, confirmed=True, completed=True) }
 	return render(request, 'shop/dashboard_past_orders.html', context_dict)
 
 def removeitem(request, item_slug):

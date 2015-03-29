@@ -135,7 +135,7 @@ class Order(models.Model):
 	completed = models.BooleanField(default=False)
 
 	def __unicode__(self):
-		return ("ORDER" + " " + self.buyer.first_name + " " + self.buyer.last_name + " " + self.buy_item.title )
+		return (self.buyer.first_name + " " + self.buyer.last_name + " "  + "ordered item:" + " " + self.buy_item.title )
 
 
 

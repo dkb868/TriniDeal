@@ -11,13 +11,13 @@
         <div class="col-sm-offset-5">
 			<p><strong>Item:</strong> {{ item.title }}</p>
 			<p><strong>Their Asking Price:</strong> ${{ item.asking_price }}.00</p>
-            <p><strong>Current Highest Offer:</strong> ${{ highestbid.offer_price }}.00</p>
+            <p><strong>Current Highest Offer:</strong>${{ highestbid.offer_price }}.00</p>
             <form class="form-horizontal pull-left" id="bid_form" method="post" action="{% url 'shop:makebid' item.slug %}">
             {% csrf_token %}
                  <div class="form-group">
                      <label for="id_offer_price" class="control-label col-xs-2">Your offer</label>
                      <div class="col-xs-5">
-                <input type="number" min="{{ highestbid.offer_price }}" max="{{ item.asking_price }}" id="id_offer_price" name="offer_price" placeholder="100">
+                <input type="number" min="{{ min_offer }}" max="{{ item.asking_price }}" id="id_offer_price" name="offer_price" placeholder="100">
                     </div>
                  </div>
             <div class="form-group">

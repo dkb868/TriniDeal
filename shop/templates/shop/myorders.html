@@ -6,7 +6,7 @@
 {% block body_block %}
     <div class="row">
         <div class="col-sm-12">
-            <h2 class="title text-center">Your Orders</h2>
+            <h2 class="title text-center">Your Purchases</h2>
         </div>
         <div class="col-sm-offset-5">
             {% if current_orders %}
@@ -16,8 +16,11 @@
             {% endfor %}
         </ul>
             {% else %}
-                <strong>You do not have any orders at the moment.</strong>
+                <strong>You have not made any purchases.</strong>
             {% endif %}
 		</div>
     </div>
+        <div class="row">
+ <br><br><br><br><br><br>
+</div>
 {% endblock %}

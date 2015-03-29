@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {%  load staticfiles %}
+{% load notifications_tags %}
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -34,12 +35,24 @@
 						<div class="contactinfo">
 							<ul class="nav nav-pills">
 								<li><a href=""><i class="fa fa-envelope"></i> support@trinideal.com </a></li>
+                                <li><a href=""><i class="fa fa-user"></i> My Seller Profile</a></li>
+								<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
+								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+
 							</ul>
 						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="social-icons pull-right">
 							<ul class="nav navbar-nav">
+                                <li><a href="{% url 'about' %}"><i class="fa fa-trophy"></i> About</a></li>
+								<li><a href="#"><i class="fa fa-send"></i> Contact</a></li>
+                                {% if not request.user.is_authenticated %}
+                                <li><a href="{% url 'account_login' %}"><i class="fa fa-lock"></i> Login</a></li>
+                                    {% else %}
+                                <li><a href="{% url 'account_logout' %}"><i class="fa fa-lock"></i> Logout</a></li>
+                                {% endif %}
 								<li><a href=""><i class="fa fa-facebook"></i></a></li>
 							</ul>
 						</div>
@@ -101,14 +114,10 @@
 								<li><a href="{% url 'index' %}">Home</a></li>
                                 <li><a href="{% url 'shop:dashboard' %}">Seller Dashboard</a></li>
                                 <li><a href="{% url 'shop:add_new_item' %}">Post an item</a></li>
-                                <li><a href="{% url 'shop:myorders' %}">My Orders</a></li>
-                                <li><a href="{% url 'about' %}">About</a></li>
-								<li><a href="#">Contact</a></li>
-                                {% if not request.user.is_authenticated %}
-                                <li><a href="{% url 'account_login' %}">Login</a></li>
-                                    {% else %}
-                                <li><a href="{% url 'account_logout' %}">Logout</a></li>
-                                {% endif %}
+                                <li><a href="{% url 'shop:myorders' %}">My Purchases</a></li>
+                                {% notifications_unread as unread_count %}
+                                <li><a href="{% url 'notifications:unread' %}">Notifications({{ unread_count }})</a></li>
+
                                 <!--
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">

@@ -30,7 +30,7 @@ Order on {{ item }}
                                             ${{ item.asking_price }}.00
                                             {% endif %}</p>
                 {% if order.meetuploc %}
-                    <p><strong>Meetup Location: </strong> {{ order.meetuploc }}</p>
+                    <p><strong>Suggested Meetup Location: </strong> {{ order.meetuploc }}</p>
                 {% endif %}
                 {% if order.street %}
                     <p><strong>Delivery Address: </strong> {{ order.street }}, {{ order.city }}</p>
