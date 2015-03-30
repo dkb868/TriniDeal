@@ -2,22 +2,56 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, render_to_response
 from django.template import RequestContext
 from notifications import notify
-from shop.models import SellerProfile,SaleItem,Category,UserBid,Comment, Order, PaymentChoice, \
-	SaleItemAdditionalImages
+from shop.models import SellerProfile,SaleItem,Category,UserBid,Comment, Order, PaymentChoice, SaleItemAdditionalImages
 from shop.forms import SaleItemForm, UserBidForm, SellerProfileForm, OrderCheckoutForm, OrderConfirmationForm
+import re
+from django.db.models import Q
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+## Custom Decorators
+
+def has_seller_profile(user):
+	if user:
+		try:
+			sellerprofile = user.sellerprofile
+			return True
+		except AttributeError:
+			return False
+
+
+	return False
+
+######
+
 
 
 def index(request):
-	item_list = SaleItem.objects.filter(available=True).order_by('post_time')[:9]
+	item_list = SaleItem.objects.filter(available=True).order_by('-post_time')[:9]
 	context_dict = {'items': item_list}
 	return render(request, 'shop/index.html', context_dict)
 
 
-def category(request, category_name_slug):
+#def category(request, category_name_slug):
+#	category = Category.objects.get(slug=category_name_slug)
+#	item_list = SaleItem.objects.filter(Q(category=category) | Q(category__parent_category=category)).order_by('-post_time')
+#	context_dict = {'category': category, 'items': item_list}
+#	return render(request, 'shop/category.html', context_dict)
+
+def category(
+        request,
+        category_name_slug,
+        template='shop/category.html',
+        page_template='shop/item_list.html'):
+
 	category = Category.objects.get(slug=category_name_slug)
-	item_list = SaleItem.objects.filter(category=category).order_by('post_time')[:9]
-	context_dict = {'category': category, 'items': item_list}
-	return render(request, 'shop/category.html', context_dict)
+	item_list = SaleItem.objects.filter(Q(category=category) | Q(category__parent_category=category)).order_by('-post_time')
+	context_dict = {'category': category, 'items': item_list, 'page_template': page_template}
+
+	if request.is_ajax():
+		template = page_template
+
+	return render_to_response(
+		template, context_dict, context_instance=RequestContext(request))
 
 def saleitem(request, item_slug):
 	item = SaleItem.objects.get(slug=item_slug)
@@ -35,6 +69,8 @@ def saleitem(request, item_slug):
 
 	return render(request, 'shop/item.html', context_dict)
 
+@login_required
+@user_passes_test(has_seller_profile, login_url='/shop/create_sellerprofile')
 def add_new_item(request):
 	if request.method == 'POST':
 		form = SaleItemForm(request.POST,request.FILES)
@@ -69,7 +105,7 @@ def sellerprofile(request, seller_id):
 	context_dict = {'sellerprofile': sellerprofile}
 	return render(request, 'shop/sellerprofile.html', context_dict)
 
-
+@login_required
 def make_bid(request, item_slug):
 	item = SaleItem.objects.get(slug=item_slug)
 	context_dict = {'item': item}
@@ -112,12 +148,16 @@ def make_bid(request, item_slug):
 		context_dict['form'] = form
 		return render(request, 'shop/makebid.html', context_dict)
 
+@login_required
 def create_sellerprofile(request):
 	if request.method=='POST':
-		form = SellerProfileForm(request.POST)
+		form = SellerProfileForm(request.POST, request.FILES)
 		if form.is_valid():
 			sellerprofile = form.save(commit=False)
 			sellerprofile.user = request.user
+			if 'image' in request.FILES:
+				sellerprofile.image = request.FILES['image']
+
 			sellerprofile.save()
 			form.save_m2m()
 			return redirect('index')
@@ -127,11 +167,13 @@ def create_sellerprofile(request):
 		form = SellerProfileForm()
 	return render(request, 'shop/create_sellerprofile.html', {'form': form})
 
+@login_required
 def item_cart(request, item_slug):
 	item = SaleItem.objects.get(slug=item_slug)
 	context_dict = {'item': item}
 	return render(request, 'shop/item_cart.html', context_dict)
 
+@login_required
 def checkout(request, item_slug):
 	item = SaleItem.objects.get(slug=item_slug)
 	if not item.available:
@@ -156,6 +198,7 @@ def checkout(request, item_slug):
 	return render(request, 'shop/checkout.html', context_dict)
 
 
+@login_required
 def confirmation(request, order_id):
 	try:
 		order = Order.objects.get(id=order_id)
@@ -189,6 +232,7 @@ def confirmation(request, order_id):
 	except Order.DoesNotExist:
 		return redirect('index')
 
+@login_required
 def bidcheckout(request, item_slug):
 	item = SaleItem.objects.get(slug=item_slug)
 	try:
@@ -216,7 +260,8 @@ def bidcheckout(request, item_slug):
 	return render(request, 'shop/bidcheckout.html', context_dict)
 
 
-
+@login_required
+@user_passes_test(has_seller_profile, login_url='/shop/create_sellerprofile')
 def acceptbid(request, bid_id):
 	bid = UserBid.objects.get(id=bid_id)
 
@@ -237,10 +282,12 @@ def acceptbid(request, bid_id):
 	context_dict={'item':bid.sale_item, 'bid':bid}
 	return render(request, 'shop/acceptbid.html', context_dict )
 
+@login_required
 def myorders(request):
 	context_dict = {'current_orders':Order.objects.filter(buyer=request.user, confirmed=True, completed=False)}
 	return render(request, 'shop/myorders.html',context_dict)
 
+@login_required
 def order(request, order_id):
 	try:
 		order = Order.objects.get(id=order_id)
@@ -267,8 +314,12 @@ def order(request, order_id):
 		return redirect('index')
 
 
-# dashboard views
 
+
+# dashboard views ########################### ###############################
+
+@login_required
+@user_passes_test(has_seller_profile, login_url='/shop/create_sellerprofile')
 def sellerdashboard(request):
 	current_items_count = SaleItem.objects.filter(owner=request.user.sellerprofile,available=True).count()
 	past_items_count = SaleItem.objects.filter(owner=request.user.sellerprofile, available=False).count()
@@ -279,22 +330,32 @@ def sellerdashboard(request):
 					'past_orders_count':past_orders_count}
 	return render(request, 'shop/dashboard.html', context_dict)
 
+@login_required
+@user_passes_test(has_seller_profile, login_url='/shop/create_sellerprofile')
 def dashboard_current_items(request):
 	context_dict = {'current_items': SaleItem.objects.filter(owner=request.user.sellerprofile,available=True).order_by('post_time')}
 	return render(request, 'shop/dashboard_current_items.html', context_dict)
 
+@login_required
+@user_passes_test(has_seller_profile, login_url='/shop/create_sellerprofile')
 def dashboard_past_items(request):
 	context_dict = {'past_items': SaleItem.objects.filter(owner=request.user.sellerprofile, available=False).order_by('post_time')}
 	return render(request, 'shop/dashboard_past_items.html',context_dict)
 
+@login_required
+@user_passes_test(has_seller_profile, login_url='/shop/create_sellerprofile')
 def dashboard_current_orders(request):
 	context_dict = {'current_orders':Order.objects.filter(buy_item__owner=request.user.sellerprofile, confirmed=True, completed=False)}
 	return render(request, 'shop/dashboard_current_orders.html',context_dict)
 
+@login_required
+@user_passes_test(has_seller_profile, login_url='/shop/create_sellerprofile')
 def dashboard_past_orders(request):
 	context_dict = {'past_orders':Order.objects.filter(buy_item__owner=request.user.sellerprofile, confirmed=True, completed=True) }
 	return render(request, 'shop/dashboard_past_orders.html', context_dict)
 
+@login_required
+@user_passes_test(has_seller_profile, login_url='/shop/create_sellerprofile')
 def removeitem(request, item_slug):
 	item = SaleItem.objects.get(slug=item_slug)
 	try:
@@ -310,6 +371,8 @@ def removeitem(request, item_slug):
 
 	return redirect('shop:dashboard')
 
+@login_required
+@user_passes_test(has_seller_profile, login_url='/shop/create_sellerprofile')
 def reactivateitem(request, item_slug):
 	item = SaleItem.objects.get(slug=item_slug)
 	try:
@@ -325,56 +388,57 @@ def reactivateitem(request, item_slug):
 
 	return redirect('shop:dashboard')
 
-# search view
 
-import re
 
-from django.db.models import Q
+
+# search view  ###############################
+
+
 
 def normalize_query(query_string,
-                    findterms=re.compile(r'"([^"]+)"|(\S+)').findall,
-                    normspace=re.compile(r'\s{2,}').sub):
-    ''' Splits the query string in invidual keywords, getting rid of unecessary spaces
-        and grouping quoted words together.
-        Example:
+					findterms=re.compile(r'"([^"]+)"|(\S+)').findall,
+					normspace=re.compile(r'\s{2,}').sub):
+	''' Splits the query string in invidual keywords, getting rid of unecessary spaces
+		and grouping quoted words together.
+		Example:
 
-        >>> normalize_query('  some random  words "with   quotes  " and   spaces')
-        ['some', 'random', 'words', 'with quotes', 'and', 'spaces']
+		>>> normalize_query('  some random  words "with   quotes  " and   spaces')
+		['some', 'random', 'words', 'with quotes', 'and', 'spaces']
 
-    '''
-    return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)]
+	'''
+	return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)]
 
 def get_query(query_string, search_fields):
-    ''' Returns a query, that is a combination of Q objects. That combination
-        aims to search keywords within a model by testing the given search fields.
+	''' Returns a query, that is a combination of Q objects. That combination
+		aims to search keywords within a model by testing the given search fields.
 
-    '''
-    query = None # Query to search for every search term
-    terms = normalize_query(query_string)
-    for term in terms:
-        or_query = None # Query to search for a given term in each field
-        for field_name in search_fields:
-            q = Q(**{"%s__icontains" % field_name: term})
-            if or_query is None:
-                or_query = q
-            else:
-                or_query = or_query | q
-        if query is None:
-            query = or_query
-        else:
-            query = query & or_query
-    return query
+	'''
+	query = None # Query to search for every search term
+	terms = normalize_query(query_string)
+	for term in terms:
+		or_query = None # Query to search for a given term in each field
+		for field_name in search_fields:
+			q = Q(**{"%s__icontains" % field_name: term})
+			if or_query is None:
+				or_query = q
+			else:
+				or_query = or_query | q
+		if query is None:
+			query = or_query
+		else:
+			query = query & or_query
+	return query
 
 def search(request):
-    query_string = ''
-    found_entries = None
-    if ('q' in request.GET) and request.GET['q'].strip():
-        query_string = request.GET['q']
+	query_string = ''
+	found_entries = None
+	if ('q' in request.GET) and request.GET['q'].strip():
+		query_string = request.GET['q']
 
-        entry_query = get_query(query_string, ['title', 'description',])
+		entry_query = get_query(query_string, ['title', 'description',])
 
-        found_entries = SaleItem.objects.filter(entry_query).order_by('post_time')
+		found_entries = SaleItem.objects.filter(entry_query).order_by('post_time')
 
-    return render_to_response('shop/search_results.html',
-                          { 'query_string': query_string, 'found_entries': found_entries },
-                          context_instance=RequestContext(request))
+	return render_to_response('shop/search_results.html',
+						  { 'query_string': query_string, 'found_entries': found_entries },
+						  context_instance=RequestContext(request))

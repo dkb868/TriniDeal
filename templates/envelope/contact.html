@@ -18,7 +18,7 @@
                             <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>
                             <div class="col-md-8">
                                 {{ form.sender.errors }}
-                                <input id="id_sender" name="sender" type="text" placeholder="Name" value="{{ request.user.first_name }} {{ request.user.last_name }}" class="form-control">
+                                <input id="id_sender" name="sender" type="text" placeholder="Name" value="{{request.user.first_name}} {{ request.user.last_name }}" class="form-control">
                             </div>
                         </div>
 
@@ -32,7 +32,7 @@
                         <div class="form-group">
                             <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-pencil-square-o bigicon"></i></span>
                             <div class="col-md-8">
-                                <textarea class="form-control" id="id_message" name="message" placeholder="Enter your massage for us here. We will get back to you within 1 hour" rows="7"></textarea>
+                                <textarea class="form-control" id="id_message" name="message" placeholder="Suggest Features and they'll be added before you can even refresh the page." rows="7"></textarea>
                             </div>
                         </div>
 

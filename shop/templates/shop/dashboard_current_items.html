@@ -18,7 +18,7 @@
 											<div class="single-products">
 												<div class="productinfo text-center">
                                                     <a href="{% url 'shop:item' item.slug %}">
-													<img src="{% static 'shop/images/home/product1.jpg' %}" alt="" />
+													<img class="padme" src="{{ MEDIA_URL }}{{ item.image }}" alt="" />
 
                                                     <h2>{{ item.title|truncatewords:'6' }}</h2>
 													<p>${{ item.asking_price }}.00</p>
@@ -48,6 +48,8 @@
 			</div>
 		</div>
 	</section>
-	
+	    <div class="row">
+ <br><br><br><br><br><br> <br><br>
+</div>
 
 {% endblock %}

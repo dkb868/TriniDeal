@@ -22,7 +22,7 @@ class SellerProfileForm(forms.ModelForm):
 		fields = ('seller_name','location',
 				  'phone_number','payment_type',
 				  'home_delivery','meetup',
-				  'details',)
+				  'details','image')
 
 	def clean(self):
 		cleaned_data = super(SellerProfileForm, self).clean()

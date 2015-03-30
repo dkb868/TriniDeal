@@ -70,6 +70,9 @@ INSTALLED_APPS = (
 
     # contact form
     'envelope',
+
+    #pagination
+    'endless_pagination',
 )
 
 SITE_ID = 1

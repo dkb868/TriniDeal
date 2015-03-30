@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {%  load staticfiles %}
+{% load shop_extras %}
 {% load notifications_tags %}
 <html lang="en">
 <head>
@@ -34,17 +35,19 @@
 					<div class="col-sm-6">
 						<div class="contactinfo">
 							<ul class="nav navbar-nav">
+                            {% if request.user.is_authenticated %}
                                 {% if request.user.sellerprofile %}
                                 <li><a href="{% url 'shop:sellerprofile' request.user.sellerprofile.id %}"><i class="fa fa-user"></i> My Seller Profile</a></li>
 								{% endif %}
                                 <li><a href="{% url 'shop:myorders' %}"><i class="fa fa-shopping-cart"></i> My Purchases</a></li>
+                            {% endif %}
                             </ul>
 						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="contactinfo pull-right">
 							<ul class="nav navbar-nav">
-                                <li><a href="{% url 'about' %}"><i class="fa fa-trophy"></i> About us</a></li>
+                                <li><a href="{% url 'about' %}"><i class="fa fa-info-circle"></i> About us</a></li>
 								<li><a href="{% url 'envelope-contact' %}"><i class="fa fa-envelope"></i> Contact</a></li>
                                 {% if not request.user.is_authenticated %}
                                 <li><a href="{% url 'account_login' %}"><i class="fa fa-lock"></i> Login</a></li>
@@ -153,7 +156,19 @@
 					<div class="left-sidebar">
 						<h2>Category</h2>
 						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
-							<div class="panel panel-default">
+							{% get_category_list category %}
+                            <hr>
+                            <div class="panel panel-default">
+                            <div class="panel-heading">
+									<h4 class="panel-title">
+										<a data-parent="#accordian" href="{% url 'envelope-contact' %}">
+											<span class="badge pull-left"><i class="fa fa-plus-circle"></i></span>
+											Suggest  a  category
+										</a>
+									</h4>
+								</div>
+                                </div>
+                            <!--<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
 										<a data-toggle="collapse" data-parent="#accordian" href="#sportswear">
@@ -256,7 +271,7 @@
 								<div class="panel-heading">
 									<h4 class="panel-title"><a href="#">Shoes</a></h4>
 								</div>
-							</div>
+							</div> -->
 						</div><!--/category-products-->
 					</div>
 				</div>
@@ -292,24 +307,24 @@
 		<div class="footer-widget">
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-2">
+					<div class="col-sm-3">
 						<div class="companyinfo">
 							<h2><span>Trini</span>Deal</h2>
-							<p>Buying and selling with swag</p>
+							<p>Buying and selling with ease</p>
 						</div>
 					</div>
 
-					<div class="col-sm-2">
+					<div class="col-sm-3">
 						<div class="single-widget">
 							<h2>Service</h2>
 							<ul class="nav nav-pills nav-stacked">
-								<li><a href="">Contact Us</a></li>
+								<li><a href="{% url 'envelope-contact' %}">Contact Us</a></li>
 								<li><a href="">FAQ’s</a></li>
 							</ul>
 						</div>
 					</div>
 
-					<div class="col-sm-2">
+					<div class="col-sm-3">
 						<div class="single-widget">
 							<h2>Policies</h2>
 							<ul class="nav nav-pills nav-stacked">
@@ -318,24 +333,24 @@
 							</ul>
 						</div>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-sm-3">
 						<div class="single-widget">
 							<h2>About</h2>
 							<ul class="nav nav-pills nav-stacked">
-								<li><a href="">About us</a></li>
+								<li><a href="{% url 'about' %}">About us</a></li>
 								<li><a href="">Careers</a></li>
 							</ul>
 						</div>
 					</div>
 					<div class="col-sm-3 col-sm-offset-1">
-						<div class="single-widget">
+						<!--<div class="single-widget">
 							<h2>Mailing List</h2>
 							<form action="#" class="searchform">
 								<input type="text" placeholder="Your email address" />
 								<button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
 								<p>Get the most recent updates from <br />our site and be updated your self...</p>
 							</form>
-						</div>
+						</div> -->
 					</div>
 
 				</div>
@@ -345,7 +360,7 @@
 		<div class="footer-bottom">
 			<div class="container">
 				<div class="row">
-					<p class="pull-left">Copyright © 2015 TriniDeal.</p>
+					<p class="pull-left">Copyright © 2015 TriniDeal</p>
 				</div>
 			</div>
 		</div>

@@ -1,0 +1,24 @@
+{% load endless %}
+{% load staticfiles %}
+{% paginate 9 items %}
+{% for item in items %}
+<a href="{% url 'shop:item' item.slug %}">
+     <div class="col-sm-4">
+		<div class="product-image-wrapper">
+			<div class="single-products">
+				<div class="productinfo text-center">
+					<img class="padme" src="{{ MEDIA_URL }}{{ item.image }}" alt="" />
+                    <h2>{{ item.title|truncatewords:'6' }}</h2>
+					<p>${{ item.asking_price }}.00</p>
+				</div>
+
+			</div>
+		</div>
+     </div>
+ </a>
+{% endfor %}
+{% show_more "See more items" %}
+<br>
+
+          
+          

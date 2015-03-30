@@ -27,6 +27,7 @@ class SellerProfile(models.Model):
 	home_delivery = models.CharField(max_length=5, choices=DELIVERY_CHOICES)
 	meetup = models.BooleanField(default=True)
 	details = models.TextField(blank=True)
+	image = models.ImageField(upload_to='sellerprofile_images', blank=True, null=True)
 
 
 
@@ -85,6 +86,7 @@ class SaleItem(models.Model):
 class Category(models.Model):
 	name = models.CharField(max_length='20',unique=True)
 	slug = models.SlugField(unique=True)
+	parent_category = models.ForeignKey('self',null=True,blank=True)
 
 	def save(self, *args, **kwargs):
 		self.slug = slugify(self.name)

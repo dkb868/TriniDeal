@@ -118,16 +118,82 @@
 							<div class="tab-pane fade" id="reviews" >
                                 {% total_review_average item.owner 5 as stars %}
 								<div class="col-sm-12">
-                                    <p>This seller is rated {{ stars }} out of 5 stars.</p>
+                                <p>Seller Rating:
+                                    {% if stars == 0 %}
+		                                - No Ratings Yet
+										{% elif stars < 2.0 %}
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                {% elif stars < 3.0 %}
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                {% elif stars < 4.0 %}
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                {% elif stars < 5.0 %}
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                {% elif stars == 5.0 %}
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                {% endif %}</p>
                                     {% get_reviews item.owner as reviews %}
 									{% for review in reviews %}
+                                        <hr>
                                     <p>
-								        {{ review.get_average_rating }}
+                                        {% if review.get_average_rating == 0 %}
+		                                - No Ratings Yet
+										{% elif review.get_average_rating < 2.0 %}
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                {% elif review.get_average_rating < 3.0 %}
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                {% elif review.get_average_rating < 4.0 %}
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                {% elif review.get_average_rating < 5.0 %}
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star-o"></span>
+		                                {% elif review.get_average_rating == 5.0 %}
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                <span class="fa fa-star"></span>
+		                                {% endif %}
 								    </p>
 								    <p>
                                     <ul>
-										<li><a href=""><i class="fa fa-user"></i>{{ review.user.first_name }} {{ review.user.last_name }}</a></li>
-										<li><a href=""><i class="fa fa-calendar-o"></i>{{ review.creation_date|date:"j M Y" }}</a></li>
+										<li><a href="#"><i class="fa fa-user"></i>{{ review.user.first_name }} {{ review.user.last_name }}</a></li>
+										<li><a href="#"><i class="fa fa-calendar-o"></i>{{ review.creation_date|date:"j M Y" }}</a></li>
 									</ul>
 								        {% if review.content %}
 											<p> {{ review.content }}</p>
@@ -135,28 +201,7 @@
 								            Reviewed without description.
 								        {% endif %}
 									{% endfor %}
-                                {% user_has_reviewed item.owner request.user as has_reviewed %}
-                            {% if has_reviewed %}
-                                <br>
-                                <p><b>Thanks for your opinion!</b></p>
-                            {% else %}
-                                <a href="/review/sellerprofile/{{ item.owner.id }}/create/">Review this seller</a>
-                                <!--
-									<p><b>Write Your Review</b></p>
 
-									<form action="#">
-										<span>
-											<input type="text" placeholder="Your Name"/>
-											<input type="email" placeholder="Email Address"/>
-										</span>
-										<textarea name="" ></textarea>
-										<b>Rating: </b> <img src="images/product-details/rating.png" alt="" />
-										<button type="button" class="btn btn-default pull-right">
-											Submit
-										</button>
-									</form>
-									-->
-                            {% endif %}
                                 </div>
 								</div>
 							</div>

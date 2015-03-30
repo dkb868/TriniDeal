@@ -12,13 +12,13 @@
 			<p>Item: {{ item.title }}</p>
 			<p>Your Asking Price: ${{ item.asking_price }}.00</p>
             <p>Their Offer Price: ${{ bid.offer_price }}.00 </p>
-			<p><small>Offer made by {{ bid.user.first_name }} {{ bid.user.last_name }}</small></p>
+			<p><small>Offer made by {{ bid.user.username}} (You will receive their real name and contact info when they checkout)</small></p>
             <form class="form" id="acceptbid_form" method="post" action=".">
             {% csrf_token %}
             <div class="form-group">
                 <div class="col-xs-6 ">
                     <br>
-            <button type="submit" name="submit" value="Create SellerProfile" class="btn btn-default">
+            <button type="submit" name="submit" value="Accept Offer" class="btn btn-default">
                     Accept Offer
             </button>
                 </div>

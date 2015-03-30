@@ -38,7 +38,11 @@ Duis ornare ornare turpis eu malesuada. Donec eu iaculis nibh, ut semper urna. I
                 </div>
                 <div class="col-xs-12 col-sm-4 text-center">
                     <figure class="quickrighthack">
+                        {% if sellerprofile.image %}
+                        <img src="{{ MEDIA_URL }}{{ sellerprofile.image }}" alt="" width="200px" class="img-circle img-responsive">
+                        {% else %}
                         <img src="http://www.localcrimenews.com/wp-content/uploads/2013/07/default-user-icon-profile.png" alt="" class="img-circle img-responsive">
+                        {% endif %}
                         <figcaption class="ratings">
                             <p>Seller Rating
                                 {%  total_review_average sellerprofile 5 as stars %}

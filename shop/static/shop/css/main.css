@@ -352,7 +352,7 @@ ul.sub-menu {
 
 .footer-top .container {
   border-bottom: 1px solid #E0E0DA;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 }
 
 .companyinfo {
@@ -466,12 +466,12 @@ ul.sub-menu {
 }
 
 .footer-widget {
-  margin-bottom: 68px;
+  margin-bottom: 20px;
 }
 
 .footer-widget .container {
   border-top: 1px solid #FFFFFF;
-  padding-top: 15px;
+  padding-top: 10px;
 }
 
 .single-widget h2 {
@@ -599,7 +599,7 @@ ul.sub-menu {
   color: #B4B1AB;
   font-family: abel;
   font-size: 48px;
-  margin-top: 115px;
+  margin-top: 11px;
 }
 
 .item h1 span {
@@ -711,7 +711,7 @@ h2.title:before{
 	border: 0px;
 	border-radius: 0px;
 	box-shadow:none;
-	margin-bottom: 0px;
+	margin-bottom: 10px;
 }
 
 .category-products .panel-default .panel-heading {
@@ -848,7 +848,7 @@ h2.title {
 .product-image-wrapper{
 	border:1px solid #efefed;
 	overflow: hidden;
-	margin-bottom:30px;
+	margin-bottom:5px;
 }
 
 .product-image-wrapper:hover{
@@ -894,7 +894,7 @@ h2.title {
 }
 
 .productinfo img{
-  width: 100%;
+    width: 240px;
 }
 
 .productinfo{
@@ -2569,4 +2569,10 @@ h2.title {
 .quickrightwrap{
     position: relative;
     left:500px;
+}
+
+.padme{
+    padding-left:10./ml;kkpx;
+    padding-right: 10px;
+    padding-top: 10px;
 }
