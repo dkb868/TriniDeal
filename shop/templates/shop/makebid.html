@@ -1,0 +1,34 @@
+{% extends 'shop/base.html' %}
+{%  load staticfiles %}
+{% block title %} Accept an offer {% endblock %}
+{% block category_block %}
+{% endblock %}
+{% block body_block %}
+    <div class="row">
+        <div class="col-sm-12">
+			<h2 class="title text-center">Make an offer</h2>
+		</div>
+        <div class="col-sm-offset-5">
+			<p><strong>Item:</strong> {{ item.title }}</p>
+			<p><strong>Their Asking Price:</strong> ${{ item.asking_price }}.00</p>
+            <p><strong>Current Highest Offer:</strong>${{ highestbid.offer_price }}.00</p>
+            <form class="form-horizontal pull-left" id="bid_form" method="post" action="{% url 'shop:makebid' item.slug %}">
+            {% csrf_token %}
+                 <div class="form-group">
+                     <label for="id_offer_price" class="control-label col-xs-2">Your offer</label>
+                     <div class="col-xs-5">
+                <input type="number" min="{{ min_offer }}" max="{{ item.asking_price }}" id="id_offer_price" name="offer_price" placeholder="100">
+                    </div>
+                 </div>
+            <div class="form-group">
+                <div class="col-xs-6 ">
+                    <br>
+            <button type="submit" name="submit" value="Make Bid" class="btn btn-default">
+                    Make Offer
+            </button>
+                </div>
+            </div>
+        </form>
+		</div>
+    </div>
+{% endblock %}

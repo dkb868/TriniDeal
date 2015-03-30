@@ -1,0 +1,69 @@
+{% extends 'shop/base.html' %}
+{%  load staticfiles %}
+{%  load review_tags %}
+{% block title %}
+Order on {{ item }}
+{% endblock %}
+
+
+
+{% block body_block %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-9">
+        <h2 class="title text-center">order on {{ item.title }}</h2>
+            <div class="col-sm-12">
+                <div class="col-sm-10">
+                    <p><strong>Order Number: </strong> {{ order.id }} </p>
+                    <p><strong>Item: </strong> {{ item }}</p>
+                    <p><strong>Sold By: </strong>
+                        {% if item.owner.seller_name %}
+					    {{ item.owner.seller_name }}
+					    {% else %}
+						{{ item.owner.user.first_name }}&nbsp;{{ item.owner.user.last_name }}
+					    {% endif %}
+                    </p>
+                    <p><strong>Price:</strong> {% if item.accepted_bid %}
+											${{ item.accepted_bid.offer_price }}.00
+                                            {% else %}
+                                            ${{ item.asking_price }}.00
+                                            {% endif %}</p>
+                {% if order.meetuploc %}
+                    <p><strong>Suggested Meetup Location: </strong> {{ order.meetuploc }}</p>
+                {% endif %}
+                {% if order.street %}
+                    <p><strong>Delivery Address: </strong> {{ order.street }}, {{ order.city }}</p>
+                {% endif %}
+                    <p><strong>Payment Method: </strong> {{ order.paymentmethod }}</p>
+                {% if request.user.sellerprofile == item.owner %}
+                    <p><strong>Buyer Name: </strong> {{ order.buyer.first_name }} {{ order.buyer.last_name }}</p>
+                    <p><strong>Buyer Contact: </strong> {{ order.phone }}</p>
+                {% else %}
+                    <p><strong>Seller Contact: </strong> {{ item.owner.phone_number }}</p>
+                {% endif %}
+                    {%  if order.additionalinfo %}
+                    <p><strong>Additional Info: </strong> {{ order.additionalinfo }}</p>
+                    {% endif %}
+                </div>
+            {% if request.user.sellerprofile == item.owner and not order.completed %}
+                <div class="row">
+                     <form class="form" id="order_complete_form" method="post" action=".">
+                         {% csrf_token %}
+                         <div class="form-group">
+			                <div class="col-xs-6 ">
+			                    <br>
+                                <label>When the product has been successfully delivered, click this button to mark the order as completed.</label>
+			                <button type="submit" name="submit" value="Order Complete" class="btn btn-success">
+			                    Order Completed
+			                </button>
+			                </div>
+			            </div>
+                     </form>
+                </div>
+            {% endif %}
+            </div>
+		</div>
+	</div>
+</div>
+{% endblock %}

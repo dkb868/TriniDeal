@@ -27,11 +27,12 @@ class SellerProfile(models.Model):
 	home_delivery = models.CharField(max_length=5, choices=DELIVERY_CHOICES)
 	meetup = models.BooleanField(default=True)
 	details = models.TextField(blank=True)
+	image = models.ImageField(upload_to='sellerprofile_images', blank=True, null=True)
 
 
 
 	def __unicode__(self):
-		return (self.user.first_name + ' ' + self.user.last_name)
+		return (self.user.first_name + ' ' + self.user.last_name) + ' ' + self.user.username
 
 class SaleItem(models.Model):
 
@@ -63,6 +64,7 @@ class SaleItem(models.Model):
 	slug = models.SlugField(unique=True)
 	reason = models.CharField(max_length=100, blank=True)
 	accepted_bid = models.OneToOneField('UserBid', null=True, blank=True)
+	image = models.ImageField(upload_to='sale_item_images')
 
 	def save(self, *args, **kwargs):
 
@@ -84,6 +86,7 @@ class SaleItem(models.Model):
 class Category(models.Model):
 	name = models.CharField(max_length='20',unique=True)
 	slug = models.SlugField(unique=True)
+	parent_category = models.ForeignKey('self',null=True,blank=True)
 
 	def save(self, *args, **kwargs):
 		self.slug = slugify(self.name)
@@ -105,9 +108,12 @@ class UserBid(models.Model):
 		return (self.user.first_name + " " + self.user.last_name + " " + self.sale_item.title)
 
 
-class SaleItemImage(models.Model):
+class SaleItemAdditionalImages(models.Model):
 	image = models.ImageField(upload_to='sale_item_images',null=True,blank=True)
 	sale_item = models.ForeignKey('SaleItem')
+
+	def __unicode__(self):
+		return self.sale_item.title + ' ' + 'image'
 
 class Comment(models.Model):
 	poster = models.ForeignKey(User)
@@ -128,14 +134,14 @@ class Order(models.Model):
 	street = models.TextField(blank=True)
 	city = models.TextField(blank=True)
 	phone = models.IntegerField()
-	paymentmethod = models.CharField(max_length=7,choices=PAYMENT_CHOICES)
+	paymentmethod = models.ForeignKey('PaymentChoice')
 	additionalinfo = models.TextField(blank=True)
 	confirmed = models.BooleanField(default=False)
 	agreetoterms = models.BooleanField(default=False)
 	completed = models.BooleanField(default=False)
 
 	def __unicode__(self):
-		return ("ORDER" + " " + self.buyer.first_name + " " + self.buyer.last_name + " " + self.buy_item.title )
+		return (self.buyer.first_name + " " + self.buyer.last_name + " "  + "ordered item:" + " " + self.buy_item.title )
 
 
 
