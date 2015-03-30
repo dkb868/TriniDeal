@@ -7,7 +7,7 @@ https://docs.djangoproject.com/en/1.7/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
-
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -35,6 +35,7 @@ TEMPLATE_DEBUG = True
 TEMPLATE_DIRS = (
     TEMPLATE_PATH,
 )
+
 
 ALLOWED_HOSTS = []
 
@@ -67,6 +68,11 @@ INSTALLED_APPS = (
     # noticiation app
     'notifications',
 
+    # contact form
+    'envelope',
+
+    #pagination
+    'endless_pagination',
 )
 
 SITE_ID = 1
@@ -125,7 +131,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Allauth stuff
 
-TEMPLATE_CONTEXT_PROCESSORS = (
+TEMPLATE_CONTEXT_PROCESSORS += (
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.request",
     "allauth.account.context_processors.account",
@@ -139,6 +145,7 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
+
 SOCIALACCOUNT_PROVIDERS = \
     {'facebook':
        {'SCOPE': ['email', 'publish_stream'],
@@ -150,3 +157,27 @@ SOCIALACCOUNT_PROVIDERS = \
 LOGIN_REDIRECT_URL = '/'
 
 ACCOUNT_SESSION_REMEMBER = True
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_SIGNUP_FORM_CLASS = 'shop.forms.SignupForm'
+
+# Review stuff
+
+REVIEW_UPDATE_SUCCESS_URL = 'index'
+REVIEW_ALLOW_ANONYMOUS = False
+
+
+# EMAIL
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.zoho.com'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'support@trinideal.com'
+EMAIL_HOST_USER = 'support@trinideal.com'
+EMAIL_HOST_PASSWORD = 'Allthatiknow1'
+
+# contact
+
+ENVELOPE_EMAIL_RECIPIENTS = ['support@trinideal.com','mitrikyle@yahoo.com']

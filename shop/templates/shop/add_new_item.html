@@ -1,17 +1,107 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Manicou</title>
-    </head>
-
-    <body>
-        <h1>Add Item</h1>
-
-        <form id="saleitem_form" method="post" action=".">
+{% extends 'shop/base.html' %}
+{%  load staticfiles %}
+{% load shop_extras %}
+{% block title %} Post new item {% endblock %}
+{% block category_block %}
+{% endblock %}
+{% block body_block %}
+    <div class="row">
+	    		<div class="col-sm-12">
+					<h2 class="title text-center">Post your Item</h2>
+				</div>
+         	<div class="col-sm-offset-1 ">
+        <form class="form-horizontal" id="saleitem_form" method="post" enctype="multipart/form-data" action=".">
             {% csrf_token %}
-            {{  form.as_p }}
-            <input type="submit" name="submit" value="Create Item" />
-        </form>
-    </body>
+			<div class="form-group">
+                <label for="id_title" class="control-label col-xs-2">Title:</label>
+                <div class="col-xs-10">
+	                <input id="id_title" maxlength="30" name="title" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_category" class="control-label col-xs-2">Category:</label>
+                <div class="col-xs-2">
+	                <select id="id_category" name="category">
+                        {% get_cats as categories %}
+                        {% for c in categories %}
+                        {% if not c.parent_category %}
+                            {% if c.category_set.all %}
+                        <optgroup label="{{ c.name }}">
+                        {% for subcat in c.category_set.all %}
+					<option value="{{ subcat.id }}">{{ subcat.name }}</option>
+                         {% endfor %}
+                          </optgroup>
+                                {% else %}
+                                <optgroup label="{{ c.name }}">
+                        <option value="{{ c.id }}">{{ c.name }}</option>
+                                </optgroup>
+                                {% endif %}
+                    {% endif %}
+                    {% endfor %}
+					</select>
+                </div>
+            </div>
+            <div class="form-group">
+			<label for="id_condition" class="control-label col-xs-2">Condition:</label>
+                 <div class="col-xs-2">
+                     <select id="id_condition" name="condition">
+			<option value="" selected="selected">---------</option>
+			<option value="NEW">New</option>
+			<option value="LIKENEW">Like New/Barely Used</option>
+			<option value="REFURBISHED">Refurbished</option>
+			<option value="USEDVERYGOOD">Used - Very Good</option>
+			<option value="USEDGOOD">Used - Good</option>
+			<option value="USEDACCEPTABLE">Used - Acceptable</option>
+			</select> </div>
+                </div>
+            <div class="form-group">
+			<label for="id_image" class="control-label col-xs-2">Main image:</label>
+                 <div class="col-xs-10">
+                <input id="id_image" name="image" type="file" />
+                        </div>
+			</div>
+             <div class="form-group">
+			<label for="id_additional_images" class="control-label col-xs-2">Additional Images (Optonal):</label>
+                 <div class="col-xs-10">
+                <input id="id_additional_images" maxlength="100" name="additional_images" type="file" multiple />
+                        </div>
+			</div>
+                <div class="form-group">
+			<label for="id_description" class="control-label col-xs-2">Description:</label>
+                 <div class="col-xs-6">
+                <textarea cols="30" id="id_description" name="description" rows="10" placeholder="Describe your item"></textarea>
+                    </div>
+                    </div>
 
-</html>
+                    <div class="form-group">
+			<label for="id_reason" class="control-label col-xs-2">Reason for selling(optional):</label>
+                 <div class="col-xs-10">
+                <input id="id_reason" maxlength="100" name="reason" type="text" />
+                        </div>
+			</div>
+                        <div class="form-group">
+                            {{ form.asking_price.errors }}
+                        <label for="id_asking_price" class="control-label col-xs-2">Asking price:</label>
+                             <div class="col-xs-10">
+                            <input id="id_asking_price" name="asking_price" type="number" step="1"/>
+                            </div>
+			</div>
+                            <div class="form-group">
+                        <label for="id_negotiable" class="control-label col-xs-2">Price Negotiable:</label>
+                         <div class="col-xs-10">
+                         <input checked="checked" id="id_negotiable" name="negotiable" type="checkbox" />
+                                </div>
+							</div>
+            <div class="form-group">
+               <label class="control-label col-xs-2">
+
+                    </label>
+                <div class="col-xs-10"><button type="submit" name="submit" value="Create Item" class="btn btn-default ">
+                    Post item
+                </button>
+                    </div>
+                </div>
+        </form>
+</div>
+    </div>
+{% endblock %}

@@ -1,17 +1,93 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Manicou</title>
-    </head>
-
-    <body>
-        <h1>Create SellerProfile</h1>
-
-        <form id="sellerprofile_form" method="post" action=".">
+{% extends 'shop/base.html' %}
+{%  load staticfiles %}
+{% block title %} Creating your Seller Profile {% endblock %}
+{% block category_block %}
+{% endblock %}
+{% block body_block %}
+    <div class="row">
+	    		<div class="col-sm-12">
+					<h2 class="title text-center">Start selling now</h2>
+				</div>
+         	<div class="col-sm-offset-2 ">
+        <form class="form-horizontal" id="sellerprofile_form" method="post" action="." enctype="multipart/form-data">
             {% csrf_token %}
-            {{  form.as_p }}
-            <input type="submit" name="submit" value="Create SellerProfile" />
+			<div class="form-group">
+                {{ form.seller_name.errors }}
+                <label for="id_seller_name" class="control-label col-xs-2">Seller name (Optional)</label>
+                <div class="col-xs-10">
+	                <input id="id_seller_name" maxlength="30" name="seller_name" type="text" placeholder="Example Company Limited" />
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form.location.errors }}
+                <label for="id_location" class="control-label col-xs-2">Location</label>
+                <div class="col-xs-10">
+	                <input id="id_location" maxlength="30" name="location" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form.phone_number.errors }}
+                <label for="id_phone_number" class="control-label col-xs-2">Phone Number</label>
+                <div class="col-xs-10">
+	                <input id="id_phone_number" maxlength="30" name="phone_number" type="number" />
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form.payment_type.errors }}
+                <label for="id_payment_type" class="control-label col-xs-2">Accepted Payment Types</label>
+                <div class="col-xs-2">
+                    <input id="id_payment_type" type="checkbox" name="payment_type" value="1" checked /> Cash on delivery<br>
+                    <input id="id_payment_type" type="checkbox" name="payment_type" value="2" /> Linx/Debit Card/Credit Card on delivery<br>
+                    <input id="id_payment_type" type="checkbox" name="payment_type" value="none" disabled /> Online Payment (Coming Soon) <br>
+                    <!--
+	                <select id="id_payment_type" name="payment_type" multiple="multiple">
+						<option value="1">Cash on delivery</option>
+						<option value="2">Linx/Debit Card/Credit Card on delivery</option>
+					</select> -->
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form.home_delivery.errors }}
+			<label for="id_home_delivery" class="control-label col-xs-2">Home Delivery</label>
+                 <div class="col-xs-2">
+                     <select id="id_home_delivery" name="home_delivery">
+					 <option value="" selected="selected">---------</option>
+					 <option value="SOME">Some Locations</option>
+					 <option value="ALL">All locations</option>
+					 <option value="NONE">No home delivery</option>
+					 </select>
+                 </div>
+            </div>
+            <div class="form-group">
+                {{ form.meetup.errors }}
+			<label for="id_meetup" class="control-label col-xs-2">Meetup Delivery (Required if not doing home deliveries) </label>
+                 <div class="col-xs-2">
+                     <input id="id_meetup" name="meetup" type="checkbox" checked="checked">
+                 </div>
+            </div>
+            <div class="form-group">
+                {{ form.image.errors }}
+			<label for="id_image" class="control-label col-xs-2">Company Logo (Optional): </label>
+                 <div class="col-xs-10">
+                <input id="id_image"  name="image" type="file" />
+                        </div>
+			</div>
+                <div class="form-group">
+                    {{ form.details.errors }}
+			<label for="id_details" class="control-label col-xs-2">About you (Optional) </label>
+                 <div class="col-xs-6">
+                <textarea cols="30" id="id_details" name="details" rows="10" placeholder="Talk about your business,vision,mission,or anything"></textarea>
+                    </div>
+                    </div>
+            <div class="form-group">
+                <div class="col-xs-6 col-sm-offset-4">
+                    <br>
+            <button type="submit" name="submit" value="Create SellerProfile" class="btn btn-default">
+                    Create Seller Profile
+            </button>
+                    </div>
+            </div>
         </form>
-    </body>
-
-</html>
+		</div>
+    </div>
+{% endblock %}

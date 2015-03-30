@@ -1,11 +1,55 @@
-<!DOCTYPE html>
+{% extends 'shop/base.html' %}
 {%  load staticfiles %}
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>Project Manicou</title>
-</head>
-<body>
-	<p>Dashboard stub</p>
-</body>
-</html>
+{% block title %} Your Current Items{% endblock %}
+{% block body_block %}
+{% block category_block %}
+{% endblock %}
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 padding-right">
+					<div class="features_items"><!--features_items-->
+						<h2 class="title text-center"> Your Current Items</h2>
+                    	{% if current_items %}
+							{%  for item in current_items %}
+
+	                                 <div class="col-sm-3">
+										<div class="product-image-wrapper">
+											<div class="single-products">
+												<div class="productinfo text-center">
+                                                    <a href="{% url 'shop:item' item.slug %}">
+													<img class="padme" src="{{ MEDIA_URL }}{{ item.image }}" alt="" />
+
+                                                    <h2>{{ item.title|truncatewords:'6' }}</h2>
+													<p>${{ item.asking_price }}.00</p>
+                                                        </a>
+                                                    <form class="form col-sm-offset-3" id="removeitem_form" method="post" action="{% url 'shop:removeitem' item.slug %}">
+                                                        {% csrf_token %}
+                                                        <div class="form-group">
+											                <div class="col-xs-6 ">
+												            <button type="submit" name="submit" value="Create SellerProfile" class="btn btn-danger">
+												                    Remove Item
+												            </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+											</div>
+										</div>
+                                     </div>
+						    {%  endfor %}
+					    {%  else  %}
+					        <strong> You have no items for sale at the moment. <a href="{% url 'shop:add_new_item' %}">Post an item now!</a> </strong>
+					    {% endif %}
+
+
+					</div><!--features_items-->
+				</div>
+			</div>
+		</div>
+	</section>
+	    <div class="row">
+ <br><br><br><br><br><br> <br><br>
+</div>
+
+{% endblock %}
