@@ -1,0 +1,180 @@
+{% extends 'shop/base.html' %}
+{%  load staticfiles %}
+{%  load review_tags %}
+{% block title %}
+    Seller-
+    {% if sellerprofile.seller_name %}
+    {{ sellerprofile.seller_name }}
+    {% else %}
+	{{ sellerprofile.user.first_name }}&nbsp;{{ sellerprofile.user.last_name }}
+    {% endif %}
+{% endblock %}
+
+
+
+{% block body_block %}
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+	<div class="row">
+		<div class="col-sm-9">
+    	 <div class="well profile">
+            <div class="col-sm-12">
+                <div class="col-xs-12 col-sm-8 textwrapper">
+                    <h2>
+                        {% if sellerprofile.seller_name %}
+					    {{ sellerprofile.seller_name }}
+					    {% else %}
+						{{ sellerprofile.user.first_name }}&nbsp;{{ sellerprofile.user.last_name }}
+					    {% endif %}
+                    </h2>
+                    <p><strong>About: </strong> {{ sellerprofile.details }}  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at quam a augue ultrices convallis. Nulla finibus bibendum velit sit amet tempor. Donec non eros neque. Sed ac diam et nibh porttitor sodales. Vivamus aliquam sem id leo lobortis molestie. Quisque et eros in libero pellentesque ornare id non elit. Praesent vel lacinia ante, vitae elementum quam. Nunc sed tempor libero, sit amet porttitor tellus. Fusce ut dui blandit, varius magna vitae, tempor sem.
+
+Donec condimentum magna eros, et pretium libero luctus blandit. Sed turpis sapien, tempus suscipit fringilla vel, pellentesque gravida magna. Praesent tempor ligula non dolor aliquet, sed sollicitudin justo vestibulum. Cras commodo elementum mauris, vel sodales leo posuere a. Etiam vel fringilla est. Praesent nec iaculis metus, at fermentum neque. Phasellus vel eleifend dolor, dapibus egestas sapien. Fusce in aliquam eros, et finibus ante. Suspendisse convallis tellus libero, quis consequat lorem vestibulum eu. Donec sit amet elementum purus. Aliquam eu nisi dictum, ullamcorper tortor a, congue metus. Vivamus at vulputate nulla. In venenatis libero ut leo scelerisque, quis mattis leo pharetra. Nulla hendrerit ligula metus, sit amet rhoncus lectus pretium in.
+
+Duis elit risus, fermentum in eleifend non, auctor in felis. Integer eu metus arcu. Aenean arcu urna, posuere vel ipsum eu, feugiat suscipit odio. Aenean elit metus, placerat quis est vitae, faucibus accumsan orci. Suspendisse nec porttitor nisl, ut tempus elit. Donec vehicula mollis sapien et eleifend. Etiam viverra aliquam neque in porta. Duis sed pretium lectus, quis suscipit quam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec gravida eu nibh ac consequat.
+
+Duis ornare ornare turpis eu malesuada. Donec eu iaculis nibh, ut semper urna. In ante turpis, fringilla a magna et, pharetra tincidunt risus. Donec vitae risus ac purus condimentum imperdiet vel in magna. Nullam tempor risus nec libero finibus convallis. Vivamus molestie ipsum malesuada turpis ullamcorper, ut laoreet elit laoreet. Cras ut sem laoreet, tempus libero eu, pharetra lorem. Donec consectetur dolor non pharetra volutpat. Vestibulum et magna non nisl semper imperdiet sit amet luctus orci.    </p>
+
+                </div>
+                <div class="col-xs-12 col-sm-4 text-center">
+                    <figure class="quickrighthack">
+                        {% if sellerprofile.image %}
+                        <img src="{{ MEDIA_URL }}{{ sellerprofile.image }}" alt="" width="200px" class="img-circle img-responsive">
+                        {% else %}
+                        <img src="http://www.localcrimenews.com/wp-content/uploads/2013/07/default-user-icon-profile.png" alt="" class="img-circle img-responsive">
+                        {% endif %}
+                        <figcaption class="ratings">
+                            <p>Seller Rating
+                                {%  total_review_average sellerprofile 5 as stars %}
+                                {% if stars == 0 %}
+                                - No Ratings Yet
+								{% elif stars < 2.0 %}
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star-o"></span>
+                                <span class="fa fa-star-o"></span>
+                                <span class="fa fa-star-o"></span>
+                                <span class="fa fa-star-o"></span>
+                                {% elif stars < 3.0 %}
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star-o"></span>
+                                <span class="fa fa-star-o"></span>
+                                <span class="fa fa-star-o"></span>
+                                {% elif stars < 4.0 %}
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star-o"></span>
+                                <span class="fa fa-star-o"></span>
+                                {% elif stars < 5.0 %}
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star-o"></span>
+                                {% elif stars == 5.0 %}
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                {% endif %}
+
+                            </p>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-10">
+					{% get_reviews sellerprofile as reviews %}
+					{% for review in reviews %}
+					    <p>
+							<div class="tab-pane fade active in" id="reviews" >
+								<div class="col-sm-12">
+                                    <hr>
+									<ul>
+										<li><i class="fa fa-user"></i>&nbsp;{{ review.user.first_name }}&nbsp;{{ review.user.last_name }}&nbsp;&nbsp;</li>
+                                        <li><i class="fa fa-calendar-o"></i>&nbsp;{{ review.creation_date|date:"j M Y" }}</li>
+									</ul>
+                                    <p>
+									{% if review.get_average_rating == 1.0 %}
+	                                <span class="fa fa-star"></span>
+	                                <span class="fa fa-star-o"></span>
+	                                <span class="fa fa-star-o"></span>
+	                                <span class="fa fa-star-o"></span>
+	                                <span class="fa fa-star-o"></span>
+	                                {% elif review.get_average_rating == 2.0 %}
+	                                <span class="fa fa-star"></span>
+	                                <span class="fa fa-star"></span>
+	                                <span class="fa fa-star-o"></span>
+	                                <span class="fa fa-star-o"></span>
+	                                <span class="fa fa-star-o"></span>
+	                                {% elif review.get_average_rating == 3.0 %}
+	                                <span class="fa fa-star"></span>
+	                                <span class="fa fa-star"></span>
+	                                <span class="fa fa-star"></span>
+	                                <span class="fa fa-star-o"></span>
+	                                <span class="fa fa-star-o"></span>
+	                                {% elif review.get_average_rating == 4.0 %}
+	                                <span class="fa fa-star"></span>
+	                                <span class="fa fa-star"></span>
+	                                <span class="fa fa-star"></span>
+	                                <span class="fa fa-star"></span>
+	                                <span class="fa fa-star-o"></span>
+	                                {% elif review.get_average_rating == 5.0 %}
+	                                <span class="fa fa-star"></span>
+	                                <span class="fa fa-star"></span>
+	                                <span class="fa fa-star"></span>
+	                                <span class="fa fa-star"></span>
+	                                <span class="fa fa-star"></span>
+	                                {% endif %}
+
+	                                </p>
+                            {% if review.content %}
+									<p>{{ review.content }}t, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+								</div>
+							</div>
+					        {% endif %}
+
+						{% endfor %}
+						{% user_has_reviewed sellerprofile request.user as has_reviewed %}
+						{% if has_reviewed %}
+	                            <div class="col-sm-12">
+	                                <hr>
+	                                <h2 class="title text-center">Thank you for your opinion!</h2>
+	                            </div>
+                        {% else %}
+								<div class="col-sm-12">
+                                    <hr>
+                                    <h2 class="title text-center">Write a Review</h2>
+									<form method="post" action="{% url 'review_create' 'sellerprofile' sellerprofile.id %}">
+                                        {% csrf_token %}
+
+                                            <div class="form-group">
+											<label for="id_category_1">Seller Rating:</label>
+		                                            <select id="id_category_1" name="category_1">
+													<option value="5">5</option>
+													<option value="4">4</option>
+													<option value="3">3</option>
+													<option value="2">2</option>
+													<option value="1">1</option>
+                                                    </select>
+                                            </div>
+										<div class="form-group">
+                                            <label for="id_content">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Describe your experience (Optional) </label>
+										<textarea rows="7" name="content" id="id_content" maxlength="1024"></textarea>
+                                        </div>
+										<button type="submit" name="submit" value="Create Review" class="btn btn-default pull-right">
+										Create Review
+                                        </button>
+									</form>
+								</div>
+                        {% endif %}
+                </div>
+            </div>
+    	 </div>                 
+		</div>
+	</div>
+</div>
+{% endblock %}

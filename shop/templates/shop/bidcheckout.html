@@ -1,0 +1,131 @@
+{% extends 'shop/base.html' %}
+{%  load staticfiles %}
+{% block title %} Checkout on {{ item.title }} {% endblock %}
+{% block category_block %}
+{% endblock %}
+{% block body_block %}
+
+    <section id="cart_items">
+		<div class="container">
+
+			<div class="table-responsive cart_info">
+				<table class="table table-condensed">
+
+        <h2 class="title text-center">Checkout</h2>
+
+					<thead>
+						<tr class="cart_menu">
+							<td class="image">Item</td>
+							<td class="description">Description</td>
+							<td class="total">Your accepted offer</td>
+							<td></td>
+                            <td></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="cart_product">
+								<a href=""><img src="{% static 'shop/images/cart/one.png' %}" alt=""></a>
+							</td>
+							<td class="cart_description">
+								<h4><a href="">{{ item.title }}</a></h4>
+								<p>Sold by: {{ item.owner }} </p>
+							</td>
+							<td class="cart_total">
+								<p class="cart_total_price">${{ item.accepted_bid.offer_price }}.00</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section> <!--/#cart_items-->
+    <div class="row">
+         	<div class="col-sm-offset-2 ">
+        <form class="form-horizontal" id="checkout_form" method="post" action=".">
+            {% csrf_token %}
+            {% if item.owner.meetup and item.owner.home_delivery != 'NONE' %}
+			<div class="form-group">
+                {{ form.meetuploc.errors }}
+                <label for="id_meetuploc" class="control-label col-xs-3">Suggested Meetup Location</label>
+                <div class="col-xs-9">
+	                <input id="id_meetuploc" maxlength="60" name="meetuploc" type="text" placeholder="Gulf City Mall" />
+                </div>
+            </div>
+            <h3>Enter a meetup location OR a home delivery address</h3>
+            <div class="form-group">
+                {{ form.street.errors }}
+                <label for="id_street" class="control-label col-xs-3">Address</label>
+                <div class="col-xs-9">
+	                <input id="id_street" maxlength="60" name="street" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form.city.errors }}
+                <label for="id_city" class="control-label col-xs-3">City</label>
+                <div class="col-xs-9">
+	                <input id="id_city" maxlength="60" name="city" type="text" />
+                </div>
+            </div>
+            {% elif item.owner.meetup and item.owner.home_delivery == 'NONE' %}
+            <div class="form-group">
+                {{ form.meetuploc.errors }}
+                <label for="id_meetuploc" class="control-label col-xs-3">Suggested Meetup Location</label>
+                <div class="col-xs-9">
+	                <input id="id_meetuploc" maxlength="60" name="meetuploc" type="text" placeholder="Gulf City Mall" />
+                </div>
+            </div>
+            {% elif not item.owner.meetup %}
+            <div class="form-group">
+                {{ form.street.errors }}
+                <label for="id_street" class="control-label col-xs-3">Address</label>
+                <div class="col-xs-9">
+	                <input id="id_street" maxlength="60" name="street" type="text" />
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form.city.errors }}
+                <label for="id_city" class="control-label col-xs-3">City</label>
+                <div class="col-xs-9">
+	                <input id="id_city" maxlength="60" name="city" type="text" />
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="form-group">
+                {{ form.phone.errors }}
+                <label for="id_phone" class="control-label col-xs-3">Phone Number (No spaces or dashes) </label>
+                <div class="col-xs-9">
+	                <input id="id_phone" max="9999999" name="phone" type="number" />
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form.payment_type.errors }}
+                <label for="id_paymentmethod" class="control-label col-xs-3">Payment Method</label>
+                <div class="col-xs-3">
+                    <select id="id_paymentmethod" name="paymentmethod">
+                        {% for type in payment %}
+						<option value="{{ type.id }}">{{ type.description }}</option>
+                        {% endfor %}
+					</select>
+                </div>
+            </div>
+            <div class="form-group">
+                    {{ form.additionalinfo.errors }}
+				<label for="id_additionalinfo" class="control-label col-xs-3">Additional info (Optional) </label>
+                 <div class="col-xs-5">
+                <textarea cols="20" id="id_additionalinfo" name="additionalinfo" rows="5" placeholder="I'm only available to meetup on Saturdays"></textarea>
+                 </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6 col-sm-offset-4">
+                    <br>
+		            <button type="submit" name="submit" value="Checkout" class="btn btn-default">
+		                    Continue
+		            </button>
+                </div>
+            </div>
+        </form>
+		</div>
+    </div>
+{% endblock %}

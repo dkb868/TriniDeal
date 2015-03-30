@@ -1,0 +1,35 @@
+{%  if cats %}
+{%  for c in cats %}
+    {% if not c.parent_category %}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h4 class="panel-title">
+            <a href="{% url 'shop:category' c.slug %}">
+            {{ c.name }}
+                </a>
+            {% if c.category_set.all %}
+			<a data-toggle="collapse" data-parent="#accordian" href="#{{ c.slug }}">
+				<span class="badge pull-right"><i class="fa fa-plus"></i></span>
+			</a>
+            {% endif %}
+		</h4>
+	</div>
+        {% if c.category_set.all %}
+	{% if c == act_cat %}
+		<div id="{{ c.slug }}" class="panel-collapse">
+    {% else %}
+        <div id="{{ c.slug }}" class="panel-collapse collapse">
+    {% endif %}
+		<div class="panel-body">
+			<ul>
+                {% for subcat in c.category_set.all %}
+				<li><a href="{% url 'shop:category' subcat.slug %}"> {{ subcat.name }} </a></li>
+                {% endfor %}
+			</ul>
+		</div>
+	</div>
+            {% endif %}
+</div>
+    {% endif %}
+{% endfor %}
+{% endif %}

@@ -1,18 +1,29 @@
-<!DOCTYPE html>
+{% extends 'shop/base.html' %}
 {%  load staticfiles %}
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>Project Manicou</title>
-</head>
-<body>
-<h1>Accept Offer</h1>
-
-<p>Item - {{ item.title }}</p>
-<p>Price - {{ item.asking_price }}</p>
-<p>Bid User - {{ bid.user }}</p>
-<p>Bid Offer Price - {{ bid.offer_price }}</p>
-
-
-</body>
-</html>
+{% block title %} Accept an offer {% endblock %}
+{% block category_block %}
+{% endblock %}
+{% block body_block %}
+    <div class="row">
+        <div class="col-sm-12">
+			<h2 class="title text-center">Accept an offer</h2>
+		</div>
+        <div class="col-sm-offset-5">
+			<p>Item: {{ item.title }}</p>
+			<p>Your Asking Price: ${{ item.asking_price }}.00</p>
+            <p>Their Offer Price: ${{ bid.offer_price }}.00 </p>
+			<p><small>Offer made by {{ bid.user.username}} (You will receive their real name and contact info when they checkout)</small></p>
+            <form class="form" id="acceptbid_form" method="post" action=".">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="col-xs-6 ">
+                    <br>
+            <button type="submit" name="submit" value="Accept Offer" class="btn btn-default">
+                    Accept Offer
+            </button>
+                </div>
+            </div>
+        </form>
+		</div>
+    </div>
+{% endblock %}

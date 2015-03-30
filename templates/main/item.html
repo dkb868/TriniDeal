@@ -16,7 +16,7 @@
 }(document, 'script', 'facebook-jssdk'));</script>
 	<p>Title: {{ item.title }}</p>
 	<p>Owner: {{ item.owner }}</p>
-	<p>Condition: {{ item.condition }}</p>
+	<p>Condition: {{ item.get_condition_display() }}</p>
 	<p>Asking Price: {{ item.asking_price }}</p>
     {% if highestbid %}
         {% if  user == item.owner.user %}

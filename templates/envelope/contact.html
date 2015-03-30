@@ -1,0 +1,85 @@
+{% extends 'shop/base.html' %}
+{%  load staticfiles %}
+{% load envelope_tags %}
+{% block title %} Your Dashboard {% endblock %}
+{% block category_block %}
+{% endblock %}
+{% block body_block %}
+    <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-sm">
+                <form class="form-horizontal" method="post" action="{% url 'envelope-contact' %}">
+                    {% csrf_token %}
+                    {% antispam_fields %}
+                    <fieldset>
+                        <legend class="text-center header">Contact us</legend>
+                        <div class="form-group">
+                            <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>
+                            <div class="col-md-8">
+                                {{ form.sender.errors }}
+                                <input id="id_sender" name="sender" type="text" placeholder="Name" value="{{request.user.first_name}} {{ request.user.last_name }}" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-envelope-o bigicon"></i></span>
+                            <div class="col-md-8">
+                                {{ form.email.errors }}
+                                <input id="id_email" name="email" type="email" placeholder="Email Address" value="{{request.user.email}}" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-pencil-square-o bigicon"></i></span>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="id_message" name="message" placeholder="Suggest Features and they'll be added before you can even refresh the page." rows="7"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12 text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .header {
+        color: #36A0FF;
+        font-size: 27px;
+        padding: 10px;
+    }
+
+    .bigicon {
+        font-size: 35px;
+        color: #36A0FF;
+    }
+</style>
+
+<!--
+<form action="/contact/" method="post">
+<input type='hidden' name='csrfmiddlewaretoken' value='5O99QHELtneDMxVdUU3WP9hfZaLEtdlx' />
+
+<fieldset>
+    <table>
+    <tbody>
+    <tr><th><label for="id_sender">From:</label></th><td><input id="id_sender" name="sender" type="text" value="administrator (Joe Doe)" /></td></tr>
+<tr><th><label for="id_email">Email:</label></th><td><input id="id_email" name="email" type="email" value="joedoe@joedoe.joe" /></td></tr>
+<tr><th><label for="id_subject">Subject:</label></th><td><input id="id_subject" name="subject" type="text" /></td></tr>
+<tr><th><label for="id_message">Message:</label></th><td><textarea cols="40" id="id_message" name="message" rows="10">
+</textarea></td></tr>
+    </tbody>
+    <tfoot>
+        <tr>
+        <td colspan="2"><input type="submit" value="Send!" /></td>
+        </tr>
+    </tfoot>
+    </table>
+</fieldset>
+</form> -->
+{% endblock %}
