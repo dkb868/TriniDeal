@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name='Category',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(unique=True, max_length=b'20')),
+                ('name', models.CharField(unique=True, max_length=b'40')),
                 ('slug', models.SlugField(unique=True)),
                 ('parent_category', models.ForeignKey(blank=True, to='shop.Category', null=True)),
             ],
