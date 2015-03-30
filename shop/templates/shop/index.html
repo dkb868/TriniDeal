@@ -1,5 +1,6 @@
 {% extends 'shop/base.html' %}
 {%  load staticfiles %}
+{% load endless %}
 {% block title %} Buy and Sell anything {% endblock %}
 
 {% block extra_section %}
@@ -71,6 +72,10 @@
 					<div class="features_items"><!--features_items-->
 						<h2 class="title text-center">Latest Items</h2>
                     	{% if items %}
+                            <div class="endless_page_template">
+                            {% include page_template %}
+                            </div>
+                            <!--
 							{%  for item in items %}
 					             <a href="{% url 'shop:item' item.slug %}">
 
@@ -89,13 +94,25 @@
                                      </div>
                                  </a>
 
-						    {%  endfor %}
+						    {%  endfor %} -->
+
 					    {%  else  %}
 					        <strong> No items ? MADNESS. Go sell something now! </strong>
 					    {% endif %}
 
 
 					</div><!--features_items-->
-					
+
 				</div>
+{% block js %}
+{{ block.super }}
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+<script>$.endlessPaginate({
+    paginateOnScroll: true,
+    paginateOnScrollChunkSize: 2,
+    paginateOnScrollMargin: 300,
+    });
+    </script>
+{% endblock %}
 {% endblock %}

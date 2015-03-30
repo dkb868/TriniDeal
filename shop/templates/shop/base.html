@@ -116,6 +116,9 @@
 								<li><a href="{% url 'index' %}">Home</a></li>
                                 <li><a href="{% url 'shop:dashboard' %}">Seller Dashboard</a></li>
                                 <li><a href="{% url 'shop:add_new_item' %}">Post an item</a></li>
+                                {% if not request.user.is_authenticated %}
+                                <li><a href="{% url 'account_login' %}">Login</a></li>
+                                {% endif %}
                                 {% if request.user.is_authenticated %}
                                 {% notifications_unread as unread_count %}
                                 <li><a href="{% url 'notifications:unread' %}">Notifications({{ unread_count }})</a></li>

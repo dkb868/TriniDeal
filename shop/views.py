@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, render_to_response
 from django.template import RequestContext
+from endless_pagination.decorators import page_template
 from notifications import notify
 from shop.models import SellerProfile,SaleItem,Category,UserBid,Comment, Order, PaymentChoice, SaleItemAdditionalImages
 from shop.forms import SaleItemForm, UserBidForm, SellerProfileForm, OrderCheckoutForm, OrderConfirmationForm
@@ -24,11 +25,12 @@ def has_seller_profile(user):
 ######
 
 
-
-def index(request):
-	item_list = SaleItem.objects.filter(available=True).order_by('-post_time')[:9]
-	context_dict = {'items': item_list}
-	return render(request, 'shop/index.html', context_dict)
+def index(request, template='shop/index.html', page_template='shop/item_list.html'):
+	item_list = SaleItem.objects.filter(available=True).order_by('-post_time')
+	context_dict = {'items': item_list, 'page_template': page_template}
+	if request.is_ajax():
+		template = page_template
+	return render_to_response(template, context_dict, context_instance=RequestContext(request))
 
 
 #def category(request, category_name_slug):

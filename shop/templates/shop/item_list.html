@@ -1,6 +1,6 @@
 {% load endless %}
 {% load staticfiles %}
-{% paginate 9 items %}
+{% paginate 6 items %}
 {% for item in items %}
 <a href="{% url 'shop:item' item.slug %}">
      <div class="col-sm-4">
@@ -17,7 +17,7 @@
      </div>
  </a>
 {% endfor %}
-{% show_more "See more items" %}
+{% show_more %}
 <br>
 
           
