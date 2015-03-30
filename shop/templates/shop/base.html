@@ -66,7 +66,7 @@
 				<div class="row">
 					<div class="col-sm-3">
 						<div class="logo pull-left">
-							<a href="index.html"><img src="{% static 'shop/images/home/logo.png' %}" height="30" alt="" /></a>
+							<a href="{% url 'index' %}"><img src="{% static 'shop/images/home/logo.png' %}" height="30" alt="" /></a>
 						</div>
 					</div>
                 <div class="col-sm-6">
@@ -319,7 +319,7 @@
 							<h2>Service</h2>
 							<ul class="nav nav-pills nav-stacked">
 								<li><a href="{% url 'envelope-contact' %}">Contact Us</a></li>
-								<li><a href="">FAQ’s</a></li>
+								<li><a href="{% url 'help' %}">Help/FAQs</a></li>
 							</ul>
 						</div>
 					</div>
@@ -328,8 +328,8 @@
 						<div class="single-widget">
 							<h2>Policies</h2>
 							<ul class="nav nav-pills nav-stacked">
-								<li><a href="">Terms of Use</a></li>
-								<li><a href="">Privecy Policy</a></li>
+								<li><a href="{% url 'tos' %}">Terms of Service</a></li>
+								<li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
 							</ul>
 						</div>
 					</div>
@@ -338,7 +338,7 @@
 							<h2>About</h2>
 							<ul class="nav nav-pills nav-stacked">
 								<li><a href="{% url 'about' %}">About us</a></li>
-								<li><a href="">Careers</a></li>
+								<li><a href="{% url 'careers' %}">Careers</a></li>
 							</ul>
 						</div>
 					</div>

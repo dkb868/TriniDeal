@@ -13,6 +13,10 @@ urlpatterns = patterns('',
     url(r'^inbox/notifications/', include(notifications.urls)),
     url(r'^shop/', include('shop.urls', namespace='shop')),
     url(r'^about/$', TemplateView.as_view(template_name='main/about.html'), name='about'),
+    url(r'^privacy/$', TemplateView.as_view(template_name='main/privacy.html'), name='privacy'),
+    url(r'^terms-of-use/$', TemplateView.as_view(template_name='main/TOS.html'), name='tos'),
+    url(r'^help/$', TemplateView.as_view(template_name='main/help.html'), name='help'),
+    url(r'^careers/$', TemplateView.as_view(template_name='main/careers.html'), name='careers'),
     url(r'^contact/', include('envelope.urls')),
 )
 
