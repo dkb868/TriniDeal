@@ -14,7 +14,7 @@
 										<div class="product-image-wrapper">
 											<div class="single-products">
 												<div class="productinfo text-center">
-													<img src="{% static 'shop/images/home/product1.jpg' %}" alt="" />
+													<img src="{{ MEDIA_URL }}{{ item.image }}" alt="" />
 
                                                     <h2>{{ item.title|truncatewords:'6' }}</h2>
 													<p>${{ item.asking_price }}.00</p>
