@@ -84,7 +84,7 @@ class SaleItem(models.Model):
 		return self.title
 
 class Category(models.Model):
-	name = models.CharField(max_length='20',unique=True)
+	name = models.CharField(max_length='40',unique=True)
 	slug = models.SlugField(unique=True)
 	parent_category = models.ForeignKey('self',null=True,blank=True)
 

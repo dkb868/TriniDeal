@@ -2,6 +2,7 @@
 
 *.pyc
 db.sqlite3
+manicou/settings.py
 
 #gedit autosave ignores
 *.py~

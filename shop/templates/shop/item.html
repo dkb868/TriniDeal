@@ -65,11 +65,9 @@
 
 									{% endif %}
                                     <p><b>Price Negotiable</b></p>
-                                    {% if request.user.sellerprofile != item.owner %}
 							            <a href="{% url 'shop:makebid' item.slug %}"><button class="btn btn-default" type="submit" name="submit" value="Make an Offer" >
                                             Make an offer
                                         </button></a>
-                                    {% endif %}
                                 {% endif %}
 								<p><br><b>Condition:</b> {{ itemcondition }}</p>
                                 {%  if item.reason %}

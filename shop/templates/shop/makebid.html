@@ -11,7 +11,11 @@
         <div class="col-sm-offset-5">
 			<p><strong>Item:</strong> {{ item.title }}</p>
 			<p><strong>Their Asking Price:</strong> ${{ item.asking_price }}.00</p>
+			{% if highestbid %}
             <p><strong>Current Highest Offer:</strong>${{ highestbid.offer_price }}.00</p>
+            {% else %}
+            <p><strong>No previous offers</strong></p>
+            {% endif %}
             <form class="form-horizontal pull-left" id="bid_form" method="post" action="{% url 'shop:makebid' item.slug %}">
             {% csrf_token %}
                  <div class="form-group">
