@@ -2590,3 +2590,8 @@ html,body{
 #padbelow{
     padding-bottom: 30px;
 }
+
+.carousel-inner{
+    height: 241px;
+}
+

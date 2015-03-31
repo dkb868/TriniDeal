@@ -218,7 +218,7 @@ def confirmation(request, order_id):
 				confirmorder.buy_item.save(update_fields=['available'])
 				notify.send(request.user, recipient=item.owner.user, verb=u' placed an order on your item. Go to your dashboard to view your orders.', target=confirmorder)
 
-				return redirect('index')
+				return redirect('shop:order', order_id=confirmorder.id)
 			else:
 				print form.errors
 
