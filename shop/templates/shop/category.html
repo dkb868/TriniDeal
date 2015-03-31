@@ -1,7 +1,6 @@
 {% extends 'shop/base.html' %}
 {%  load staticfiles %}
 {% block title %} {{ category.name }}{% endblock %}
-{% load endless %}
 {% block body_block %}
 	<section>
 		<div class="container">
@@ -40,8 +39,7 @@
 			</div>
 		</div>
 	</section>
-
-
+	
 {% block js %}
     {{ block.super }}
     <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -49,7 +47,7 @@
     <script>$.endlessPaginate({
     	paginateOnScroll: true,
         paginateOnScrollChunkSize: 3,
-        paginateOnScrollMargin: 300,
+        paginateOnScrollMargin: 10,
     	});
     	</script>
 {% endblock %}
