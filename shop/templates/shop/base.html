@@ -38,7 +38,9 @@
 							<ul class="nav navbar-nav">
                                 <li><a href="{% url 'shop:myorders' %}"><i class="fa fa-shopping-cart"></i> My Purchases</a></li>
                                 <li><a href="{% url 'shop:add_new_item' %}"><i class="fa fa-plus"></i> Post an item</a></li>
+                            {% if request.user.sellerprofile %}
                                 <li><a href="{% url 'shop:sellerprofile' request.user.sellerprofile.id %}"><i class="fa fa-user"></i> My Seller Profile</a></li>
+                                {% endif %}
                                 <li><a href="{% url 'shop:dashboard' %}"><i class="fa fa-briefcase"></i> Seller Dashboard</a></li>
                                 {% if request.user.is_authenticated %}
                                 {% notifications_unread as unread_count %}
