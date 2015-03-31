@@ -75,7 +75,7 @@
                                 {% endif %}
                                 <p><b>Home Delivery:</b> {{ homedelivery }}</p>
                                 <p><b>Meetup Delivery:</b> {% if item.owner.meetup %} Available {% else %} Unavailable {% endif %}</p>
-								<p><b>Seller:</b> {{ item.owner }}</p>
+								<p><b>Seller:</b> <a href="{% url 'shop:sellerprofile' item.owner.id %}">{% if item.owner.seller_name %}{{ item.owner.seller_name }}{% else %}{{ item.owner.user.first_name }} {{ item.owner.user.last_name }}{% endif %}</a></p>
                                 <p><b>Seller Location:</b> {{ item.owner.location }}</p>
                                 <p><b>Accepted Payment Types:</b> {% for type in payment %} {{ type }} {% endfor %}</p>
 								<a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>

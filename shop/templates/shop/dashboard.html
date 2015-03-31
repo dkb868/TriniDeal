@@ -16,10 +16,13 @@
         </div>
         <div class="col-sm-offset-5">
         <ul>
-            <li><a href="{% url 'shop:dashboard_current_items' %}">Current items on sale ({{ current_items_count }})</a></li>
-            <li><a href="{% url 'shop:dashboard_past_items' %}">Past items sold ({{ past_items_count }})</a></li>
-            <li><a href="{% url 'shop:dashboard_current_orders' %}">Current orders ({{ current_orders_count }})</a></li>
-            <li><a href="{% url 'shop:dashboard_past_orders' %}">Completed orders ({{ past_orders_count }})</a></li>
+            <li><a href="{% url 'shop:dashboard_current_items' %}"><button class="btn btn-success"> Current items on sale ({{ current_items_count }})</button></a></li>
+            <li><p>&nbsp;</p></li>
+            <li><a href="{% url 'shop:dashboard_past_items' %}"><button class="btn btn-info">Past items sold ({{ past_items_count }})</button></a></li>
+            <li><p>&nbsp;</p></li>
+            <li><a href="{% url 'shop:dashboard_current_orders' %}"><button class="btn btn-success">Current orders ({{ current_orders_count }})</button></a></li>
+            <li><p>&nbsp;</p></li>
+            <li><a href="{% url 'shop:dashboard_past_orders' %}"><button class="btn btn-info">Completed orders ({{ past_orders_count }})</button></a></li>
         </ul>
 		</div>
     </div>
