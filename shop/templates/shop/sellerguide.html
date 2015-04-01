@@ -1,0 +1,71 @@
+{% extends 'shop/base.html' %}
+{%  load staticfiles %}
+{% block title %} About us {% endblock %}
+{% block body_block %}
+
+    	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-9 padding-right">
+     <!-- Page Content -->
+
+<!-- Introduction Row -->
+
+<h2 class="title text-center">Seller's Guide
+</h2>
+
+	<article>
+        <h4 id="posting">Posting items</h4>
+        <p>Your item will remain available for 2 weeks after posting it. This is done to avoid the inconvenience of products being sold by other means but still being left on the website. If your product has not been sold on 2 weeks you simply need to go to your <a href="{% url 'shop:dashboard' %}">dashboard</a> then navigate to 'past sold items' and click the 'repost' button on whichever item you want to repost. It will then be kept alive for another 2 weeks. </p>
+	    <h4 id="profile">Seller Profile</h4>
+		<p>Your seller profile is the place where people will go if they want to find out more about you or your company. It is also the place where people will go to leave reviews about you. A nice,short 'about me' section will let customers know all they need to know. You should also encourage past customers to leave you a review so that buyers will know they can trust you. </p>
+        <h4 id="dashboard"> Dashboard </h4>
+        <p>Your dashboard is where everything is managed. It isn't much right now but we are currently developing a vastly improved version. For now it is a list of links to information about your products and orders. You may remove currently posted items, repost previously listed items, view current orders and completed orders.</p>
+        <h4 id="orders">Orders</h4>
+        <p>When someone orders one of your items, you will be able to access the order through the dashboard. The order page will give you all the information you need to deliver the product to the buyer, including their contact information. It is recommended that you contact the buyer as soon as possible to finalize the transaction. You are strongly recommended to give the buyer a receipt on delivery.</p>
+        <h4 id="offers">Bidding/Offers</h4>
+        <p>If check the 'price negotiable' box then buyers will have a choice of buying the product at your original asking price or making an offer. You will receive a notification for all bids on your items. To view the current highest bid you must navigate to the item page, through your dashboard or otherwise. The current highest bid will be listed above the item details and you will be able to accept the bid by clicking the 'accept bid' button and confirming your decision. When you accept an offer, the buyer will be notified that their offer was accepted and will be able to make an order and checkout.</p>
+        <h4 id="notifications">Notifications</h4>
+        <p>We will do our best to notify you by phone when someone places an order on your item. However,we recommend checking the website once per day to view all your notifications and visit your items' comment sections to see what people are saying.</p>
+        <h4 id="help">Further help</h4>
+        <p>If you need something else do not hesitate to <a href="{% url 'envelope-contact' %}">contact us</a>. You will usually receive a response in a few minutes.</p>
+
+	</article>
+
+</div>
+</div>
+
+</div>
+            </section>
+    <script type="text/javascript">var ToC =
+  "<nav role='navigation' class='table-of-contents'>" +
+    "<h4>Contents:</h4>" +
+    "<ul>";
+
+var newLine, el, title, link;
+
+$("article h4").each(function() {
+
+  el = $(this);
+  title = el.text();
+  link = "#" + el.attr("id");
+
+  newLine =
+    "<li>" +
+      "<a href='" + link + "'>" +
+        title +
+      "</a>" +
+    "</li>";
+
+  ToC += newLine;
+
+});
+
+ToC +=
+   "</ul>" +
+  "</nav>";
+
+$("article").prepend(ToC);</script>
+
+<!-- /.container -->
+{% endblock %}

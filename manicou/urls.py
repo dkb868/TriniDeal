@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^terms-of-use/$', TemplateView.as_view(template_name='main/TOS.html'), name='tos'),
     url(r'^help/$', TemplateView.as_view(template_name='main/help.html'), name='help'),
     url(r'^careers/$', TemplateView.as_view(template_name='main/careers.html'), name='careers'),
+    url(r'^thefutureisbright/$', TemplateView.as_view(template_name='main/comingsoon.html'), name='comingsoon'),
     url(r'^contact/', include('envelope.urls')),
 )
 
