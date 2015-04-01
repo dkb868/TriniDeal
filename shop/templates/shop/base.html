@@ -17,6 +17,7 @@
     <link href="{% static 'shop/css/animate.css' %}" rel="stylesheet">
 	<link href="{% static 'shop/css/main.css' %}" rel="stylesheet">
 	<link href="{% static 'shop/css/responsive.css' %}" rel="stylesheet">
+    <script src="{% static 'shop/js/jquery.js' %}"></script>
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -35,7 +36,15 @@
 				<div class="row">
 					<div class="col-sm-7">
 						<div class="contactinfo">
-							<ul class="nav navbar-nav">
+                        <div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+						</div>
+							<ul class="nav navbar-nav collapse navbar-collapse">
                                 <li><a href="{% url 'shop:myorders' %}"><i class="fa fa-shopping-cart"></i> My Purchases</a></li>
                                 <li><a href="{% url 'shop:add_new_item' %}"><i class="fa fa-plus"></i> Post an item</a></li>
                             {% if request.user.sellerprofile %}
@@ -51,7 +60,7 @@
 					</div>
 					<div class="col-sm-5">
 						<div class="contactinfo pull-right">
-							<ul class="nav navbar-nav">
+							<ul class="nav navbar-nav collapse navbar-collapse">
                                 <li><a href="{% url 'about' %}"><i class="fa fa-info-circle"></i> About us</a></li>
 								<li><a href="{% url 'envelope-contact' %}"><i class="fa fa-envelope"></i> Contact</a></li>
                                 {% if not request.user.is_authenticated %}
@@ -371,7 +380,7 @@
 
 
 
-    <script src="{% static 'shop/js/jquery.js' %}"></script>
+
 	<script src="{% static 'shop/js/price-range.js' %}"></script>
 	<script src="{% static 'shop/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'shop/js/jquery.prettyPhoto.js' %}"></script>
