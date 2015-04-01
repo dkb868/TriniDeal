@@ -15,21 +15,21 @@
                 {{ form.seller_name.errors }}
                 <label for="id_seller_name" class="control-label col-xs-2">Seller name (Optional)</label>
                 <div class="col-xs-10">
-	                <input id="id_seller_name" maxlength="30" name="seller_name" type="text" placeholder="Example Company Limited" />
+	                <input id="id_seller_name" maxlength="30" name="seller_name" type="text" placeholder="Your Company Ltd" />
                 </div>
             </div>
             <div class="form-group">
                 {{ form.location.errors }}
-                <label for="id_location" class="control-label col-xs-2">Location</label>
+                <label for="id_location" class="control-label col-xs-2">General Location (Optional)</label>
                 <div class="col-xs-10">
-	                <input id="id_location" maxlength="30" name="location" type="text" />
+	                <input id="id_location" maxlength="30" name="location" type="text" placeholder="e.g. sando/central/arima" />
                 </div>
             </div>
             <div class="form-group">
                 {{ form.phone_number.errors }}
-                <label for="id_phone_number" class="control-label col-xs-2">Phone Number</label>
+                <label for="id_phone_number" class="control-label col-xs-2">Phone (No dashes)</label>
                 <div class="col-xs-10">
-	                <input id="id_phone_number" maxlength="30" name="phone_number" type="number" />
+	                <input id="id_phone_number" maxlength="30" name="phone_number" type="number" placeholder="7779876" />
                 </div>
             </div>
             <div class="form-group">
@@ -51,10 +51,9 @@
 			<label for="id_home_delivery" class="control-label col-xs-2">Home Delivery</label>
                  <div class="col-xs-2">
                      <select id="id_home_delivery" name="home_delivery">
-					 <option value="" selected="selected">---------</option>
-					 <option value="SOME">Some Locations</option>
-					 <option value="ALL">All locations</option>
-					 <option value="NONE">No home delivery</option>
+	                     <option value="NONE" selected="selected">No home delivery</option>
+						 <option value="SOME">Some Locations</option>
+						 <option value="ALL">All locations</option>
 					 </select>
                  </div>
             </div>
@@ -67,7 +66,7 @@
             </div>
             <div class="form-group">
                 {{ form.image.errors }}
-			<label for="id_image" class="control-label col-xs-2">Company Logo (Optional): </label>
+			<label for="id_image" class="control-label col-xs-2">Company Logo (Optional) </label>
                  <div class="col-xs-10">
                 <input id="id_image"  name="image" type="file" />
                         </div>
@@ -76,7 +75,7 @@
                     {{ form.details.errors }}
 			<label for="id_details" class="control-label col-xs-2">About you (Optional) </label>
                  <div class="col-xs-6">
-                <textarea cols="30" id="id_details" name="details" rows="10" placeholder="Talk about your business,vision,mission,or anything"></textarea>
+                <textarea cols="30" id="id_details" name="details" rows="10" placeholder="Talk about your business,vision,mission. eg: “We intend to provide our customers with the best online shopping experience from beginning to end, with a smart, searchable website, easy-to-follow instructions, clear and secure payment methods, and fast, quality delivery.” "></textarea>
                     </div>
                     </div>
             <div class="form-group">
