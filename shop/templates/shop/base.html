@@ -34,7 +34,7 @@
 		<div class="header_top"><!--header_top-->
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-7">
+					<div class="col-sm-12">
 						<div class="contactinfo">
                         <div class="navbar-header">
 							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -55,10 +55,10 @@
                                 {% notifications_unread as unread_count %}
                                 <li><a href="{% url 'notifications:unread' %}"><i class="fa fa-bell"></i> Notifications({{ unread_count }})</a></li>
                                 {% endif %}
+                                <li><a href="{% url 'shop:sellerguide' %}"><i class="fa fa-book"></i> Seller's Guide</a> </li>
                             </ul>
 						</div>
-					</div>
-					<div class="col-sm-5">
+
 						<div class="contactinfo pull-right">
 							<ul class="nav navbar-nav collapse navbar-collapse">
                                 <li><a href="{% url 'about' %}"><i class="fa fa-info-circle"></i> About us</a></li>
