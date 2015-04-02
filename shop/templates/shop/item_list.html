@@ -1,5 +1,6 @@
 {% load endless %}
 {% load staticfiles %}
+{% load shop_extras %}
 {% paginate 9 items %}
 {% for item in items %}
 <a href="{% url 'shop:item' item.slug %}">
@@ -8,7 +9,8 @@
 			<div class="single-products">
 				<div class="productinfo text-center">
 					<img class="padme" src="{{ MEDIA_URL }}{{ item.image }}" alt="" />
-                    <h2>{{ item.title|truncatewords:'6' }}</h2>
+                    {% get_item_condition item.slug as condition %}
+                    <h2>({{ condition }}) {{ item.title|truncatewords:'6' }}</h2>
 					<p>${{ item.asking_price }}.00</p>
 				</div>
 
