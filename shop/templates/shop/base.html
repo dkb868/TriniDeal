@@ -63,7 +63,7 @@
 							<ul class="nav navbar-nav collapse navbar-collapse">
                             <li><a href="#">|</a></li>
                             <li><a href="{% url 'shop:sellerguide' %}"><i class="fa fa-book"></i> Seller's Guide</a> </li>
-                            <li><a href="{% url 'about' %}"><i class="fa fa-question-circle"></i> Help/FAQs</a></li>
+                            <li><a href="{% url 'help' %}"><i class="fa fa-question-circle"></i> Help/FAQs</a></li>
                                 <li><a href="{% url 'about' %}"><i class="fa fa-info-circle"></i> About us</a></li>
 								<li><a href="{% url 'envelope-contact' %}"><i class="fa fa-envelope"></i> Contact</a></li>
                                 {% if not request.user.is_authenticated %}
