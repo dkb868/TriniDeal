@@ -1,0 +1,142 @@
+{% extends 'shop/base.html' %}
+{%  load staticfiles %}
+{% load shop_extras %}
+{% block title %} Post new item {% endblock %}
+{% block category_block %}
+{% endblock %}
+{% block body_block %}
+    <div class="row">
+	    		<div class="col-sm-12">
+					<h2 class="title text-center">Post your Item</h2>
+				</div>
+         	<div class="col-sm-offset-1 ">
+        <form class="form-horizontal" id="dummyitem_form" method="post" enctype="multipart/form-data" action=".">
+            {% csrf_token %}
+			<div class="form-group">
+                {{ form.title.errors }}
+                <label for="id_title" class="control-label col-xs-2">Title</label>
+                <div class="col-xs-10">
+	                <input id="id_title" maxlength="30" name="title" type="text" placeholder="Samsung Galaxy S5"/>
+                </div>
+            </div>
+            <div class="form-group">
+            {{ form.category.errors }}
+                <label for="id_category" class="control-label col-xs-2">Category</label>
+                <div class="col-xs-2">
+	                <select id="id_category" name="category">
+                        {% get_cats as categories %}
+                        {% for c in categories %}
+                        {% if not c.parent_category %}
+                            {% if c.category_set.all %}
+                        <optgroup label="{{ c.name }}">
+                        {% for subcat in c.category_set.all %}
+					<option value="{{ subcat.id }}">{{ subcat.name }}</option>
+                         {% endfor %}
+                          </optgroup>
+                                {% else %}
+                                <optgroup label="{{ c.name }}">
+                        <option value="{{ c.id }}">{{ c.name }}</option>
+                                </optgroup>
+                                {% endif %}
+                    {% endif %}
+                    {% endfor %}
+					</select>
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form.condition.errors }}
+			<label for="id_condition" class="control-label col-xs-2">Condition</label>
+                 <div class="col-xs-2">
+                     <select id="id_condition" name="condition">
+			<option value="NEW" selected="selected">New</option>
+			<option value="LIKENEW">Like New/Barely Used</option>
+			<option value="REFURBISHED">Refurbished</option>
+			<option value="USEDVERYGOOD">Used - Very Good</option>
+			<option value="USEDGOOD">Used - Good</option>
+			<option value="USEDACCEPTABLE">Used - Acceptable</option>
+			</select> </div>
+                </div>
+            <div class="form-group">
+                {{ form.image.errors }}
+			<label for="id_image" class="control-label col-xs-2">Main image</label>
+                 <div class="col-xs-10">
+                <input id="id_image" name="image" type="file" />
+                        </div>
+			</div>
+             <div class="form-group">
+                 {{ form.additional_images.errors }}
+			<label for="id_additional_images" class="control-label col-xs-2">Additional Images (Optonal)</label>
+                 <div class="col-xs-10">
+                <input id="id_additional_images" maxlength="100" name="additional_images" type="file" multiple />
+                        </div>
+			</div>
+                <div class="form-group">
+                    {{ form.description.errors }}
+			<label for="id_description" class="control-label col-xs-2">Description(optional)</label>
+                 <div class="col-xs-6">
+                <textarea cols="30" id="id_description" name="description" rows="6" placeholder="Barely used it. Small scratches on the back cover. Charger not included."></textarea>
+                    </div>
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.reason.errors }}
+			<label for="id_reason" class="control-label col-xs-2">Reason for selling(optional)</label>
+                 <div class="col-xs-10">
+                <input id="id_reason" maxlength="100" name="reason" type="text" placeholder="Upgrading to newer phone" />
+                        </div>
+			</div>
+                        <div class="form-group">
+                            {{ form.asking_price.errors }}
+                        <label for="id_asking_price" class="control-label col-xs-2">Asking price (numbers only)</label>
+                             <div class="col-xs-10">
+                            <input id="id_asking_price" name="asking_price" type="number" step="1" placeholder="500"/>
+                            </div>
+			</div>
+                            <div class="form-group">
+                                {{ form.negotiable.errors }}
+                        <label for="id_negotiable" class="control-label col-xs-2">Price Negotiable</label>
+                         <div class="col-xs-10">
+                         <input id="id_negotiable" name="negotiable" type="checkbox" />
+                                </div>
+							</div>
+        <div class="form-group">
+                            {{ form.dummyseller.errors }}
+                        <label for="id_dummyseller" class="control-label col-xs-2">Dummy seller name</label>
+                             <div class="col-xs-10">
+                            <input id="id_dummyseller" name="dummyseller" type="text"/>
+                            </div>
+			</div>
+        <div class="form-group">
+                            {{ form.dummynumber.errors }}
+                        <label for="id_dummynumber" class="control-label col-xs-2">Seller dummy number</label>
+                             <div class="col-xs-10">
+                            <input id="id_dummynumber" name="dummynumber" type="number" />
+                            </div>
+			</div>
+                <div class="form-group">
+                            {{ form.dummydelivery.errors }}
+                        <label for="id_dummydelivery" class="control-label col-xs-2">Dummy delivery</label>
+                             <div class="col-xs-10">
+                            <input id="id_dummydelivery" name="dummydelivery" type="text"/>
+                            </div>
+			</div>
+                <div class="form-group">
+                            {{ form.dummylocation.errors }}
+                        <label for="id_dummylocation" class="control-label col-xs-2">Dummy location</label>
+                             <div class="col-xs-10">
+                            <input id="id_dummylocation" name="dummylocation" type="text"/>
+                            </div>
+			</div>
+            <div class="form-group">
+               <label class="control-label col-xs-2">
+
+                    </label>
+                <div class="col-xs-10"><button type="submit" name="submit" value="Create Item" class="btn btn-default ">
+                    Post item
+                </button>
+                    </div>
+                </div>
+        </form>
+</div>
+    </div>
+{% endblock %}
