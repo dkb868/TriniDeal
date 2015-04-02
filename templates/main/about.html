@@ -2,33 +2,40 @@
 {%  load staticfiles %}
 {% block title %} About us {% endblock %}
 {% block body_block %}
-{% block category_block %}
-{% endblock %}
+    <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&appId=1407433476232650&version=v2.3";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-9 padding-right">
      <!-- Page Content -->
-<div class="container">
+
 <!-- Introduction Row -->
-<div class="row">
-<div class="col-lg-12">
-<h1 class="page-header text-center">About Us
-<small>It's Nice to Meet You!</small>
-</h1>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, explicabo dolores ipsam aliquam inventore corrupti eveniet quisquam quod totam laudantium repudiandae obcaecati ea consectetur debitis velit facere nisi expedita vel?</p>
+
+
+<h2 class="title text-center">About Us</h2>
+    <h3>Vision</h3>
+    <p class="abouttext">We intend to make it possible for anyone in Trinidad and Tobago to buy and sell goods quickly, easily and reliably.</p>
+    <h3>Our Philosophy</h3>
+        <p class="abouttext">Your time is too valuable to be spent posting on 30 different facebook groups
+        and bumping your posts every hour.
+        </p>
+        <p class="abouttext">Customers deserve a user interface geared towards shopping.</p>
+        <p class="abouttext">Good sellers deserve to be recognized as good sellers</p>
+                    <h3>That sounds awesome</h3>
+                    <p>Thanks. Support the vision and show us some love with that like button</p><div class="fb-page" data-href="https://www.facebook.com/facebook" data-height="130" data-hide-cover="false" data-show-facepile="true" data-show-posts="false"></div>
 </div>
 </div>
 <!-- Team Members Row -->
-<div class="row">
-<div class="col-lg-12">
-<h2 class="page-header">Our Team</h2>
-</div>
-<div class="col-lg-4 col-sm-6 text-center">
-<img class="img-circle img-responsive img-center" src="http://placehold.it/200x200" alt="">
-<h3>John Smith
-<small>Job Title</small>
-</h3>
-<p>What does this team member to? Keep it short! This is also a great spot for social links!</p>
-</div>
 
 </div>
-</div>
+        </section>
 <!-- /.container -->
 {% endblock %}

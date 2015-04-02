@@ -2,27 +2,77 @@
 {%  load staticfiles %}
 {% block title %} About us {% endblock %}
 {% block body_block %}
-{% block category_block %}
-{% endblock %}
+
+    	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-9 padding-right">
      <!-- Page Content -->
-<div class="container">
+
 <!-- Introduction Row -->
-<div class="row">
-<div class="col-lg-12">
-<h1 class="page-header text-center">Careers
-</h1>
-<p>American Apparel typewriter readymade gluten-free, meh Shoreditch forage you probably haven't heard of them. McSweeney's Pitchfork meditation, sriracha keffiyeh flexitarian typewriter Portland. Artisan crucifix keffiyeh fanny pack jean shorts, deep v four dollar toast banjo. Hoodie Vice retro you probably haven't heard of them asymmetrical. Lumbersexual Pitchfork mlkshk lo-fi, art party kogi VHS church-key Thundercats mustache. Readymade craft beer PBR, lomo occupy tousled leggings Tumblr pug. Art party meditation craft beer pickled pop-up.
 
-Meggings tote bag forage sriracha. Hella fixie authentic wolf freegan selvage. Disrupt vinyl plaid Williamsburg farm-to-table fashion axe. 90's disrupt kogi trust fund listicle pickled. Tumblr food truck disrupt bitters, kale chips YOLO chia PBR selvage flannel small batch. IPhone cold-pressed meditation drinking vinegar authentic cred. Bitters 3 wolf moon Helvetica, leggings cardigan narwhal slow-carb jean shorts post-ironic.
+<h2 class="title text-center">Help/FAQs
+</h2>
 
-Fap leggings shabby chic yr chambray. Wes Anderson wolf Carles next level. American Apparel wolf tattooed fixie. Scenester whatever lo-fi, taxidermy chambray 8-bit aesthetic letterpress farm-to-table normcore XOXO typewriter brunch McSweeney's. Bitters street art Schlitz, keytar cliche Pinterest Godard craft beer chambray single-origin coffee Wes Anderson twee tilde disrupt. Polaroid actually VHS, seitan photo booth tattooed selvage sustainable viral selfies Brooklyn forage. Literally heirloom beard chambray fap, pug vegan.
+	<article>
+        	    <h4 id="manicou">How did my post from XYZ end up on this site?</h4>
+	   <p>We have a program that crawls Trini facebook groups and classifieds and collects data on all the items being sold (kinda like Google). That data is then sorted and posted here so people can find every Trini product being sold regardless of where/when it was posted. This gives more power of choice to buyers and more visibility to sellers.</p>
+        <p>Our crawler is nowhere near perfect however, and will miss many valuable posts. You are encouraged to <a href="{% url 'account_login' %}">create an account</a> and post/claim ownership of your items so you can better manage your orders,listings and build a reputation by getting your buyers to review you.</p>
+        <p><small>If for any reason you want your listings to be removed and ignored by the crawler in the future, contact us <a href="{% url 'envelope-contact' %}">here</a> and we will take them down permanently.</small></p>
 
-Pinterest normcore Tumblr, cliche retro fingerstache Helvetica craft beer tote bag scenester Odd Future. Mlkshk authentic VHS put a bird on it sustainable, pug 90's 8-bit 3 wolf moon single-origin coffee selfies swag wolf whatever. Viral organic flannel, art party street art Williamsburg Wes Anderson butcher flexitarian leggings cred food truck pickled lumbersexual farm-to-table. Skateboard hella raw denim lomo locavore gentrify farm-to-table swag polaroid retro. Carles distillery sartorial, Kickstarter forage 90's hoodie drinking vinegar fingerstache cold-pressed lumbersexual Blue Bottle keffiyeh. Fingerstache Odd Future flannel readymade, try-hard Shoreditch leggings ennui. Photo booth messenger bag four loko, Bushwick kale chips slow-carb lomo flexitarian wolf mixtape PBR paleo.
 
-</p>
+	    <h4 id="cost">How much does it cost to post my item?</h4>
+		<p>It costs nothing to post your items. However, you will be restricted to a maximum of 5 active products at a time. This should be more than enough for casual sellers. Those who wish to sell  a larger quantity of goods will be able to upgrade their accounts for a variety of features, including the ability to have more active items at a time.</p>
+        <h4 id="purchases">How does buying work?</h4>
+        <p>After you checkout and confirm your order, it will be sent to the seller and they will take care of it from there. You will also receive contact information for the seller, though they will likely get in contact with you to finalize delivery details. We do not currently process online payments, so you will have to pay on delivery.</p>
+        <h4 id="bidding">How does bidding/making offers work?</h4>
+        <p>When an item has a negotiable price, buyers will be allowed to either purchase the item at the asking price or make their own offer. If your offer is accepted, you will receive a notification and be able to checkout on the item.</p>
+        <h4 id="selling">How does selling work?</h4>
+	   <p>You will first have to <a href="{% url 'shop:create_sellerprofile' %}">create a Seller Profile</a>. This is a quick and easy process just to gather basic information that buyers will be interested in, such as your delivery and payment methods.
+       Once your Seller Profile is created, you can post items.
+       When someone makes an order on your item, you will receive a notification and be able to access the order to get important details such as the buyer's delivery and contact information.
+       After the product is delivered, you should invite your buyer to leave a review on your seller profile page, which will let future customers know that they can trust you.
+       You will always be able to view current orders on your products as well as other valuable information on your <a href="{% url 'shop:dashboard' %}">Seller's Dashboard</a>. For more information, see your <a href="{% url 'shop:sellerguide' %}">seller's guide.</a></p>
+
+        <h4 id="delivery">Will you deliver the product for me? / Do you process online payments?</h4>
+        <p>At this point in time we are unable to deliver products and process online payments, but we hope to do so soon. For a full list of features you can look forward to, <a href="{%  url 'comingsoon' %}">click here</a> </p> <br>
+
+	</article>
+
 </div>
 </div>
 
 </div>
+            </section>
+    <script type="text/javascript">var ToC =
+  "<nav role='navigation' class='table-of-contents'>" +
+    "<h4>Contents:</h4>" +
+    "<ul>";
+
+var newLine, el, title, link;
+
+$("article h4").each(function() {
+
+  el = $(this);
+  title = el.text();
+  link = "#" + el.attr("id");
+
+  newLine =
+    "<li>" +
+      "<a href='" + link + "'>" +
+        title +
+      "</a>" +
+    "</li>";
+
+  ToC += newLine;
+
+});
+
+ToC +=
+   "</ul>" +
+  "</nav>";
+
+$("article").prepend(ToC);</script>
+
 <!-- /.container -->
 {% endblock %}

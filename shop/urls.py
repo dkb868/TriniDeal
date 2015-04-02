@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, url, include
+from django.views.generic import TemplateView
 from shop import views
 
 urlpatterns = patterns('',
@@ -15,6 +16,7 @@ urlpatterns = patterns('',
     url(r'^acceptbid/(?P<bid_id>\d+)/$', views.acceptbid, name='acceptbid'),
     url(r'^order/(?P<order_id>\d+)/$', views.order, name='order'),
     url(r'^myorders/$', views.myorders, name='myorders'),
+    url(r'^sellerguide/$', TemplateView.as_view(template_name='shop/sellerguide.html'), name='sellerguide'),
 
     url(r'^search/$', views.search, name='search'),
 

@@ -4,7 +4,7 @@
 {% block title %} Post new item {% endblock %}
 {% block category_block %}
 {% endblock %}
-{% block body_block %}
+{% block body_block %}<script src="{% static 'shop/js/dropzone.js' %}"></script>
     <div class="row">
 	    		<div class="col-sm-12">
 					<h2 class="title text-center">Post your Item</h2>
@@ -111,4 +111,7 @@
         </form>
 </div>
     </div>
+    <form action="."
+      class="dropzone"
+      id="my-awesome-dropzone"></form>
 {% endblock %}
