@@ -10,6 +10,7 @@
     <meta name="author" content="">
     <title>{% if request.user.is_authenticated %}
                                 {% notifications_unread as unread_count %} {% if unread_count != 0 %}({{ unread_count }}){% endif %}{% endif %}TriniDeal - {% block title %}{% endblock %}</title>
+	<link rel="shortcut icon" type="image/png" href="{% static 'shop/images/favicon.png' %}">
     <link href="{% static 'shop/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'shop/css/font-awesome.min.css' %}" rel="stylesheet">
     <link href="{% static 'shop/css/prettyPhoto.css' %}" rel="stylesheet">
