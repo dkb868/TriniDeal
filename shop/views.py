@@ -39,10 +39,10 @@ def index(request):
 #	return render(request, 'shop/category.html', context_dict)
 
 def category(
-        request,
-        category_name_slug,
-        template='shop/category.html',
-        page_template='shop/item_list.html'):
+		request,
+		category_name_slug,
+		template='shop/category.html',
+		page_template='shop/item_list.html'):
 
 	category = Category.objects.get(slug=category_name_slug)
 	item_list = SaleItem.objects.filter(Q(category=category) | Q(category__parent_category=category)).order_by('-post_time')
@@ -443,6 +443,18 @@ def search(request):
 	return render_to_response('shop/search_results.html',
 						  { 'query_string': query_string, 'found_entries': found_entries },
 						  context_instance=RequestContext(request))
+
+
+# 404
+
+def handler404(request):
+	response = render_to_response("main/404.html", {},
+								  context_instance=RequestContext(request))
+	response.status_code = 404
+	return response
+
+
+
 
 ## the dummy hack view
 
