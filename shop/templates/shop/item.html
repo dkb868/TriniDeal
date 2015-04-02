@@ -47,9 +47,9 @@
 						</div>
 						<div class="col-sm-7">
 							<div class="product-information"><!--/product-information-->
-								<img src="images/product-details/new.jpg" class="newarrival" alt="" />
+                            {% if item.dummyseller %}
+								<small><a href="{% url 'help' %}">This is my post from another site.</a> </small>{% endif %}
 								<h2>{{ item.title }}</h2>
-								<img src="images/product-details/rating.png" alt="" />
 								<span>
 									<span>${{ item.asking_price }}.00</span>
 									<a href="{% url 'shop:item_cart' item.slug %}"><button type="button" class="btn btn-default cart">
