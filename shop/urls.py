@@ -30,4 +30,9 @@ urlpatterns = patterns('',
     url(r'^(?P<item_slug>[\w\-]+)/remove_item/$', views.removeitem, name='removeitem'),
     url(r'^(?P<item_slug>[\w\-]+)/reactivate_item/$', views.reactivateitem, name='reactivateitem'),
 
+	#Dummyitem url
+    url(r'^add_dummyitem/$', views.add_dummyitem, name='add_dummyitem'),
+
+
 	)
+
