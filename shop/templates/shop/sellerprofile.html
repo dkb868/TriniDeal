@@ -27,13 +27,7 @@
 						{{ sellerprofile.user.first_name }}&nbsp;{{ sellerprofile.user.last_name }}
 					    {% endif %}
                     </h2>
-                    <p><strong>About: </strong> {{ sellerprofile.details }}  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin at quam a augue ultrices convallis. Nulla finibus bibendum velit sit amet tempor. Donec non eros neque. Sed ac diam et nibh porttitor sodales. Vivamus aliquam sem id leo lobortis molestie. Quisque et eros in libero pellentesque ornare id non elit. Praesent vel lacinia ante, vitae elementum quam. Nunc sed tempor libero, sit amet porttitor tellus. Fusce ut dui blandit, varius magna vitae, tempor sem.
-
-Donec condimentum magna eros, et pretium libero luctus blandit. Sed turpis sapien, tempus suscipit fringilla vel, pellentesque gravida magna. Praesent tempor ligula non dolor aliquet, sed sollicitudin justo vestibulum. Cras commodo elementum mauris, vel sodales leo posuere a. Etiam vel fringilla est. Praesent nec iaculis metus, at fermentum neque. Phasellus vel eleifend dolor, dapibus egestas sapien. Fusce in aliquam eros, et finibus ante. Suspendisse convallis tellus libero, quis consequat lorem vestibulum eu. Donec sit amet elementum purus. Aliquam eu nisi dictum, ullamcorper tortor a, congue metus. Vivamus at vulputate nulla. In venenatis libero ut leo scelerisque, quis mattis leo pharetra. Nulla hendrerit ligula metus, sit amet rhoncus lectus pretium in.
-
-Duis elit risus, fermentum in eleifend non, auctor in felis. Integer eu metus arcu. Aenean arcu urna, posuere vel ipsum eu, feugiat suscipit odio. Aenean elit metus, placerat quis est vitae, faucibus accumsan orci. Suspendisse nec porttitor nisl, ut tempus elit. Donec vehicula mollis sapien et eleifend. Etiam viverra aliquam neque in porta. Duis sed pretium lectus, quis suscipit quam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec gravida eu nibh ac consequat.
-
-Duis ornare ornare turpis eu malesuada. Donec eu iaculis nibh, ut semper urna. In ante turpis, fringilla a magna et, pharetra tincidunt risus. Donec vitae risus ac purus condimentum imperdiet vel in magna. Nullam tempor risus nec libero finibus convallis. Vivamus molestie ipsum malesuada turpis ullamcorper, ut laoreet elit laoreet. Cras ut sem laoreet, tempus libero eu, pharetra lorem. Donec consectetur dolor non pharetra volutpat. Vestibulum et magna non nisl semper imperdiet sit amet luctus orci.    </p>
+                    <p><strong>About: </strong> {{ sellerprofile.details|linebreaks }} </p>
 
                 </div>
                 <div class="col-xs-12 col-sm-4 text-center">
@@ -132,7 +126,7 @@ Duis ornare ornare turpis eu malesuada. Donec eu iaculis nibh, ut semper urna. I
 
 	                                </p>
                             {% if review.content %}
-									<p>{{ review.content }}t, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+									<p>{{ review.content }}</p>
 								</div>
 							</div>
 					        {% endif %}
