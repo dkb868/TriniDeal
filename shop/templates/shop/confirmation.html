@@ -31,7 +31,11 @@
 							</td>
 							<td class="cart_description">
 								<h4><a href="">{{ item.title }}</a></h4>
+								{% if item.dummyseller %}
+                                <p>Sold by: {{ item.dummyseller }} </p>
+                            {% else %}
 								<p>Sold by: <a href="{% url 'shop:sellerprofile' item.owner.id %}">{% if item.owner.seller_name %}{{ item.owner.seller_name }}{% else %}{{ item.owner.user.first_name }} {{ item.owner.user.last_name }}{% endif %}</a> </p>
+                            {% endif %}
 							</td>
 							<td class="cart_total">
                                 {% if item.accepted_bid %}
@@ -57,9 +61,13 @@
 											<td>{{ order.street }},{{ order.city }}</td>
 										</tr>
                                         {% endif %}
-										<tr class="shipping-cost">
+										<tr>
 											<td>Phone Number</td>
 											<td>{{ order.phone }}</td>
+										</tr>
+                                        <tr class="shipping-cost">
+											<td>Payment Method</td>
+											<td>{{ order.paymentmethod }}</td>
 										</tr>
 										<tr>
 											<td>Total</td>
@@ -83,7 +91,7 @@
             {% csrf_token %}
 			<div class="form-group">
                 {{ form.agreetoterms.errors }}
-                <label for="id_agreetoterms" class="control-label col-xs-4">Confirm order and Agree to our terms of service and solemnly swear all info is valid :) :</label>
+                <label for="id_agreetoterms" class="control-label col-xs-4">I confirm that all the information I have entered is valid and I have read and agree to the <a href="{% url 'tos' %}" target="_blank">Terms of Service</a> :</label>
                 <div class="col-xs-8">
 	                <input id="id_agreetoterms" name="agreetoterms" type="checkbox" />
                 </div>

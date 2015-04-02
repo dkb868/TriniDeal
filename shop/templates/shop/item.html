@@ -1,5 +1,6 @@
 {% extends 'shop/base.html' %}
 {%  load staticfiles %}
+{% load review_tags %}
 {% block title %} {{ item.title }} {% endblock %}
 
 {% block body_block %}
@@ -73,10 +74,25 @@
                                 {%  if item.reason %}
                                    <p><b>Reason for selling:</b> {{ item.reason }}</p>
                                 {% endif %}
+                            {% if item.dummydelivery %}
+                                <p><b>Home Delivery:</b> {{ item.dummydelivery }}</p>
+                                {% else %}
                                 <p><b>Home Delivery:</b> {{ homedelivery }}</p>
+                            {% endif %}
+
                                 <p><b>Meetup Delivery:</b> {% if item.owner.meetup %} Available {% else %} Unavailable {% endif %}</p>
+
+                            {% if item.dummyseller %}
+                                <p><b>Seller:</b> {{ item.dummyseller }}</p>
+                            {% else %}
 								<p><b>Seller:</b> <a href="{% url 'shop:sellerprofile' item.owner.id %}">{% if item.owner.seller_name %}{{ item.owner.seller_name }}{% else %}{{ item.owner.user.first_name }} {{ item.owner.user.last_name }}{% endif %}</a></p>
+                            {% endif %}
+
+                            {% if item.dummylocation %}
+                                <p><b>Seller Location:</b> {{ item.dummylocation }}</p>
+                                {% elif item.owner.location %}
                                 <p><b>Seller Location:</b> {{ item.owner.location }}</p>
+                            {% endif %}
                                 <p><b>Accepted Payment Types:</b> {% for type in payment %} {{ type }} {% endfor %}</p>
 								<a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
 							</div><!--/product-information-->
@@ -84,7 +100,7 @@
 					</div><!--/product-details-->
 
 					<div class="category-tab shop-details-tab"><!--category-tab-->
-                        {% load review_tags %}
+
 						<div class="col-sm-12">
 							<ul class="nav nav-tabs">
 								<li class="active"><a href="#details" data-toggle="tab">Details</a></li>

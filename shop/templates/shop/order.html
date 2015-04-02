@@ -18,7 +18,9 @@ Order on {{ item }}
                     <p><strong>Order Number: </strong> {{ order.id }} </p>
                     <p><strong>Item: </strong> {{ item }}</p>
                     <p><strong>Sold By: </strong>
-                        {% if item.owner.seller_name %}
+	                    {% if item.dummyseller %}
+	                    {{ item.dummyseller }}
+                        {% elif item.owner.seller_name %}
 					    {{ item.owner.seller_name }}
 					    {% else %}
 						{{ item.owner.user.first_name }}&nbsp;{{ item.owner.user.last_name }}
@@ -40,7 +42,11 @@ Order on {{ item }}
                     <p><strong>Buyer Name: </strong> {{ order.buyer.first_name }} {{ order.buyer.last_name }}</p>
                     <p><strong>Buyer Contact: </strong> {{ order.phone }}</p>
                 {% else %}
+                    {% if item.dummynumber %}
+                        <p><strong>Seller Contact: </strong> {{ item.dummynumber }}</p>
+                        {% else %}
                     <p><strong>Seller Contact: </strong> {{ item.owner.phone_number }}</p>
+                        {% endif %}
                 {% endif %}
                     {%  if order.additionalinfo %}
                     <p><strong>Additional Info: </strong> {{ order.additionalinfo }}</p>

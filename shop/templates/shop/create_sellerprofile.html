@@ -78,6 +78,9 @@
                 <textarea cols="30" id="id_details" name="details" rows="10" placeholder="Talk about your business,vision,mission. eg: “We intend to provide our customers with the best online shopping experience from beginning to end, with a smart, searchable website, easy-to-follow instructions, clear and secure payment methods, and fast, quality delivery.” "></textarea>
                     </div>
                     </div>
+                                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                    {% endif %}
             <div class="form-group">
                 <div class="col-xs-6 col-sm-offset-4">
                     <br>

@@ -3,7 +3,8 @@ from django.shortcuts import render, redirect, render_to_response
 from django.template import RequestContext
 from notifications import notify
 from shop.models import SellerProfile,SaleItem,Category,UserBid,Comment, Order, PaymentChoice, SaleItemAdditionalImages
-from shop.forms import SaleItemForm, UserBidForm, SellerProfileForm, OrderCheckoutForm, OrderConfirmationForm
+from shop.forms import SaleItemForm, UserBidForm, SellerProfileForm, OrderCheckoutForm, OrderConfirmationForm, \
+	DummyItemForm
 import re
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -442,3 +443,33 @@ def search(request):
 	return render_to_response('shop/search_results.html',
 						  { 'query_string': query_string, 'found_entries': found_entries },
 						  context_instance=RequestContext(request))
+
+## the dummy hack view
+
+@user_passes_test(lambda u: u.is_superuser)
+@user_passes_test(has_seller_profile, login_url='/shop/create_sellerprofile')
+def add_dummyitem(request):
+	if request.method == 'POST':
+		form = DummyItemForm(request.POST,request.FILES)
+
+		if form.is_valid():
+			item = form.save(commit=False)
+			item.owner = request.user.sellerprofile
+
+			if 'image' in request.FILES:
+				item.image = request.FILES['image']
+
+			item.save()
+
+			if 'additional_images' in request.FILES:
+				for image in request.FILES.getlist('additional_images'):
+					SaleItemAdditionalImages.objects.create(image=image, sale_item=item)
+
+			return redirect('shop:add_dummyitem')
+		else:
+			print form.errors
+
+	else:
+		form = DummyItemForm()
+
+	return render(request, 'shop/add_dummyitem.html', {'form': form})

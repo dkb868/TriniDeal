@@ -67,3 +67,15 @@ class SignupForm(forms.Form):
 		user.first_name = self.cleaned_data['first_name']
 		user.last_name = self.cleaned_data['last_name']
 		user.save()
+
+
+## dummy item hack
+
+class DummyItemForm(forms.ModelForm):
+	category = forms.ModelChoiceField(queryset=Category.objects.all())
+	image = forms.ImageField(required=True)
+	additional_images = forms.ImageField(required=False)
+	class Meta:
+		model = SaleItem
+		fields = ('title','condition','description','reason',
+				  'asking_price','negotiable','category','image','additional_images','dummyseller','dummydelivery','dummylocation','dummynumber' )

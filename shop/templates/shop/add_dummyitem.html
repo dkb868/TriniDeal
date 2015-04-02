@@ -10,7 +10,7 @@
 					<h2 class="title text-center">Post your Item</h2>
 				</div>
          	<div class="col-sm-offset-1 ">
-        <form class="form-horizontal" id="saleitem_form" method="post" enctype="multipart/form-data" action=".">
+        <form class="form-horizontal" id="dummyitem_form" method="post" enctype="multipart/form-data" action=".">
             {% csrf_token %}
 			<div class="form-group">
                 {{ form.title.errors }}
@@ -72,7 +72,7 @@
 			</div>
                 <div class="form-group">
                     {{ form.description.errors }}
-			<label for="id_description" class="control-label col-xs-2">Description</label>
+			<label for="id_description" class="control-label col-xs-2">Description(optional)</label>
                  <div class="col-xs-6">
                 <textarea cols="30" id="id_description" name="description" rows="6" placeholder="Barely used it. Small scratches on the back cover. Charger not included."></textarea>
                     </div>
@@ -99,6 +99,34 @@
                          <input id="id_negotiable" name="negotiable" type="checkbox" />
                                 </div>
 							</div>
+        <div class="form-group">
+                            {{ form.dummyseller.errors }}
+                        <label for="id_dummyseller" class="control-label col-xs-2">Dummy seller name</label>
+                             <div class="col-xs-10">
+                            <input id="id_dummyseller" name="dummyseller" type="text"/>
+                            </div>
+			</div>
+        <div class="form-group">
+                            {{ form.dummynumber.errors }}
+                        <label for="id_dummynumber" class="control-label col-xs-2">Seller dummy number</label>
+                             <div class="col-xs-10">
+                            <input id="id_dummynumber" name="dummynumber" type="number" />
+                            </div>
+			</div>
+                <div class="form-group">
+                            {{ form.dummydelivery.errors }}
+                        <label for="id_dummydelivery" class="control-label col-xs-2">Dummy delivery</label>
+                             <div class="col-xs-10">
+                            <input id="id_dummydelivery" name="dummydelivery" type="text"/>
+                            </div>
+			</div>
+                <div class="form-group">
+                            {{ form.dummylocation.errors }}
+                        <label for="id_dummylocation" class="control-label col-xs-2">Dummy location</label>
+                             <div class="col-xs-10">
+                            <input id="id_dummylocation" name="dummylocation" type="text"/>
+                            </div>
+			</div>
             <div class="form-group">
                <label class="control-label col-xs-2">
 
