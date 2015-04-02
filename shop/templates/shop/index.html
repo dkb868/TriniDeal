@@ -1,5 +1,6 @@
 {% extends 'shop/base.html' %}
 {%  load staticfiles %}
+{% load shop_extras %}
 {% block title %} Buy and Sell anything {% endblock %}
 
 {% block extra_section %}
@@ -74,13 +75,13 @@
 							{%  for item in items %}
 					             <a href="{% url 'shop:item' item.slug %}">
 
-	                                 <div class="col-sm-4" id="{% cycle 'col1' 'col2' 'col3' %}">
+	                                 <div class="col-sm-4">
 										<div class="product-image-wrapper">
 											<div class="single-products">
 												<div class="productinfo text-center">
 													<img class="padme" src="{{ MEDIA_URL }}{{ item.image }}" alt="" />
-
-                                                    <h2>{{ item.title|truncatewords:'10' }}</h2>
+{% get_item_condition item.slug as condition %}
+                                                    <h2>({{ condition }}) {{ item.title|truncatewords:'10' }}</h2>
 													<p>${{ item.asking_price }}.00</p>
 												</div>
 
