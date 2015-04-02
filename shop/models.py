@@ -47,9 +47,6 @@ class SaleItem(models.Model):
 		('USEDACCEPTABLE', 'Used - Acceptable'),
 
 	)
-
-
-
 	# Model Fields
 
 	owner = models.ForeignKey('SellerProfile')
@@ -65,6 +62,15 @@ class SaleItem(models.Model):
 	reason = models.CharField(max_length=100, blank=True)
 	accepted_bid = models.OneToOneField('UserBid', null=True, blank=True)
 	image = models.ImageField(upload_to='sale_item_images')
+
+	# Dummy fields
+
+	dummyseller = models.CharField(max_length='40',blank=True)
+	dummydelivery = models.CharField(max_length='40',blank=True)
+	dummylocation = models.CharField(max_length='40',blank=True)
+
+
+
 
 	def save(self, *args, **kwargs):
 
