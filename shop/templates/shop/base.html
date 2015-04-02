@@ -55,6 +55,9 @@
                                 {% notifications_unread as unread_count %}
                                 <li><a href="{% url 'notifications:unread' %}"><i class="fa fa-bell"></i> Notifications({{ unread_count }})</a></li>
                                 {% endif %}
+                            {% if request.user.is_superuser %}
+                            <li><a href="{% url 'shop:add_dummyitem' %}"><i class="fa fa-fighter-jet"></i> Add Dummy Item</a></li>
+                            {% endif %}
 
                             </ul>
 						</div>
