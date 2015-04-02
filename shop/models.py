@@ -50,7 +50,7 @@ class SaleItem(models.Model):
 	# Model Fields
 
 	owner = models.ForeignKey('SellerProfile')
-	title = models.CharField(max_length='30')
+	title = models.CharField(max_length='50')
 	condition = models.CharField(max_length=15, choices=CONDITION_CHOICES)
 	description = models.TextField(blank=True)
 	asking_price = models.IntegerField(default=0)
