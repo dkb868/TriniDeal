@@ -26,7 +26,11 @@
 							</td>
 							<td class="cart_description">
 								<h4><a href="">{{ item.title }}</a></h4>
+                            {% if item.dummyseller %}
+                                <p>Sold by: {{ item.dummyseller }} </p>
+                            {% else %}
 								<p>Sold by: <a href="{% url 'shop:sellerprofile' item.owner.id %}">{% if item.owner.seller_name %}{{ item.owner.seller_name }}{% else %}{{ item.owner.user.first_name }} {{ item.owner.user.last_name }}{% endif %}</a> </p>
+                            {% endif %}
 							</td>
 							<td class="cart_total">
 								<p class="cart_total_price">${{ item.asking_price }}.00</p>
