@@ -1,5 +1,6 @@
 {% extends 'shop/base.html' %}
 {%  load staticfiles %}
+{% load review_tags %}
 {% block title %} {{ item.title }} {% endblock %}
 
 {% block body_block %}
@@ -99,7 +100,7 @@
 					</div><!--/product-details-->
 
 					<div class="category-tab shop-details-tab"><!--category-tab-->
-                        {% load review_tags %}
+
 						<div class="col-sm-12">
 							<ul class="nav nav-tabs">
 								<li class="active"><a href="#details" data-toggle="tab">Details</a></li>
