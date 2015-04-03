@@ -37,16 +37,6 @@
 								</ul>
 							</div>
 						</div><!--/brands_products-->
-                        <div class="brands_products">
-                            <h2>Price Sorting</h2>
-                                <form action="" method="get">
-        <label for="id_asking_price">Price less than:</label> <input id="id_asking_price" name="asking_price" step="any" type="number" />
-<select hidden="hidden" id="id_o" name="o">
-<option value="asking_price" selected="selected">Asking_price</option>
-</select>
-        <button class="btn btn-default" type="submit" > Sort </button>
-    </form> <br><br>
-                            </div>
 					</div>
 				</div>
                 {% endblock %}
@@ -159,7 +149,7 @@
 <script>$.endlessPaginate({
     paginateOnScroll: true,
     paginateOnScrollChunkSize: 3,
-    paginateOnScrollMargin: 270,
+    paginateOnScrollMargin: 200,
     });
     </script>
 {% endblock %}

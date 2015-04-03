@@ -30,9 +30,8 @@ def has_seller_profile(user):
 def index(request,
           template='shop/index.html',
           page_template='shop/item_list.html'):
-	item_list = SaleItem.objects.filter(available=True).order_by('-post_time')
-	f = SaleItemFilter(request.GET, queryset=item_list)
-	context_dict = {'items': item_list, 'filter': f, 'page_template': page_template}
+	f = SaleItem.objects.filter(available=True).order_by('-post_time')[:27]
+	context_dict = {'filter': f, 'page_template': page_template}
 
 	if request.is_ajax():
 		template = page_template
