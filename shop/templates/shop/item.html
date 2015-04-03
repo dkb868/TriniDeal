@@ -114,9 +114,10 @@
 								<div class="col-sm-12">
 									<div class="product-image-wrapper item-description">
                                         <p>{{ item.description|linebreaks }}</p> <hr>
+                                        <a href="{{ MEDIA_URL }}{{ item.image }}"><img src="{{ MEDIA_URL }}{{ item.image }}" width="300" alt="" /></a>
                                         {% if additional_images %}
                                         {% for imagemodel in additional_images %}
-                                            <a href="{{ MEDIA_URL }}{{ imagemodel.image }}"><img src="/media/{{ imagemodel.image }}" alt="" width="300"/></a>
+                                            <a href="{{ MEDIA_URL }}{{ imagemodel.image }}"><img src="{{ MEDIA_URL }}{{ imagemodel.image }}" alt="" width="300"/></a>
                                         {% endfor %}
                                         {% endif %}
 									</div>
