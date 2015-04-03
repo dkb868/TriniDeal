@@ -3,6 +3,9 @@
 {% load shop_extras %}
 {% paginate 9 items %}
 {% for item in items %}
+    {% if forloop.counter|divisibleby:3 %}
+                                <div class="row">
+                                {% endif %}
 <a href="{% url 'shop:item' item.slug %}">
      <div class="col-sm-4">
 		<div class="product-image-wrapper">
@@ -18,6 +21,7 @@
 		</div>
      </div>
  </a>
+    {% if forloop.counter|divisibleby:3 %}</div>{% endif %}
 {% endfor %}
 {% show_more "See more items" %}
 <br>
