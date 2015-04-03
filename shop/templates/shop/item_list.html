@@ -1,8 +1,8 @@
 {% load endless %}
 {% load staticfiles %}
 {% load shop_extras %}
-{% paginate 9 items %}
-{% for item in items %}
+{% paginate 6 filter %}
+{% for item in filter %}
     {% if forloop.counter|divisibleby:3 %}
                                 <div class="row">
                                 {% endif %}
