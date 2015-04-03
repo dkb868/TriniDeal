@@ -8,6 +8,7 @@ from shop.forms import SaleItemForm, UserBidForm, SellerProfileForm, OrderChecko
 import re
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required, user_passes_test
+from filters import SaleItemFilter
 
 ## Custom Decorators
 
@@ -26,10 +27,18 @@ def has_seller_profile(user):
 
 
 
-def index(request):
-	item_list = SaleItem.objects.filter(available=True).order_by('-post_time')[:9]
-	context_dict = {'items': item_list}
-	return render(request, 'shop/index.html', context_dict)
+def index(request,
+          template='shop/index.html',
+          page_template='shop/item_list.html'):
+	item_list = SaleItem.objects.filter(available=True).order_by('-post_time')
+	f = SaleItemFilter(request.GET, queryset=item_list)
+	context_dict = {'items': item_list, 'filter': f, 'page_template': page_template}
+
+	if request.is_ajax():
+		template = page_template
+
+	return render_to_response(
+		template, context_dict, context_instance=RequestContext(request))
 
 
 #def category(request, category_name_slug):
@@ -46,7 +55,8 @@ def category(
 
 	category = Category.objects.get(slug=category_name_slug)
 	item_list = SaleItem.objects.filter(Q(category=category) | Q(category__parent_category=category)).order_by('-post_time')
-	context_dict = {'category': category, 'items': item_list, 'page_template': page_template}
+	f = SaleItemFilter(request.GET, queryset=item_list)
+	context_dict = {'category': category, 'items': item_list, 'page_template': page_template, 'filter': f}
 
 	if request.is_ajax():
 		template = page_template

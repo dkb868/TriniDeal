@@ -1,6 +1,55 @@
 {% extends 'shop/base.html' %}
 {%  load staticfiles %}
+{% load shop_extras %}
 {% block title %} {{ category.name }}{% endblock %}
+	{% block category_block %}
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="left-sidebar">
+						<h2>Categories</h2>
+						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
+							{% get_category_list category %}
+                            <hr>
+                            <div class="panel panel-default">
+                            <div class="panel-heading">
+									<h4 class="panel-title">
+										<a data-parent="#accordian" href="{% url 'envelope-contact' %}">
+											<span class="badge pull-left"><i class="fa fa-plus-circle"></i></span>
+											Suggest  a  category
+										</a>
+									</h4>
+								</div>
+                                </div>
+
+						</div><!--/category-products-->
+                        						<div class="brands_products"><!--brands_products-->
+							<h2>Brands</h2>
+							<div class="brands-name">
+								<ul class="nav nav-pills nav-stacked">
+									<li><a href="/shop/search/?q=apple">Apple</a></li>
+									<li><a href="/shop/search/?q=samsung"> Samsung</a></li>
+                                    <li><a href="/shop/search/?q=blu">Blu</a> </li>
+                                    <li><a href="/shop/search/?q=dell">Dell</a> </li>
+                                    <li><a href="/shop/search/?q=hp">HP</a> </li>
+                                    <li><a href="/shop/search/?q=acer">Acer</a> </li>
+								</ul>
+							</div>
+						</div><!--/brands_products-->
+                        <div class="brands_products">
+                            <h2>Price Sorting</h2>
+                                <form action="" method="get">
+        <label for="id_asking_price">Price less than:</label> <input id="id_asking_price" name="asking_price" step="any" type="number" />
+<select hidden="hidden" id="id_o" name="o">
+<option value="asking_price" selected="selected">Asking_price</option>
+</select>
+        <button class="btn btn-default" type="submit" > Sort </button>
+    </form> <br><br>
+                            </div>
+					</div>
+				</div>
+                {% endblock %}
 {% block body_block %}
 	<section>
 		<div class="container">
@@ -8,10 +57,12 @@
 				<div class="col-sm-9 padding-right">
 					<div class="features_items"><!--features_items-->
 						<h2 class="title text-center">{{ category.name }}</h2>
-                    	{% if items %}
+
+                    	{% if filter %}
                             <div class="endless_page_template">
                             {% include page_template %}
                             </div>
+
 						<!--	{%  for item in items %}
 					             <a href="{% url 'shop:item' item.slug %}">
 	                                 <div class="col-sm-4">
@@ -41,14 +92,14 @@
 	</section>
 	
 {% block js %}
-    {{ block.super }}
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
-    <script>$.endlessPaginate({
-    	paginateOnScroll: true,
-        paginateOnScrollChunkSize: 3,
-        paginateOnScrollMargin: 10,
-    	});
-    	</script>
+{{ block.super }}
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+<script>$.endlessPaginate({
+    paginateOnScroll: true,
+    paginateOnScrollChunkSize: 3,
+    paginateOnScrollMargin: 270,
+    });
+    </script>
 {% endblock %}
 {% endblock %}

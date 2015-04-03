@@ -2,7 +2,54 @@
 {%  load staticfiles %}
 {% load shop_extras %}
 {% block title %} Buy and Sell anything {% endblock %}
+	{% block category_block %}
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="left-sidebar">
+						<h2>Categories</h2>
+						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
+							{% get_category_list category %}
+                            <hr>
+                            <div class="panel panel-default">
+                            <div class="panel-heading">
+									<h4 class="panel-title">
+										<a data-parent="#accordian" href="{% url 'envelope-contact' %}">
+											<span class="badge pull-left"><i class="fa fa-plus-circle"></i></span>
+											Suggest  a  category
+										</a>
+									</h4>
+								</div>
+                                </div>
 
+						</div><!--/category-products-->
+                        						<div class="brands_products"><!--brands_products-->
+							<h2>Brands</h2>
+							<div class="brands-name">
+								<ul class="nav nav-pills nav-stacked">
+									<li><a href="/shop/search/?q=apple">Apple</a></li>
+									<li><a href="/shop/search/?q=samsung"> Samsung</a></li>
+                                    <li><a href="/shop/search/?q=blu">Blu</a> </li>
+                                    <li><a href="/shop/search/?q=dell">Dell</a> </li>
+                                    <li><a href="/shop/search/?q=hp">HP</a> </li>
+                                    <li><a href="/shop/search/?q=acer">Acer</a> </li>
+								</ul>
+							</div>
+						</div><!--/brands_products-->
+                        <div class="brands_products">
+                            <h2>Price Sorting</h2>
+                                <form action="" method="get">
+        <label for="id_asking_price">Price less than:</label> <input id="id_asking_price" name="asking_price" step="any" type="number" />
+<select hidden="hidden" id="id_o" name="o">
+<option value="asking_price" selected="selected">Asking_price</option>
+</select>
+        <button class="btn btn-default" type="submit" > Sort </button>
+    </form> <br><br>
+                            </div>
+					</div>
+				</div>
+                {% endblock %}
 {% block extra_section %}
 	<section id="slider"><!--slider-->
 		<div class="container">
@@ -20,8 +67,7 @@
 								<div class="col-sm-6">
 									<h1><span>Trini</span>Deal</h1>
 									<h2>Buy and sell anything</h2>
-									<p>The place to sell your stuff, and find affordable goods,
-                                        used and new, in Trinidad and Tobago </p>
+									<p>The fastest growing marketplace for new and used products in the country.</p>
 									<a href="{% url 'shop:create_sellerprofile' %}"><button type="button" class="btn btn-default get">Start selling now</button></a>
 								</div>
 								<div class="col-sm-6">
@@ -32,7 +78,7 @@
 								<div class="col-sm-6">
 									<h1><span>Trini</span>Deal</h1>
 									<h2>Quickest signup ever</h2>
-									<p>It'll take 30 seconds to set up a Seller Profile and post your first item </p>
+									<p>It'll take 30 seconds to login with facebook, set up a Seller Profile and post your first item. </p>
 									<a href="{% url 'shop:create_sellerprofile' %}"><button type="button" class="btn btn-default get">Start selling now</button></a>
 								</div>
 								<div class="col-sm-6">
@@ -43,8 +89,8 @@
 							<div class="item">
 								<div class="col-sm-6">
 									<h1><span>Trini</span>Deal</h1>
-									<h2>No fees whatsoever</h2>
-									<p>What do you have to lose?</p>
+									<h2>Free free free</h2>
+									<p>Let me get this straight. I get to post products and get more sales for free? Sign me up eh</p>
 									<a href="{% url 'shop:create_sellerprofile' %}"><button type="button" class="btn btn-default get">Start selling now</button></a>
 								</div>
 								<div class="col-sm-6">
@@ -71,8 +117,12 @@
 				<div class="col-sm-9 padding-right" id="padbelow">
 					<div class="features_items"><!--features_items-->
 						<h2 class="title text-center">Latest Items</h2>
-                    	{% if items %}
-							{%  for item in items %}
+                    	{% if filter %}
+                            <div class="endless_page_template">
+                            {% include page_template %}
+                            </div>
+                            <!--
+							{%  for item in filter %}
                                 {% if forloop.counter|divisibleby:3 %}
                                 <div class="row">
                                 {% endif %}
@@ -93,7 +143,7 @@
                                      </div>
                                  </a>
 {% if forloop.counter|divisibleby:3 %}</div>{% endif %}
-						    {%  endfor %}
+						    {%  endfor %} -->
 					    {%  else  %}
 					        <strong> No items? What kinda ting is that? go <a href="{% url 'shop:add_new_item' %}">post something now eh</a> </strong>
 					    {% endif %}
@@ -102,4 +152,15 @@
 					</div><!--features_items-->
 					
 				</div>
+{% block js %}
+{{ block.super }}
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+<script>$.endlessPaginate({
+    paginateOnScroll: true,
+    paginateOnScrollChunkSize: 3,
+    paginateOnScrollMargin: 270,
+    });
+    </script>
+{% endblock %}
 {% endblock %}
