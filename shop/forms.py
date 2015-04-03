@@ -78,4 +78,4 @@ class DummyItemForm(forms.ModelForm):
 	class Meta:
 		model = SaleItem
 		fields = ('title','condition','description','reason',
-				  'asking_price','negotiable','category','image','additional_images','dummyseller','dummydelivery','dummylocation','dummynumber' )
+				  'asking_price','negotiable','category','image','additional_images','dummyseller','dummydelivery','dummylocation','dummynumber','dummyfacebook' )
