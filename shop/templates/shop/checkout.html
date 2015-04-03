@@ -12,7 +12,7 @@
         <form class="form-horizontal" id="checkout_form" method="post" action=".">
             {% csrf_token %}
 
-        {% if item.dummylocation %}
+        {% if item.dummydelivery %}
             			<div class="form-group">
                 {{ form.meetuploc.errors }}
                 <label for="id_meetuploc" class="control-label col-xs-3">Suggested Meetup Location</label>
