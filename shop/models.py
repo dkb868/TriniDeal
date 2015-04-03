@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 import itertools
 from django.template.defaultfilters import slugify
+import django_filters
+
 
 class PaymentChoice(models.Model):
 	description = models.CharField(max_length=50)
@@ -150,9 +152,6 @@ class Order(models.Model):
 
 	def __unicode__(self):
 		return (self.buyer.first_name + " " + self.buyer.last_name + " "  + "ordered item:" + " " + self.buy_item.title )
-
-
-
 
 
 
