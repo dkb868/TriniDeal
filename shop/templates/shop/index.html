@@ -73,6 +73,9 @@
 						<h2 class="title text-center">Latest Items</h2>
                     	{% if items %}
 							{%  for item in items %}
+                                {% if forloop.counter|divisibleby:3 %}
+                                <div class="row">
+                                {% endif %}
 					             <a href="{% url 'shop:item' item.slug %}">
 
 	                                 <div class="col-sm-4">
@@ -89,7 +92,7 @@
 										</div>
                                      </div>
                                  </a>
-
+{% if forloop.counter|divisibleby:3 %}</div>{% endif %}
 						    {%  endfor %}
 					    {%  else  %}
 					        <strong> No items? What kinda ting is that? go <a href="{% url 'shop:add_new_item' %}">post something now eh</a> </strong>

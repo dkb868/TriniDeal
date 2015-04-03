@@ -69,6 +69,7 @@ class SaleItem(models.Model):
 	dummydelivery = models.CharField(max_length='40',blank=True)
 	dummylocation = models.CharField(max_length='40',blank=True)
 	dummynumber = models.IntegerField(blank=True,null=True)
+	dummyfacebook = models.CharField(max_length='200',blank=True)
 
 
 
