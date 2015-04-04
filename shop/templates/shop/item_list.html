@@ -11,10 +11,17 @@
 		<div class="product-image-wrapper">
 			<div class="single-products">
 				<div class="productinfo text-center">
+                {% if item.deal %}
+                <p>Sale ends {{ item.sale_end_date }}</p>
+                {% endif %}
 					<img class="padme" src="{{ MEDIA_URL }}{{ item.image }}" alt="" />
                     {% get_item_condition item.slug as condition %}
                     <h2>({{ condition }}) {{ item.title|truncatewords:'6' }}</h2>
-					<p>${{ item.asking_price }}.00</p>
+                    {% if item.deal %}
+					<p><s>${{ item.usual_price }}.00</s></p><h2>${{ item.asking_price }}.00</h2>
+                    {% else %}
+                    <p>${{ item.asking_price }}.00</p>
+                    {% endif %}
 				</div>
 
 			</div>
