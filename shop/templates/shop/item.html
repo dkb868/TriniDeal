@@ -104,7 +104,7 @@
                             {% if not item.offline %}
                                 <p><b>Accepted Payment Types:</b> {% for type in payment %} {{ type }} {% endfor %}</p> {% endif %}
                             {% if item.link %}
-                            <p><b>Link to page:</b> {{ item.link }}</p>
+                            <p><b>Link to page:</b> <a target="_blank" href="http://{{ item.link }}">{{ item.link }}</a></p>
                             {% endif %}
 
 							</div><!--/product-information-->
