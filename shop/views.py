@@ -30,7 +30,7 @@ def has_seller_profile(user):
 def index(request,
           template='shop/index.html',
           page_template='shop/item_list.html'):
-	f = SaleItem.objects.filter(available=True).order_by('-post_time')[:27]
+	f = SaleItem.objects.filter(available=True, deal=True).order_by('-post_time')
 	context_dict = {'filter': f, 'page_template': page_template}
 
 	if request.is_ajax():
@@ -54,8 +54,8 @@ def category(
 
 	category = Category.objects.get(slug=category_name_slug)
 	item_list = SaleItem.objects.filter(Q(category=category) | Q(category__parent_category=category)).order_by('-post_time')
-	f = SaleItemFilter(request.GET, queryset=item_list)
-	context_dict = {'category': category, 'items': item_list, 'page_template': page_template, 'filter': f}
+	# f = SaleItemFilter(request.GET, queryset=item_list)
+	context_dict = {'category': category, 'items': item_list, 'page_template': page_template, 'filter': item_list}
 
 	if request.is_ajax():
 		template = page_template
@@ -91,6 +91,9 @@ def add_new_item(request):
 
 			if 'image' in request.FILES:
 				item.image = request.FILES['image']
+
+			if item.usual_price:
+				item.deal = True
 
 			item.save()
 
@@ -479,6 +482,9 @@ def add_dummyitem(request):
 
 			if 'image' in request.FILES:
 				item.image = request.FILES['image']
+
+			if item.usual_price:
+				item.deal = True
 
 			item.save()
 

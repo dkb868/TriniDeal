@@ -134,6 +134,35 @@
                             <input id="id_dummyfacebook" name="dummyfacebook" type="text"/>
                             </div>
 			</div>
+        <div class="form-group">
+                            {{ form.usual_price.errors }}
+                        <label for="id_usual_price" class="control-label col-xs-2">Usual price (ignore if item is not on sale)</label>
+                             <div class="col-xs-10">
+                            <input id="id_usual_price" name="usual_price" type="number" step="1" placeholder="1000"/>
+                            </div>
+			</div>
+        <div class="form-group">
+                                {{ form.offline.errors }}
+                        <label for="id_offline" class="control-label col-xs-2">Tick if people can only buy the item in store. (i.e you do not deliver)</label>
+                         <div class="col-xs-10">
+                         <input id="id_offline" name="offline" type="checkbox" />
+                                </div>
+							</div>
+        <div class="form-group">
+                {{ form.sale_end_date.errors }}
+                <label for="id_title" class="control-label col-xs-2">Sale end date</label>
+                <div class="col-xs-10">
+	                <input id="id_sale_end_date" maxlength="60" name="sale_end_date" type="text" placeholder="1/1/1"/>
+                </div>
+            </div>
+                <div class="form-group">
+                {{ form.link.errors }}
+                <label for="id_title" class="control-label col-xs-2">Link to your page/site if selling offline</label>
+                <div class="col-xs-10">
+	                <input id="id_link" maxlength="260" name="link" type="text" placeholder="facebook.com/urpage"/>
+                </div>
+            </div>
+
             <div class="form-group">
                <label class="control-label col-xs-2">
 

@@ -9,7 +9,7 @@ class SaleItemForm(forms.ModelForm):
 	class Meta:
 		model = SaleItem
 		fields = ('title','condition','description','reason',
-				  'asking_price','negotiable','category','image','additional_images')
+				  'asking_price','negotiable','category','image','additional_images','usual_price','sale_end_date','offline',)
 
 class UserBidForm(forms.ModelForm):
 	class Meta:
@@ -78,4 +78,4 @@ class DummyItemForm(forms.ModelForm):
 	class Meta:
 		model = SaleItem
 		fields = ('title','condition','description','reason',
-				  'asking_price','negotiable','category','image','additional_images','dummyseller','dummydelivery','dummylocation','dummynumber','dummyfacebook' )
+				  'asking_price','negotiable','category','image','additional_images','dummyseller','dummydelivery','dummylocation','dummynumber','dummyfacebook','usual_price','sale_end_date','offline','link')
