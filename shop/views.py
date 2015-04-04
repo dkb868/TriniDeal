@@ -53,7 +53,7 @@ def category(
 		page_template='shop/item_list.html'):
 
 	category = Category.objects.get(slug=category_name_slug)
-	item_list = SaleItem.objects.filter(Q(category=category) | Q(category__parent_category=category)).order_by('-post_time')
+	item_list = SaleItem.objects.filter((Q(category=category) | Q(category__parent_category=category)),deal=True).order_by('-post_time')
 	# f = SaleItemFilter(request.GET, queryset=item_list)
 	context_dict = {'category': category, 'items': item_list, 'page_template': page_template, 'filter': item_list}
 
