@@ -9,6 +9,9 @@
 					<div class="features_items"><!--features_items-->
                     	{% if found_entries %}
 							{%  for item in found_entries %}
+                                    {% if forloop.counter|divisibleby:3 %}
+                                <div class="row">
+                                {% endif %}
 					             <a href="{% url 'shop:item' item.slug %}">
 	                                 <div class="col-sm-4">
 										<div class="product-image-wrapper">
@@ -24,6 +27,7 @@
 										</div>
                                      </div>
                                  </a>
+                                    {% if forloop.counter|divisibleby:3 %}</div>{% endif %}
 						    {%  endfor %}
 					    {%  else  %}
 					        <strong> No results found :( </strong>

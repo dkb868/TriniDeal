@@ -1,23 +1,34 @@
 {% load endless %}
 {% load staticfiles %}
 {% load shop_extras %}
-{% paginate 9 items %}
-{% for item in items %}
+{% paginate 6 filter %}
+{% for item in filter %}
+    {% if forloop.counter|divisibleby:3 %}
+                                <div class="row">
+                                {% endif %}
 <a href="{% url 'shop:item' item.slug %}">
      <div class="col-sm-4">
 		<div class="product-image-wrapper">
 			<div class="single-products">
 				<div class="productinfo text-center">
+                {% if item.deal %}
+                <p>Sale ends {{ item.sale_end_date }}</p>
+                {% endif %}
 					<img class="padme" src="{{ MEDIA_URL }}{{ item.image }}" alt="" />
                     {% get_item_condition item.slug as condition %}
                     <h2>({{ condition }}) {{ item.title|truncatewords:'6' }}</h2>
-					<p>${{ item.asking_price }}.00</p>
+                    {% if item.deal %}
+					<p><s>${{ item.usual_price }}.00</s></p><h2>${{ item.asking_price }}.00</h2>
+                    {% else %}
+                    <p>${{ item.asking_price }}.00</p>
+                    {% endif %}
 				</div>
 
 			</div>
 		</div>
      </div>
  </a>
+    {% if forloop.counter|divisibleby:3 %}</div>{% endif %}
 {% endfor %}
 {% show_more "See more items" %}
 <br>

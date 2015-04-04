@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 import itertools
 from django.template.defaultfilters import slugify
+import django_filters
+
 
 class PaymentChoice(models.Model):
 	description = models.CharField(max_length=50)
@@ -50,7 +52,7 @@ class SaleItem(models.Model):
 	# Model Fields
 
 	owner = models.ForeignKey('SellerProfile')
-	title = models.CharField(max_length='50')
+	title = models.CharField(max_length='60')
 	condition = models.CharField(max_length=15, choices=CONDITION_CHOICES)
 	description = models.TextField(blank=True)
 	asking_price = models.IntegerField(default=0)
@@ -69,6 +71,17 @@ class SaleItem(models.Model):
 	dummydelivery = models.CharField(max_length='40',blank=True)
 	dummylocation = models.CharField(max_length='40',blank=True)
 	dummynumber = models.IntegerField(blank=True,null=True)
+	dummyfacebook = models.CharField(max_length='200',blank=True)
+
+	# Daily Deal Fields
+
+	deal = models.BooleanField(default=False)
+	usual_price = models.IntegerField(blank=True,null=True)
+	sale_end_date = models.DateField(blank=True,null=True)
+	offline = models.BooleanField(default=False)
+	link = models.CharField(max_length='300',blank=True)
+
+
 
 
 
@@ -149,9 +162,6 @@ class Order(models.Model):
 
 	def __unicode__(self):
 		return (self.buyer.first_name + " " + self.buyer.last_name + " "  + "ordered item:" + " " + self.buy_item.title )
-
-
-
 
 
 

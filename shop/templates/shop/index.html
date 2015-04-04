@@ -1,38 +1,62 @@
 {% extends 'shop/base.html' %}
 {%  load staticfiles %}
 {% load shop_extras %}
-{% block title %} Buy and Sell anything {% endblock %}
+{% block title %} Latest deals from around the country {% endblock %}
+	{% block category_block %}
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="left-sidebar">
+						<h2>Categories</h2>
+						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
+							{% get_category_list category %}
+                            <hr>
+                            <div class="panel panel-default">
+                            <div class="panel-heading">
+									<h4 class="panel-title">
+										<a data-parent="#accordian" href="{% url 'envelope-contact' %}">
+											<span class="badge pull-left"><i class="fa fa-plus-circle"></i></span>
+											Suggest  a  category
+										</a>
+									</h4>
+								</div>
+                                </div>
 
+						</div><!--/category-products-->
+
+					</div>
+				</div>
+                {% endblock %}
 {% block extra_section %}
 	<section id="slider"><!--slider-->
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12">
 					<div id="slider-carousel" class="carousel slide" data-ride="carousel">
-						<ol class="carousel-indicators">
+						<!--<ol class="carousel-indicators">
 							<li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
-							<li data-target="#slider-carousel" data-slide-to="1"></li>
-							<li data-target="#slider-carousel" data-slide-to="2"></li>
-						</ol>
+							<!--<li data-target="#slider-carousel" data-slide-to="1"></li>
+							<li data-target="#slider-carousel" data-slide-to="2"></li> --
+						</ol> -->
 						
 						<div class="carousel-inner">
 							<div class="item active">
 								<div class="col-sm-6">
 									<h1><span>Trini</span>Deal</h1>
-									<h2>Buy and sell anything</h2>
-									<p>The place to sell your stuff, and find affordable goods,
-                                        used and new, in Trinidad and Tobago </p>
-									<a href="{% url 'shop:create_sellerprofile' %}"><button type="button" class="btn btn-default get">Start selling now</button></a>
+									<h2>Informed shopping</h2>
+									<p>Find the latest deals and discounts from stores all over the country. <br>Start shopping smart today.</p>
 								</div>
 								<div class="col-sm-6">
 									<img src="{% static 'shop/images/home/cart2.png' %}" class="girl img-responsive" alt="" />
 								</div>
 							</div>
+                            <!--
 							<div class="item">
 								<div class="col-sm-6">
 									<h1><span>Trini</span>Deal</h1>
 									<h2>Quickest signup ever</h2>
-									<p>It'll take 30 seconds to set up a Seller Profile and post your first item </p>
+									<p>It'll take 30 seconds to login with facebook, set up a Seller Profile and post your first item. </p>
 									<a href="{% url 'shop:create_sellerprofile' %}"><button type="button" class="btn btn-default get">Start selling now</button></a>
 								</div>
 								<div class="col-sm-6">
@@ -43,23 +67,23 @@
 							<div class="item">
 								<div class="col-sm-6">
 									<h1><span>Trini</span>Deal</h1>
-									<h2>No fees whatsoever</h2>
-									<p>What do you have to lose?</p>
+									<h2>Free free free</h2>
+									<p>Let me get this straight. I get to post products and get more sales for free? Sign me up eh</p>
 									<a href="{% url 'shop:create_sellerprofile' %}"><button type="button" class="btn btn-default get">Start selling now</button></a>
 								</div>
 								<div class="col-sm-6">
 									<img src="{% static 'shop/images/home/iphones.png' %}"  class="girl img-responsive" alt="" />
 								</div>
-							</div>
+							</div> -->
 							
 						</div>
-						
+						<!--
 						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
 							<i class="fa fa-angle-left"></i>
 						</a>
 						<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
 							<i class="fa fa-angle-right"></i>
-						</a>
+						</a>-->
 					</div>
 					
 				</div>
@@ -70,9 +94,16 @@
 {% block body_block %}
 				<div class="col-sm-9 padding-right" id="padbelow">
 					<div class="features_items"><!--features_items-->
-						<h2 class="title text-center">Latest Items</h2>
-                    	{% if items %}
-							{%  for item in items %}
+						<h2 class="title text-center">Easter Weekend Sales</h2>
+                    	{% if filter %}
+                            <div class="endless_page_template">
+                            {% include page_template %}
+                            </div>
+                            <!--
+							{%  for item in filter %}
+                                {% if forloop.counter|divisibleby:3 %}
+                                <div class="row">
+                                {% endif %}
 					             <a href="{% url 'shop:item' item.slug %}">
 
 	                                 <div class="col-sm-4">
@@ -89,14 +120,26 @@
 										</div>
                                      </div>
                                  </a>
-
-						    {%  endfor %}
+{% if forloop.counter|divisibleby:3 %}</div>{% endif %}
+						    {%  endfor %} -->
 					    {%  else  %}
-					        <strong> No items? What kinda ting is that? go <a href="{% url 'shop:add_new_item' %}">post something now eh</a> </strong>
+
+					        <strong> No deals at the moment. New deals are added all the time so check again soon </strong>
 					    {% endif %}
 
 
 					</div><!--features_items-->
 					
 				</div>
+{% block js %}
+{{ block.super }}
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+<script>$.endlessPaginate({
+    paginateOnScroll: true,
+    paginateOnScrollChunkSize: 3,
+    paginateOnScrollMargin: 200,
+    });
+    </script>
+{% endblock %}
 {% endblock %}
