@@ -63,8 +63,7 @@
 							</button>
 						</div>
 							<ul class="nav navbar-nav collapse navbar-collapse">
-                            <li><a target="_blank" href="https://www.facebook.com/trinideal"><i class="fa fa-facebook"></i></a></li>
-                            <!--
+
                                 <li><a href="{% url 'shop:myorders' %}"><i class="fa fa-shopping-cart"></i> My Purchases</a></li>
                                 <li><a href="{% url 'shop:add_new_item' %}"><i class="fa fa-plus"></i> Post an item</a></li>
                             {% if request.user.sellerprofile %}
@@ -74,7 +73,7 @@
                                 {% if request.user.is_authenticated %}
                                 {% notifications_unread as unread_count %}
                                 <li><a href="{% url 'notifications:unread' %}"><i class="fa fa-bell"></i> Notifications({{ unread_count }})</a></li>
-                                {% endif %} -->
+                                {% endif %}
                             {% if request.user.is_superuser %}
                             <li><a href="{% url 'shop:add_dummyitem' %}"><i class="fa fa-fighter-jet"></i> Add Dummy Item</a></li>
                             {% endif %}
@@ -84,9 +83,9 @@
 
 						<div class="contactinfo pull-right">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-                          <!--  <li><a href="#">|</a></li>
+                           <li><a href="#">|</a></li>
                             <li><a href="{% url 'shop:sellerguide' %}"><i class="fa fa-book"></i> Seller's Guide</a> </li>
-                            <li><a href="{% url 'help' %}"><i class="fa fa-question-circle"></i> Help/FAQs</a></li> -->
+                            <li><a href="{% url 'help' %}"><i class="fa fa-question-circle"></i> Help/FAQs</a></li>
                                 <li><a href="{% url 'about' %}"><i class="fa fa-info-circle"></i> About us</a></li>
 								<li><a href="{% url 'envelope-contact' %}"><i class="fa fa-envelope"></i> Contact</a></li>
                                 {% if not request.user.is_authenticated %}
