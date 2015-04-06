@@ -73,16 +73,6 @@ class SaleItem(models.Model):
 	dummynumber = models.IntegerField(blank=True,null=True)
 	dummyfacebook = models.CharField(max_length='200',blank=True)
 
-	# Daily Deal Fields
-
-	deal = models.BooleanField(default=False)
-	usual_price = models.IntegerField(blank=True,null=True)
-	sale_end_date = models.DateField(blank=True,null=True)
-	offline = models.BooleanField(default=False)
-	link = models.CharField(max_length='300',blank=True)
-
-
-
 
 
 

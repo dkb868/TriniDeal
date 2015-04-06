@@ -51,17 +51,10 @@
 								<small><a href="{% url 'help' %}">This is my post from another site.</a> </small>{% endif %}
 								<h2>{{ item.title }}</h2>
 								<span>
-                                {% if item.usual_price %}
-                                    <p>Sale ends: {{ item.sale_end_date }}</p>
-                                <s>${{ item.usual_price }}.00</s>
-                                {% endif %}
-									<h2>${{ item.asking_price }}.00</h2>
-                                    {% if item.offline %}
-                                        <p>This item cannot be purchased online. Go get it at the store while you can!</p>
-                                    {% else %}
+									<span>${{ item.asking_price }}.00</span>
 									<a href="{% url 'shop:item_cart' item.slug %}"><button type="button" class="btn btn-default cart">
 										Buy now
-									</button> </a> {% endif %}
+									</button> </a>
 								</span>
                                 {% if item.negotiable %}
 	                                {% if highestbid %}
@@ -81,14 +74,13 @@
                                 {%  if item.reason %}
                                    <p><b>Reason for selling:</b> {{ item.reason }}</p>
                                 {% endif %}
-                            {% if item.offline %}
-                            {% elif item.dummydelivery %}
+                            {% if item.dummydelivery %}
                                 <p><b>Home Delivery:</b> {{ item.dummydelivery }}</p>
                                 {% else %}
                                 <p><b>Home Delivery:</b> {{ homedelivery }}</p>
                             {% endif %}
-{% if not item.offline %}
-                                <p><b>Meetup Delivery:</b> {% if item.owner.meetup %} Available {% else %} Unavailable {% endif %}</p> {% endif %}
+
+                                <p><b>Meetup Delivery:</b> {% if item.owner.meetup %} Available {% else %} Unavailable {% endif %}</p>
 
                             {% if item.dummyseller %}
                                 <p><b>Seller:</b> {{ item.dummyseller }}</p>
@@ -101,12 +93,8 @@
                                 {% elif item.owner.location %}
                                 <p><b>Seller Location:</b> {{ item.owner.location }}</p>
                             {% endif %}
-                            {% if not item.offline %}
-                                <p><b>Accepted Payment Types:</b> {% for type in payment %} {{ type }} {% endfor %}</p> {% endif %}
-                            {% if item.link %}
-                            <p><b>Link to page:</b> <a target="_blank" href="http://{{ item.link }}">{{ item.link }}</a></p>
-                            {% endif %}
-
+                                <p><b>Accepted Payment Types:</b> {% for type in payment %} {{ type }} {% endfor %}</p>
+								<a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
 							</div><!--/product-information-->
 						</div>
 					</div><!--/product-details-->

@@ -73,9 +73,6 @@ INSTALLED_APPS = (
 
     #pagination
     'endless_pagination',
-
-    #filter
-    'django_filters',
 )
 
 SITE_ID = 1
@@ -123,7 +120,7 @@ TIME_ZONE = 'America/Port_of_Spain'
 
 USE_I18N = True
 
-USE_L10N = False
+USE_L10N = True
 
 USE_TZ = True
 
@@ -194,11 +191,3 @@ EMAIL_HOST_PASSWORD = 'Allthatiknow1'
 # contact
 
 ENVELOPE_EMAIL_RECIPIENTS = ['support@trinideal.com','mitrikyle@yahoo.com']
-
-DATE_INPUT_FORMATS = ('%d-%m-%Y', '%d/%m/%Y', '%d/%m/%y', '%d %b %Y',
-                      '%d %b, %Y', '%d %b %Y', '%d %b, %Y', '%d %B, %Y',
-                      '%d %B %Y')
-
-DATETIME_INPUT_FORMATS = ('%d/%m/%Y %H:%M:%S', '%d/%m/%Y %H:%M', '%d/%m/%Y',
-                          '%d/%m/%y %H:%M:%S', '%d/%m/%y %H:%M', '%d/%m/%y',
-                          '%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M', '%Y-%m-%d')

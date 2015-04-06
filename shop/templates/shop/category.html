@@ -24,8 +24,20 @@
                                 </div>
 
 						</div><!--/category-products-->
-                        						<!--/brands_products-->
-                <!--   temporary decmossion      <div class="brands_products">
+                        						<div class="brands_products"><!--brands_products-->
+							<h2>Brands</h2>
+							<div class="brands-name">
+								<ul class="nav nav-pills nav-stacked">
+									<li><a href="/shop/search/?q=apple">Apple</a></li>
+									<li><a href="/shop/search/?q=samsung"> Samsung</a></li>
+                                    <li><a href="/shop/search/?q=blu">Blu</a> </li>
+                                    <li><a href="/shop/search/?q=dell">Dell</a> </li>
+                                    <li><a href="/shop/search/?q=hp">HP</a> </li>
+                                    <li><a href="/shop/search/?q=acer">Acer</a> </li>
+								</ul>
+							</div>
+						</div><!--/brands_products-->
+                        <div class="brands_products">
                             <h2>Price Sorting</h2>
                                 <form action="" method="get">
         <label for="id_asking_price">Price less than:</label> <input id="id_asking_price" name="asking_price" step="any" type="number" />
@@ -34,7 +46,7 @@
 </select>
         <button class="btn btn-default" type="submit" > Sort </button>
     </form> <br><br>
-                            </div> -->
+                            </div>
 					</div>
 				</div>
                 {% endblock %}
@@ -69,7 +81,7 @@
                                  </a>
 						    {%  endfor %} -->
 					    {%  else  %}
-					        <strong> No deals at the moment. New deals are added all the time so check again soon </strong>
+					        <strong> No items? What kinda ting is that? go <a href="{% url 'shop:add_new_item' %}">post something now eh</a> </strong>
 					    {% endif %}
 
 

@@ -1,7 +1,7 @@
 {% extends 'shop/base.html' %}
 {%  load staticfiles %}
 {% load shop_extras %}
-{% block title %} Latest deals from around the country {% endblock %}
+{% block title %} Buy and Sell anything {% endblock %}
 	{% block category_block %}
 	<section>
 		<div class="container">
@@ -24,7 +24,19 @@
                                 </div>
 
 						</div><!--/category-products-->
-
+                        						<div class="brands_products"><!--brands_products-->
+							<h2>Brands</h2>
+							<div class="brands-name">
+								<ul class="nav nav-pills nav-stacked">
+									<li><a href="/shop/search/?q=apple">Apple</a></li>
+									<li><a href="/shop/search/?q=samsung"> Samsung</a></li>
+                                    <li><a href="/shop/search/?q=blu">Blu</a> </li>
+                                    <li><a href="/shop/search/?q=dell">Dell</a> </li>
+                                    <li><a href="/shop/search/?q=hp">HP</a> </li>
+                                    <li><a href="/shop/search/?q=acer">Acer</a> </li>
+								</ul>
+							</div>
+						</div><!--/brands_products-->
 					</div>
 				</div>
                 {% endblock %}
@@ -34,24 +46,24 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div id="slider-carousel" class="carousel slide" data-ride="carousel">
-						<!--<ol class="carousel-indicators">
+						<ol class="carousel-indicators">
 							<li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
-							<!--<li data-target="#slider-carousel" data-slide-to="1"></li>
-							<li data-target="#slider-carousel" data-slide-to="2"></li> --
-						</ol> -->
-
+							<li data-target="#slider-carousel" data-slide-to="1"></li>
+							<li data-target="#slider-carousel" data-slide-to="2"></li>
+						</ol>
+						
 						<div class="carousel-inner">
 							<div class="item active">
 								<div class="col-sm-6">
 									<h1><span>Trini</span>Deal</h1>
-									<h2>Online Marketplace</h2>
-									<p>Buy and sell anything for free</p>
+									<h2>Buy and sell anything</h2>
+									<p>The fastest growing marketplace for new and used products in the country.</p>
+									<a href="{% url 'shop:create_sellerprofile' %}"><button type="button" class="btn btn-default get">Start selling now</button></a>
 								</div>
 								<div class="col-sm-6">
 									<img src="{% static 'shop/images/home/cart2.png' %}" class="girl img-responsive" alt="" />
 								</div>
 							</div>
-
 							<div class="item">
 								<div class="col-sm-6">
 									<h1><span>Trini</span>Deal</h1>
@@ -63,7 +75,7 @@
 									<img src="{% static 'shop/images/home/consoles2.png' %}" class="girl img-responsive" alt="" />
 								</div>
 							</div>
-
+							
 							<div class="item">
 								<div class="col-sm-6">
 									<h1><span>Trini</span>Deal</h1>
@@ -75,9 +87,9 @@
 									<img src="{% static 'shop/images/home/iphones.png' %}"  class="girl img-responsive" alt="" />
 								</div>
 							</div>
-
+							
 						</div>
-
+						
 						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
 							<i class="fa fa-angle-left"></i>
 						</a>
@@ -85,7 +97,7 @@
 							<i class="fa fa-angle-right"></i>
 						</a>
 					</div>
-
+					
 				</div>
 			</div>
 		</div>
@@ -94,7 +106,7 @@
 {% block body_block %}
 				<div class="col-sm-9 padding-right" id="padbelow">
 					<div class="features_items"><!--features_items-->
-						<h2 class="title text-center">Latest items</h2>
+						<h2 class="title text-center">Latest Items</h2>
                     	{% if filter %}
                             <div class="endless_page_template">
                             {% include page_template %}
@@ -123,13 +135,12 @@
 {% if forloop.counter|divisibleby:3 %}</div>{% endif %}
 						    {%  endfor %} -->
 					    {%  else  %}
-
-					        <strong> No deals at the moment. New deals are added all the time so check again soon </strong>
+					        <strong> No items? What kinda ting is that? go <a href="{% url 'shop:add_new_item' %}">post something now eh</a> </strong>
 					    {% endif %}
 
 
 					</div><!--features_items-->
-
+					
 				</div>
 {% block js %}
 {{ block.super }}

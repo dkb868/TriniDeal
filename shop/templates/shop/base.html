@@ -53,7 +53,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-12">
-						<div class="social-icons pull-left">
+						<div class="contactinfo">
                         <div class="navbar-header">
 							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 								<span class="sr-only">Toggle navigation</span>
@@ -63,7 +63,6 @@
 							</button>
 						</div>
 							<ul class="nav navbar-nav collapse navbar-collapse">
-
                                 <li><a href="{% url 'shop:myorders' %}"><i class="fa fa-shopping-cart"></i> My Purchases</a></li>
                                 <li><a href="{% url 'shop:add_new_item' %}"><i class="fa fa-plus"></i> Post an item</a></li>
                             {% if request.user.sellerprofile %}
@@ -83,7 +82,7 @@
 
 						<div class="contactinfo pull-right">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-                           <li><a href="#">|</a></li>
+                            <li><a href="#">|</a></li>
                             <li><a href="{% url 'shop:sellerguide' %}"><i class="fa fa-book"></i> Seller's Guide</a> </li>
                             <li><a href="{% url 'help' %}"><i class="fa fa-question-circle"></i> Help/FAQs</a></li>
                                 <li><a href="{% url 'about' %}"><i class="fa fa-info-circle"></i> About us</a></li>
